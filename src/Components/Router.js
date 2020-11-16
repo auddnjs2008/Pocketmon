@@ -4,17 +4,13 @@ import {HashRouter as Router,
         Switch,
         Redirect,
     } from "react-router-dom";
-
+import Home from "../Routes/Home";
 
 export default ()=>{
 
     return (
         <Router>
-
-
-
+            <Route path="/" exact component={Home}/>
         </Router>
     )
-
-
 }    

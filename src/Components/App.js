@@ -1,13 +1,10 @@
 import pocketmon from "pokemon-go-pokedex";
-
+import Router from "./Router";
 
 function App() {
   
-  console.log(pocketmon);
   return (
-    <div className="App">
-      
-    </div>
+      <Router/>
   );
 }
 
