@@ -36,10 +36,10 @@ const LongMenu = (props) =>{
    
     return (
         <Container>
-             <MLink color={props.location.pathname === "/navi" ? true: false} to="/navi">Encyclopedia<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/camera.png"></img></MLink>
-                <MLink color={props.location.pathname === "/navi/store" ? true: false}>Store <img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokebag.png"/></MLink>
-                <MLink color={props.location.pathname === "/navi/mine" ? true: false}>My Pokemons<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png"></img></MLink>
-                <MLink color={props.location.pathname === "/navi/etc" ? true: false}>Etc</MLink>
+             <MLink to="/navi" color={props.location.pathname === "/navi" ? true: false} to="/navi">Encyclopedia<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/camera.png"></img></MLink>
+                <MLink to="/store" color={props.location.pathname === "/store" ? true: false}>Store <img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokebag.png"/></MLink>
+                <MLink to="/mine" color={props.location.pathname === "/mine" ? true: false}>My Pokemons<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png"></img></MLink>
+                <MLink color={props.location.pathname === "/etc" ? true: false}>Etc</MLink>
         </Container>
     )
 }
