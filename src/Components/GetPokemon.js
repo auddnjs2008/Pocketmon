@@ -100,26 +100,52 @@ const GetPokemon = ({setPokemon}) =>{
     let Random;
     let myPoketmon;
     const poketmon = pokemon.pokemon;
+    let commonUrl = "https://projectpokemon.org/images/normal-sprite/";
+    let shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
+    
+    let commonBackUrl = "https://projectpokemon.org/images/sprites-models/normal-back/";
+    let shinyBackUrl = "https://projectpokemon.org/images/sprites-models/shiny-back/";
+    
     const [num,setNum]=useState(1);
-   
+    
     const settingNumber = ()=>{
         if(changeNum === 151){
             changeNum=1;
             turn=1;
         }else
-            changeNum++;
+        changeNum++;
         setNum(changeNum);
-
+        
         if(changeNum === Random && turn === 1) {
             clearInterval(RandomNum);
+            //Farfetch'd 이 아이 안찾아지므로 예외처리해준다.
+            if(poketmon[changeNum-1].name === "Farfetch'd"){
+               changeNum =Math.floor(Math.random()*(151-1))+1;
+            }
+            
+            
             myPoketmon= poketmon[changeNum-1].prev_evolution ? 
                 poketmon.filter(item => item.num === poketmon[changeNum-1].prev_evolution[0].num): [poketmon[changeNum-1]];
             const pokeGif = pokedex.pokemon(myPoketmon[0].name.toLowerCase()).sprites.animated;
             let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
-         
-            localStorage.setItem("myPoketmon",JSON.stringify({...myPoketmon[0],cp:Cp,pokeGif:googleProxyURL + encodeURIComponent(pokeGif)}));
+            let smallName;
+
+            //예외처리 (nidran (female) , nidoran (male)은 안찾아진다. ,)
+            if(myPoketmon[0].name.includes("female"))
+                smallName ="nidoran_f";
+            else if(myPoketmon[0].name.includes("male"))
+                smallName="nidoran_m";
+            else
+                smallName = myPoketmon[0].name.toLowerCase();
+            
+            
+            localStorage.setItem("myPoketmon",JSON.stringify([{...myPoketmon[0],cp:Cp,pokeGif:googleProxyURL + encodeURIComponent(pokeGif),
+            commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
+            shinyBackUrl:shinyBackUrl+smallName+".gif"
+            }]));
            
-            setPokemon({...myPoketmon[0],cp:Cp,pokeGif: googleProxyURL + encodeURIComponent(pokeGif)});
+            setPokemon([{...myPoketmon[0],cp:Cp,pokeGif: googleProxyURL + encodeURIComponent(pokeGif),commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
+            shinyBackUrl:shinyBackUrl+smallName+".gif"}]);
         }
     }
 

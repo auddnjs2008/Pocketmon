@@ -69,7 +69,7 @@ const HomePresenter = ({pokemon,setPokemon,colorArray,setColor})=>
         <FlexWrapper>
             <Title>Your Pokemon</Title>
             <Container colorArray={colorArray}>
-                <img  crossOrigin ="anonymous" ref={Images} src={pokemon.pokeGif}
+                <img  crossOrigin ="anonymous" ref={Images} src={pokemon[0].pokeGif}
                     alt={"example"}
                     onLoad={()=>{
                         const colorThief = new ColorThief();
@@ -79,7 +79,7 @@ const HomePresenter = ({pokemon,setPokemon,colorArray,setColor})=>
             
                 />
             </Container>
-            <Name>{pokemon.name}</Name>
+            <Name>{pokemon[0].name}</Name>
         </FlexWrapper>
         <SLink to="/navi">Go to <FontAwesomeIcon icon={faArrowRight}></FontAwesomeIcon></SLink>
     </> 
