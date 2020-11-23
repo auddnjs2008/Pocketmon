@@ -146,7 +146,14 @@ const GetPokemon = ({setPokemon}) =>{
            
             setPokemon([{...myPoketmon[0],cp:Cp,pokeGif: googleProxyURL + encodeURIComponent(pokeGif),commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
             shinyBackUrl:shinyBackUrl+smallName+".gif"}]);
+        
+            // 처음 시작할때  돈을 1000개 정도 준다.
+
+            localStorage.setItem("myBag",JSON.stringify({"money":1000}));
+        
         }
+    
+    
     }
 
     useEffect(()=>{

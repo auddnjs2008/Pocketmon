@@ -9,6 +9,7 @@ import Navigator from "../Routes/Navigator";
 import Detail from "../Routes/Detail";
 import Store from "../Routes/Store";
 import MyPokemon from "../Routes/MyPokemon";
+import MyBag from "../Routes/MyBag";
 
 
 export default ()=>{
@@ -20,6 +21,7 @@ export default ()=>{
             <Route path="/navi/:id" component={Detail}/>    
             <Route path="/store" component={Store}/>
             <Route path="/mine" component={MyPokemon}/>
+            <Route path="/bag" component={MyBag}/>
         </Router>
     )
 }    

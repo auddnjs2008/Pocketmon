@@ -126,7 +126,7 @@ const Img = styled.img`
     object-fit:cover;
 `;
 
-const StorePresenter=({windowSize,handleItemClick,handleClose,name,info,img,money,scroll})=>
+const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,info,img,money,scroll})=>
     <>
     {windowSize > 810 ? <LongMenu></LongMenu> :<Menu></Menu>}
     <Container windowSize={windowSize}>
@@ -303,7 +303,7 @@ const StorePresenter=({windowSize,handleItemClick,handleClose,name,info,img,mone
                <div>Price : {<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokecoin.png"/>} {money}</div> 
         </PriceWrapper>
          <BtnWrapper>
-            <button>Buy</button>
+            <button onClick={handleBuyBtn}>Buy</button>
             <button onClick={handleClose}>Close</button>     
         </BtnWrapper>   
     </InfoWrapper>       

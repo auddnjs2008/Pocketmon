@@ -5,22 +5,35 @@ import Menu from "../../Components/Menu";
 import LongMenu from "../../Components/LongMenu";
 import ColorThief from "colorthief";
 
-const Container = styled.div``;
+const Container = styled.div`
+    position:absolute;
+    top:0;
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:1fr;
+    height:90%;
+    width:100%;  
+    margin-top:${props=>props.windowSize >810 ? "70px" :"0px"};
+    justify-items:center;
+`;
 const PokemonWrapper = styled.section`
  background-color:rgba(0,0,0,0.8);
-padding:20px;
-border: 20px solid ${props => `rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]})`};  
+padding:10px;
+border: 10px solid ${props => `rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]})`};  
 display:grid;
 grid-template-columns:1fr 0.5fr 3fr;
 justify-items:center;
 align-items:center;
+
+ 
+
 `;
 const PokeImg = styled.img`
    width:auto;
    height:auto;
    min-width:50px;
    min-height:50px;
-
+ 
    @keyframes  touch {
       0%{
 
@@ -41,6 +54,7 @@ position:relative;
 display:flex;
 flex-direction:column;
 align-items:center;
+color:white;
 
 `;
 
@@ -54,7 +68,8 @@ const PokeInfo = styled.ul`
       grid-template-columns:2fr 3fr;
       text-align:center;
       span:first-child{
-        
+        font-size:20px;
+        color:#e74c3c;
          padding:5px;
       }
       ul{
@@ -107,7 +122,7 @@ const InnerBox = styled.div`
      position:absolute;
      bottom:0; 
      //background-color: ${props => `rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]})`};  
-     background:${props => `linear-gradient(to bottom,rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]}),white)`};
+     background:${props => `linear-gradient(to top,rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]}),black)`};
 
    @keyframes fill{
       0%{
@@ -175,7 +190,7 @@ const MyPokePresenter = ({windowSize,pokemons,colorArray,setColor,handlePokemonC
    return( 
     <>
      {windowSize > 810 ? <LongMenu></LongMenu> : <Menu></Menu>}
-    <Container>
+    <Container windowSize={windowSize}>
       {pokemons.map(item => item ? <PokemonWrapper colors={colorArray}>
        <PokeProfile>
          <PokeImg onClick={handlePokemonClick} crossOrigin="anonymous" ref={Images} src={googleProxyURL +encodeURIComponent(item.commonUrl)}
