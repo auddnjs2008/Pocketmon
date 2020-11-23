@@ -8,8 +8,9 @@ const StoreContainer = ()=>{
     const [info,setInfo]=useState("");
     const [img,setImg]=useState("");
     const [money,setMoney]=useState(0);
+    const [myMoney,setMyMoney]=useState(JSON.parse(localStorage.getItem("myBag")).money);
     const [bag,setBag]=useState(JSON.parse(localStorage.getItem("myBag")));
-
+    const [message,setMessage]=useState("");
 
     const handleBuyBtn=()=>{
         const itemes=bag;
@@ -32,13 +33,30 @@ const StoreContainer = ()=>{
         if(Badges.length ===0) // 산 아이템이 뱃지가 아닐경우    
         itemes[itemName]= (itemes[itemName] !== undefined? (itemes[itemName])+number : number);
         else // 산 아이템이 뱃지일 경우
-            itemes["Badges"] = (itemes["Badges"] !== undefined ? [...itemes["Badges"],...Badges] : Badges);
+        {   if(!itemes["Badges"].includes(Badges[0]))
+                itemes["Badges"] = (itemes["Badges"] !== undefined ? [...itemes["Badges"],...Badges] : Badges);
+            else
+            {   // 알람메시지를 넣어준다.
+                setMessage("You already had this Badge");
+                setTimeout(()=>{setMessage(""); console.log("셋팅")},3000);
+                return;
+            }
+        }
         
-       
-       
+        if(myMoney-money <0){
+            // 알람메시지를 넣어준다.
+            setMessage("You don't have enough money");
+            setTimeout(()=>{setMessage(""); console.log("셋팅")},3000);
+            return;
+        }
+
+
+        
+        // 돈차감을 해주어야 한다. 
+        setMyMoney(myMoney-money);
+        itemes["money"]=(myMoney-money);
        
         setBag(itemes);
-       
         localStorage.setItem("myBag",JSON.stringify(bag));
     }
 
@@ -83,6 +101,9 @@ const StoreContainer = ()=>{
         img={img}
         money={money}
         scroll={scroll}
+        myMoney={myMoney}
+        message={message}
+       
     ></StorePresenter>
 }
 
