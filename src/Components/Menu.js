@@ -100,6 +100,7 @@ const Menu = (props) =>{
                 <MLink to="/store" color={props.location.pathname === "/store" ? true: false}>Store <img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokebag.png"/></MLink>
                 <MLink to="/mine" color={props.location.pathname === "/mine" ? true: false}>My Pokemons<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png"></img></MLink>
                 <MLink to="/bag" color={props.location.pathname === "/bag" ? true: false}>My Bag<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/backpack.png"/></MLink>
+                <MLink to="/game" color={props.location.pathname.includes("/game") ? true: false}>Game<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/fist.png"/></MLink>
             </Container>
         </MenuWrapper>
 

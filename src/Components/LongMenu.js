@@ -10,7 +10,7 @@ const Container =styled.div`
  top:0;
  width:100%;
  display:grid;
- grid-template-columns:repeat(4,1fr);
+ grid-template-columns:repeat(5,1fr);
  justify-items:center;
  box-shadow: 0px 5px 5px rgba(20,20,20,0.1);
 `;
@@ -36,10 +36,11 @@ const LongMenu = (props) =>{
    
     return (
         <Container>
-             <MLink to="/navi" color={props.location.pathname.includes("/navi") ? true: false} to="/navi">Encyclopedia<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/camera.png"></img></MLink>
-                <MLink to="/store" color={props.location.pathname === "/store" ? true: false}>Store <img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokebag.png"/></MLink>
-                <MLink to="/mine" color={props.location.pathname === "/mine" ? true: false}>My Pokemons<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png"></img></MLink>
-                <MLink to="/bag" color={props.location.pathname === "/bag" ? true: false}>My Bag<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/backpack.png"/></MLink>
+            <MLink to="/navi" color={props.location.pathname.includes("/navi") ? true: false} to="/navi">Encyclopedia<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/camera.png"></img></MLink>
+            <MLink to="/store" color={props.location.pathname === "/store" ? true: false}>Store <img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokebag.png"/></MLink>
+            <MLink to="/mine" color={props.location.pathname === "/mine" ? true: false}>My Pokemons<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png"></img></MLink>
+            <MLink to="/bag" color={props.location.pathname === "/bag" ? true: false}>My Bag<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/backpack.png"/></MLink>
+            <MLink to="/game" color={props.location.pathname.includes("/game") ? true: false}>Game <img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/fist.png"/></MLink>
         </Container>
     )
 }
