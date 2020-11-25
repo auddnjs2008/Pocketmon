@@ -6,23 +6,19 @@ import Tree from "../../나무.png";
 const MapContainer=styled.div`
     position:relative;
     width:100vw;
-    height:100%;
+    height:100vh;
     display:grid;
     grid-template-columns:repeat(11,1fr);
     grid-template-rows:repeat(10,1fr);
+    background-color:#659A25;
                 
 `;
 
-const TreeWrapper = styled.div`
-    
+const TreeWrapper = styled.img`
     width:100%;
-    height:100px;
-    background-image:url(${Tree});
-    background-size:cover;
-    background-position:center center;
-    background-color:#659A25;
- 
-  
+    height:100%;
+    z-index:1;  
+    background-color:transparent;
 `;
 
 const RoadWrapper = styled.div`
@@ -33,20 +29,28 @@ const RoadWrapper = styled.div`
 `;
 const Trainer = styled.img`
     position:absolute;
-    bottom:0;
-    left:50%;
+    bottom:${props=>props.position.length !== 0 ? `${props.windowSize[1]-props.position[1]-50}px` : "0"};
+    left:${props=> props.position.length !==0 ? `${props.position[0]}px` : "50%"}
+
+`;
+
+const Pokemon = styled.img`
+    position:absolute;
+    top:${props=>props.random ? `${props.random[1]}px` : ""};
+    left:${props=>props.random ? `${props.random[0]}px` :""};
+
 `;
 
 
 
-
-const YardMapPresenter=({map,trainer,char,yard,handleKeyPress})=>{
+const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition})=>{
 
     return( 
         <>
         <MapContainer ref={yard}>
-            {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
-            <Trainer     src={trainer[0]} ref={char}></Trainer>
+            {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper src={Tree}></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
+            <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
+            {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
         </MapContainer>
         </>
     )
