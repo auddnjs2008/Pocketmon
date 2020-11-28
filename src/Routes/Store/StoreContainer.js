@@ -18,7 +18,7 @@ const StoreContainer = ()=>{
         let number=1;
         let Badges=[];
 
-        if(itemName === "Pokeballs" || itemName=== "Incenses") // 묶음 아이템을 살 경우    
+        if(itemName === "pokeballs" || itemName=== "Incenses") // 묶음 아이템을 살 경우    
         {   itemName=itemName.substring(0,name.length-1);
             number=3;
         }else if (itemName.includes("Badge"))
@@ -33,7 +33,7 @@ const StoreContainer = ()=>{
         if(Badges.length ===0) // 산 아이템이 뱃지가 아닐경우    
         itemes[itemName]= (itemes[itemName] !== undefined? (itemes[itemName])+number : number);
         else // 산 아이템이 뱃지일 경우
-        {   if(!itemes["Badges"].includes(Badges[0]))
+        {   if(itemes["Badges"] === undefined || !itemes["Badges"].includes(Badges[0]))
                 itemes["Badges"] = (itemes["Badges"] !== undefined ? [...itemes["Badges"],...Badges] : Badges);
             else
             {   // 알람메시지를 넣어준다.

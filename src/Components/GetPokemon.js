@@ -139,12 +139,12 @@ const GetPokemon = ({setPokemon}) =>{
                 smallName = myPoketmon[0].name.toLowerCase();
             
             
-            localStorage.setItem("myPoketmon",JSON.stringify([{...myPoketmon[0],cp:Cp,pokeGif:googleProxyURL + encodeURIComponent(pokeGif),
+            localStorage.setItem("myPoketmon",JSON.stringify([{...myPoketmon[0],myId:1,cp:Cp,health:100,pokeGif:googleProxyURL + encodeURIComponent(pokeGif),
             commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
             shinyBackUrl:shinyBackUrl+smallName+".gif"
             }]));
            
-            setPokemon([{...myPoketmon[0],cp:Cp,pokeGif: googleProxyURL + encodeURIComponent(pokeGif),commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
+            setPokemon([{...myPoketmon[0],myId:1,cp:Cp,health:100,pokeGif: googleProxyURL + encodeURIComponent(pokeGif),commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
             shinyBackUrl:shinyBackUrl+smallName+".gif"}]);
         
             // 처음 시작할때  돈을 1000개 정도 준다.

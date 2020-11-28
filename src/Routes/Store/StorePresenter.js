@@ -130,19 +130,19 @@ const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,
     <>
     {windowSize > 810 ? <LongMenu></LongMenu> :<Menu></Menu>}
     <Container windowSize={windowSize}>
-        <ImgWrapper onClick={()=>handleItemClick("Pokeball","You can catch pokemon by using this Item","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeball.png",25)}>
+        <ImgWrapper onClick={()=>handleItemClick("pokeball","You can catch pokemon by using this Item","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeball.png",25)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeball.png"/>
-            <Title>Pokeball</Title>
+            <Title>PokeBall</Title>
         </ImgWrapper>
-        <ImgWrapper onClick={()=>handleItemClick("SuperBall","You can catch pokemon by using this Item","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/superball.png",35)}>
+        <ImgWrapper onClick={()=>handleItemClick("superball","You can catch pokemon by using this Item","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/superball.png",35)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/superball.png" />
             <Title>Super-Ball</Title>
         </ImgWrapper>
-        <ImgWrapper onClick={()=>handleItemClick("UltraBall","You can catch pokemon by using this Item","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/ultra-ball.png",45)}>
+        <ImgWrapper onClick={()=>handleItemClick("ultra-ball","You can catch pokemon by using this Item","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/ultra-ball.png",45)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/ultra-ball.png"/>
             <Title>Ultra-Ball</Title>
         </ImgWrapper>
-        <ImgWrapper onClick={()=>handleItemClick("Pokeballs","You can catch pokemon by using this Item","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeballs.png",65)}>
+        <ImgWrapper onClick={()=>handleItemClick("pokeballs","You can catch pokemon by using this Item","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeballs.png",65)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeballs.png"/>
             <Title>Pokeballs</Title>
         </ImgWrapper>
@@ -155,7 +155,7 @@ const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/incenses.png"/>
             <Title>Incenses</Title>
         </ImgWrapper>    
-        <ImgWrapper onClick={()=>handleItemClick("RazzBerry","When you are trying to catch Pokemon, you can get Pokemon easily by using this","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png",30)}>
+        <ImgWrapper onClick={()=>handleItemClick("razz-berry","When you are trying to catch Pokemon, you can get Pokemon easily by using this","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png",30)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png"/>
             <Title>Razz-Berry</Title>
         </ImgWrapper>

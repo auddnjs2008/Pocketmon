@@ -168,9 +168,9 @@ const BagPresenter= ({windowSize,bag})=>
     <SubGridWrapper>
         <BallWrapper>
             <h1>Ball</h1>
-            <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeball.png"/><h2>Poketball</h2></div><div>{bag.PokeBall ? bag.PokeBall : 0}개</div></Ball>
-            <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/superball.png"/><h2>Super-ball</h2></div><div>{bag.SuperBall?bag.SuperBall : 0}개</div></Ball>
-            <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/ultra-ball.png"/><h2>Ultra-ball</h2></div><div>{bag.UltraBall ? bag.UltraBall :0}개</div></Ball>
+            <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeball.png"/><h2>Poketball</h2></div><div>{bag.pokeball ? bag.pokeball : 0}개</div></Ball>
+            <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/superball.png"/><h2>Super-ball</h2></div><div>{bag.superball?bag.superball : 0}개</div></Ball>
+            <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/ultra-ball.png"/><h2>Ultra-ball</h2></div><div>{bag.ultraball ? bag.ultraball :0}개</div></Ball>
         </BallWrapper>
         <PotionWrapper>
             <h1>Potion</h1>

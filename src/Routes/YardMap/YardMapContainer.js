@@ -13,12 +13,13 @@ const YardMapContainer =()=>{
     const [charPosition,setPosition]=useState([]); //트레이너 포지션
     const [windowSize,setWindow]=useState([]);
     const [frontMove,setMove]=useState(1); // 위로가는 키를 눌렀을때 1 아래로가는 키를 눌렀을때1 (캐릭터 모습 변경)
-    const [gameon,setPower]=useState(0);
+    const [battleon,setBattle]=useState(0); // battle 상태 표시 0 이면 배틀이 아니고 1이면 배틀 상태이다.
+    const [run,setRun]=useState(0); // 도망가고 나오면 1로 상태를 만든다.
     // 랜덤 포켓몬은  3단계 최종진화 포켓몬은 나오지 못하게 한다. 
     const [pokemon,setPokemon]=useState(Pokemon.pokemon.filter(item=>item.type.includes("Grass")&& (item.prev_evolution ? item.prev_evolution.length!==2 : 1)));
     //랜덤 포켓몬의 좌표들
     const [pokePosition,setPkPosition]=useState([]);
-    //트레이너 반경에 포착된 포켓몬 
+    //트레이너 반경에 포착된 포켓몬    // **** cp를 랜덤으로 넣어줘야 한다.
     const [battlePokemon,setBattlePoke]=useState([]);
 
     const char=useRef();
@@ -27,9 +28,7 @@ const YardMapContainer =()=>{
     const trainer="https://projectpokemon.org/images/normal-sprite/pikachu-hoenncap.gif";
     const trainerBack="https://projectpokemon.org/images/sprites-models/normal-back/pikachu-hoenncap.gif";
     const trainerImg=[trainer,trainerBack];
-    // 트레이너의 현재위치
-    //  console.log("실행************");
-    // console.log(charPosition);
+   
    
     
     // 랜덤 함수를 만든다. (좌표랜덤, 포켓몬 배열중  랜덤으로 나오게 하는 함수)
@@ -54,44 +53,58 @@ const YardMapContainer =()=>{
     
     const handleKeyPress=useCallback((e)=>{ //useCallback은 함수를 재사용하는 것이다.
      // ArrowUp ArrowDown //ArrowRight ArrowLeft // 60px씩 이동
-             // 랜덤포켓몬  주위 10px 반경 에 접촉할경우 메세지 발생 
-             // 좌표 사이의 거리가 반지름 거리보다 크면 인지 못한다.     // 문제는 업데이트전 좌표들이다. 
-            let rader = pokePosition.filter((item,index)=>{
-                    //console.log(Math.sqrt(Math.pow(item[0]-nowPosition[0],2)+Math.pow(item[1]-nowPosition[1],2)));
-                    // console.log("****피카츄 포지션:",nowPosition);
-                    // console.log("***포켓몬포지션:",index,item);
-                    return Math.sqrt(Math.pow(item[0]-(nowPosition[0]),2)+Math.pow(item[1]-(nowPosition[1]),2))<= 40})            
-
-            setBattlePoke(rader);
+           
+            //도망치고 나서 움직일때 다시  도망모드를 초기화 시킨다.
+            if(run) setRun(0);
             e.preventDefault();
             const initialArray =[ Math.floor(getAbsoluteLeft(char.current) - getAbsoluteLeft(yard.current)),Math.floor(getAbsoluteTop(char.current) - getAbsoluteTop(yard.current))]           
             // 경계선 세우기
-            if(e.key === "ArrowUp"){
+            if(e.key === "ArrowUp" && battleon === 0){
              nowPosition.length === 0 ? setPosition([initialArray[0],initialArray[1]-60]):(nowPosition[1]-60<=0 ? setPosition([nowPosition[0],nowPosition[1]]):setPosition([nowPosition[0],nowPosition[1]-60]));
               setMove(0);  
-            }else if(e.key ==="ArrowDown"){ 
+            }else if(e.key ==="ArrowDown" && battleon === 0){ 
             nowPosition.length === 0 ? setPosition([initialArray[0],initialArray[1]+60]):(nowPosition[1]+60 >= windowSize[1] ? setPosition([nowPosition[0],nowPosition[1]]): setPosition([nowPosition[0],nowPosition[1]+60]));
                 setMove(1);
-            }else if(e.key ==="ArrowRight"){
+            }else if(e.key ==="ArrowRight" && battleon === 0){
              nowPosition.length === 0 ? setPosition([initialArray[0]+60,initialArray[1]]):(nowPosition[0]+60 >=windowSize[0] ? setPosition([nowPosition[0],nowPosition[1]]):setPosition([nowPosition[0]+60,nowPosition[1]]));
 
-            }else if(e.key ==="ArrowLeft"){
+            }else if(e.key ==="ArrowLeft" && battleon === 0){
                 nowPosition.length === 0 ? setPosition([initialArray[0]-60,initialArray[1]]): (nowPosition[0]-60 <=0? setPosition([nowPosition[0],nowPosition[1]]) :setPosition([nowPosition[0]-60,nowPosition[1]]));
 
-            }else{
-                return;
             }
     },[charPosition]);
+
+    const handleKeyUp =useCallback((e)=>{
+          // 랜덤포켓몬  주위 10px 반경 에 접촉할경우 메세지 발생 
+             // 좌표 사이의 거리가 반지름 거리보다 크면 인지 못한다.   // 꼭 한명만 배열에 들어가는 건 아니다. 
+             let rader = pokePosition.map((item,index)=>
+                Math.sqrt(Math.pow(item[0]-(nowPosition[0]),2)+Math.pow(item[1]-(nowPosition[1]),2))<= 40 ? index : "" ).filter(item => item !=="");
+
+            if(rader.length !==0 && !run) {
+                window.removeEventListener("keydown",handleKeyPress);
+                setBattlePoke(rader);
+                setBattle(1);
+            }
+
+
+    },[charPosition,run]);
+
+
+
 
 
     useEffect(()=>{
         if(char.current && yard.current){
             setWindow([yard.current.offsetWidth,yard.current.offsetHeight]);
-            setPower(1);
+            //setPower(1);
             window.addEventListener("keydown",handleKeyPress);
-            return ()=> window.removeEventListener("keydown",handleKeyPress);
+            window.addEventListener("keyup",handleKeyUp);
+            return ()=> {
+                    window.removeEventListener("keydown",handleKeyPress);
+                    window.removeEventListener("keyup",handleKeyUp);
+                }
         }
-    },[handleKeyPress]);
+    },[handleKeyPress,run]);
 
     useEffect(()=>{
         if(char.current && yard.current){
@@ -99,7 +112,7 @@ const YardMapContainer =()=>{
         let randomPosition=[];
         for(let i=0; i<6;i++){
             randomPokemon.push(pokemon[getRandom(pokemon.length)-1]);
-            randomPosition.push([getRandom(yard.current.clientWidth-60),getRandom(yard.current.clientHeight-60)]);
+            randomPosition.push([getRandom(yard.current.clientWidth-100),getRandom(yard.current.clientHeight-100)]);
         }
        setPokemon(randomPokemon); 
        setPkPosition(randomPosition);
@@ -109,18 +122,21 @@ const YardMapContainer =()=>{
 
   
     return (
-     <> 
-     {console.log(battlePokemon)}     
+     <>    
     <YardMapPresenter
      map={map} 
      trainer={trainerImg} 
      char={char} 
      yard={yard} 
+     setBattle={setBattle}
      charPosition={charPosition} 
      frontMove={frontMove} 
      windowSize={windowSize}
      pokemon={pokemon}
      randomPosition={pokePosition}
+     battlePokemon={battlePokemon}
+     battleon={battleon}
+     run={setRun}
      ></YardMapPresenter>
      </> 
     )

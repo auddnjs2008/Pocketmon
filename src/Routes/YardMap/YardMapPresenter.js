@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Tree from "../../나무.png";
+import Battle from "../../Components/Battle";
 
 const MapContainer=styled.div`
     position:relative;
@@ -13,6 +14,10 @@ const MapContainer=styled.div`
     background-color:#659A25;
                 
 `;
+
+
+
+
 
 const TreeWrapper = styled.img`
     width:100%;
@@ -30,7 +35,7 @@ const RoadWrapper = styled.div`
 const Trainer = styled.img`
     position:absolute;
     bottom:${props=>props.position.length !== 0 ? `${props.windowSize[1]-props.position[1]-50}px` : "0"};
-    left:${props=> props.position.length !==0 ? `${props.position[0]}px` : "50%"}
+    left:${props=> props.position.length !==0 ? `${props.position[0]}px` : "50%"};
 
 `;
 
@@ -43,15 +48,17 @@ const Pokemon = styled.img`
 
 
 
-const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition})=>{
+const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run})=>{
 
     return( 
         <>
-        <MapContainer ref={yard}>
-            {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper src={Tree}></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
-            <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
-            {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
-        </MapContainer>
+            <MapContainer ref={yard}>
+                {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper src={Tree}></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
+                <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
+                {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
+            </MapContainer>
+            {battlePokemon.length !==0 && battleon===1?<Battle setRun={run} setBattle={setBattle} battleon={battleon} battleIndex={battlePokemon}  pokemons={pokemon}></Battle> : ""}
+        
         </>
     )
 }
