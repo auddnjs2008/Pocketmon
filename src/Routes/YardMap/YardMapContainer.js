@@ -19,8 +19,11 @@ const YardMapContainer =()=>{
     const [pokemon,setPokemon]=useState(Pokemon.pokemon.filter(item=>item.type.includes("Grass")&& (item.prev_evolution ? item.prev_evolution.length!==2 : 1)));
     //랜덤 포켓몬의 좌표들
     const [pokePosition,setPkPosition]=useState([]);
-    //트레이너 반경에 포착된 포켓몬    // **** cp를 랜덤으로 넣어줘야 한다.
+    //트레이너 반경에 포착된 포켓몬    // 
     const [battlePokemon,setBattlePoke]=useState([]);
+    // 랜덤 포켓몬들 cp
+    const [pokemonsCp,setCp]=useState([]);
+
 
     const char=useRef();
     const yard=useRef();
@@ -32,8 +35,8 @@ const YardMapContainer =()=>{
    
     
     // 랜덤 함수를 만든다. (좌표랜덤, 포켓몬 배열중  랜덤으로 나오게 하는 함수)
-    const getRandom=(num)=>{    
-        return Math.floor(Math.random()*(num-1))+1; // 1부터 num까지 랜덤으로 배출
+    const getRandom=(num,start)=>{    
+        return Math.floor(Math.random()*(num-start))+start; // 1부터 num까지 랜덤으로 배출
     }
 
   
@@ -110,12 +113,15 @@ const YardMapContainer =()=>{
         if(char.current && yard.current){
         let randomPokemon=[];
         let randomPosition=[];
+        let randomCp=[];
         for(let i=0; i<6;i++){
-            randomPokemon.push(pokemon[getRandom(pokemon.length)-1]);
-            randomPosition.push([getRandom(yard.current.clientWidth-100),getRandom(yard.current.clientHeight-100)]);
+            randomPokemon.push(pokemon[getRandom(pokemon.length,1)-1]);
+            randomPosition.push([getRandom(yard.current.clientWidth-100,1),getRandom(yard.current.clientHeight-100,1)]);
+            randomCp.push(getRandom(900,100));
         }
        setPokemon(randomPokemon); 
        setPkPosition(randomPosition);
+       setCp(randomCp);
      }
     },[])
 
@@ -136,6 +142,7 @@ const YardMapContainer =()=>{
      randomPosition={pokePosition}
      battlePokemon={battlePokemon}
      battleon={battleon}
+     pokemonsCp={pokemonsCp}
      run={setRun}
      ></YardMapPresenter>
      </> 

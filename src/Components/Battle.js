@@ -127,9 +127,44 @@ position:relative;
  }
 `;
 
+const Physical=styled.div`
+        height:15px;
+        width:${props=>props.physical ? `${props.physical * 150 /100}px` : "0px"};
+        background-color:#ff7979;
+`;
+const MonsterWrapper =styled.div`
+
+
+
+    div.physical1, div.physical2{
+        width:150px;
+        height:15px;
+        background-color:#dfe6e9;
+        position:absolute;
+        bottom:60%;
+        left:20%;
+        margin-bottom:20px;
+        
+        
+    }
+
+    div.physical1{
+        bottom:unset;
+        left:unset;
+        top:0;
+        right:20%;
+        margin:20px 0;
+    }
+
+
+
+
+`;
+
+
 const BattleMonster = styled.img`
     position:absolute;
-    top:0;
+    top:30px;
     right:20%;
 
 `;
@@ -141,13 +176,12 @@ const MyMonster = styled.img`
 `;
 
 
-const Battle =({battleIndex,pokemons,setBattle,battleon,setRun})=>{
+const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
 
     setBattle(1);
     let myPokemons=JSON.parse(localStorage.getItem("myPoketmon"));
     const battlePokmon = PokeDex.pokemon[pokemons[battleIndex[0]].id-1];
     const battlePokmonName = battlePokmon.name.toLowerCase();
-    const battleCp = Math.floor(Math.random()*(900-100))+100;
     const myBag = JSON.parse(localStorage.getItem("myBag"));
     let commonUrl = "https://projectpokemon.org/images/normal-sprite/";
     let shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
@@ -155,13 +189,16 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun})=>{
     let shinyBackUrl = "https://projectpokemon.org/images/sprites-models/shiny-back/";
     const menu =useRef();
     const myMonster = useRef();
+    const [battlePhysical,setPhysical]=useState(100);
+    const [myPhysical,setMyPhysical]=useState();
     const [initList,setInit]=useState();
     const [list,setList]=useState();
     const [listIndex,setIndex]=useState(0); 
    
+    
 
     const catchPokemon=()=>{
-        const catchPokemon = {...battlePokmon, cp:battleCp,health:100,myId:myPokemons.length+1, commonUrl:commonUrl+battlePokmonName+".gif", commonBackUrl:commonBackUrl + battlePokmonName+".gif",shinyUrl:shinyUrl+battlePokmonName+".gif",
+        const catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:commonUrl+battlePokmonName+".gif", commonBackUrl:commonBackUrl + battlePokmonName+".gif",shinyUrl:shinyUrl+battlePokmonName+".gif",
         shinyBackUrl:shinyBackUrl+battlePokmonName+".gif"};
         myPokemons.push(catchPokemon);
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
@@ -178,7 +215,11 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun})=>{
 
 
         if(item.className.includes("attack")){
-
+            //*** 공격했을 경우  얼마나 달지 계산해주는 코드 작성 필요  */
+            setPhysical(battlePhysical-10);
+            setTimeout(()=>setMyPhysical(myPhysical-10),3000);
+            // myPokemons[myMonster.current.id-1].heatlh=myPhysical;
+            //localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
 
         }else if (item.className.includes("run")){
             setBattle(0);
@@ -308,6 +349,11 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun})=>{
             menu.current.querySelectorAll("li")[0].style.backgroundColor="yellow";
         }
     },[list])
+    useEffect(()=>{
+       if(myMonster.current) setMyPhysical( myPokemons[myMonster.current.id-1].heatlh); 
+    },[])
+
+
 
     return (
         <>
@@ -317,9 +363,16 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun})=>{
         <BattleContainer>
             <BattlePokmons>
                 <div className="field"></div>
+                <MonsterWrapper>
+                    <BattleMonster src={`https://projectpokemon.org/images/normal-sprite/${pokemons[battleIndex[0]].name.toLowerCase()}.gif`}></BattleMonster>
+                    <div className="physical1"><Physical physical={battlePhysical}></Physical></div>
+                </MonsterWrapper>
                 
-                <BattleMonster src={`https://projectpokemon.org/images/normal-sprite/${pokemons[battleIndex[0]].name.toLowerCase()}.gif`}></BattleMonster>
-                <MyMonster id={myPokemons[0].myId}ref={myMonster}src={myPokemons[0].commonBackUrl}></MyMonster>
+                <MonsterWrapper>
+                    <MyMonster id={myPokemons[0].myId}ref={myMonster}src={myPokemons[0].commonBackUrl}></MyMonster>
+                    <div className="physical2"><Physical physical={myPhysical}></Physical></div>
+                </MonsterWrapper>
+            
             </BattlePokmons>
             <BattleNavi>
                 <ul ref={menu}>
