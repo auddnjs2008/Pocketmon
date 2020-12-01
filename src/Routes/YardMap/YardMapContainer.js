@@ -139,10 +139,13 @@ const YardMapContainer =()=>{
      frontMove={frontMove} 
      windowSize={windowSize}
      pokemon={pokemon}
+     setPokemons={setPokemon}
      randomPosition={pokePosition}
+     setPkPosition={setPkPosition}
      battlePokemon={battlePokemon}
      battleon={battleon}
      pokemonsCp={pokemonsCp}
+     setCp={setCp}
      run={setRun}
      ></YardMapPresenter>
      </> 

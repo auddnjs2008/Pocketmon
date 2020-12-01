@@ -170,7 +170,7 @@ const BagPresenter= ({windowSize,bag})=>
             <h1>Ball</h1>
             <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeball.png"/><h2>Poketball</h2></div><div>{bag.pokeball ? bag.pokeball : 0}개</div></Ball>
             <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/superball.png"/><h2>Super-ball</h2></div><div>{bag.superball?bag.superball : 0}개</div></Ball>
-            <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/ultra-ball.png"/><h2>Ultra-ball</h2></div><div>{bag.ultraball ? bag.ultraball :0}개</div></Ball>
+            <Ball><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/ultra-ball.png"/><h2>Ultra-ball</h2></div><div>{bag["ultra-ball"] ? bag["ultra-ball"] :0}개</div></Ball>
         </BallWrapper>
         <PotionWrapper>
             <h1>Potion</h1>
@@ -190,7 +190,7 @@ const BagPresenter= ({windowSize,bag})=>
         </IncubatorWrapper>
         <OthersWrapper>
             <h1>Others</h1>
-            <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png"/><h2>Razz-berry</h2></div><div>{bag.RazzBerry ? bag.RazzBerry : 0}개</div></Others>
+            <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png"/><h2>Razz-berry</h2></div><div>{bag["razz-berry"] ? bag["razz-berry"] : 0}개</div></Others>
             <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/incense.png"/><h2>Incense</h2></div><div>{bag.Incense ? bag.Incense : 0}개</div></Others>
             <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/candy.png"/><h2>Candy</h2></div><div>{bag.Candy ? bag.Candy : 0}개</div></Others>
         </OthersWrapper>

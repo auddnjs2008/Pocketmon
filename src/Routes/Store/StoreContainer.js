@@ -38,7 +38,7 @@ const StoreContainer = ()=>{
             else
             {   // 알람메시지를 넣어준다.
                 setMessage("You already had this Badge");
-                setTimeout(()=>{setMessage(""); console.log("셋팅")},3000);
+                setTimeout(()=>{setMessage("");},3000);
                 return;
             }
         }
@@ -46,7 +46,7 @@ const StoreContainer = ()=>{
         if(myMoney-money <0){
             // 알람메시지를 넣어준다.
             setMessage("You don't have enough money");
-            setTimeout(()=>{setMessage(""); console.log("셋팅")},3000);
+            setTimeout(()=>{setMessage(""); },3000);
             return;
         }
 

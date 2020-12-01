@@ -34,7 +34,7 @@ const BattleEffect = styled.div`
         }
 
     }
-animation : battle 3s linear forwards;
+animation : battle 2s linear forwards;
 `;
 
 const BattleContainer=styled.div`
@@ -43,20 +43,21 @@ const BattleContainer=styled.div`
     top:0;
     
     z-index:3;
-    /* width:100%;
-    height:100%; */
+    width:100%;
+    height:100%;
     @keyframes  battleWindow{
         0%{
-            width:0;
-            height:0;
+            opacity:0;
+        }
+        80%{
+            opacity:0;
         }
         100%{
-            width:100%;
-            height:100%;
+            opacity:1;
         }
     }
 
-    animation: battleWindow 2s linear forwards;
+    animation: battleWindow 3s ease-in-out forwards;
 `;
 
 const BattleNavi = styled.div`
@@ -120,11 +121,7 @@ position:relative;
     transform:rotateX(87deg) rotateZ(10deg);
 
  }
- img{
-     width:150px;
-     height:150px;
-     object-fit:contain;
- }
+
 `;
 
 const Physical=styled.div`
@@ -143,7 +140,7 @@ const MonsterWrapper =styled.div`
         position:absolute;
         bottom:60%;
         left:20%;
-        margin-bottom:20px;
+        
         
         
     }
@@ -152,7 +149,7 @@ const MonsterWrapper =styled.div`
         bottom:unset;
         left:unset;
         top:0;
-        right:20%;
+        right:18%;
         margin:20px 0;
     }
 
@@ -167,21 +164,112 @@ const BattleMonster = styled.img`
     top:30px;
     right:20%;
 
+     width:100px;
+     height:100px;
+     object-fit:contain;
+ 
+    
+     @keyframes ballIn{
+         0%{
+            
+             transform:scale(0,0);
+         }
+         100%{
+         }
+     }
+     animation: ballIn 1s linear forwards;
+    
+    &.reAttack{
+        @keyframes reAttack{
+            0%{
+              transform:translate(-40%,20%);  
+            }
+            100%{
+
+            }
+        }
+        animation: reAttack 1s linear forwards;
+    }
+
+
+
+
+
 `;
 
 const MyMonster = styled.img`
     position: absolute;
     bottom:30%;
     left:20%;
+    
+     width:150px;
+     height:150px;
+     object-fit:contain;
+     
+
+    &.attack{ 
+     @keyframes attack{
+         0%{
+           transform:translate(40%,-20%); 
+         }
+         100%{
+
+         }
+     }
+
+     animation:attack 1s linear forwards;
+    }
+   
 `;
 
 
-const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
+const BallEffect = styled.img`
+    position:absolute;
+    top:200px ;
+    left:20px;
+    //right:20%; 
+    max-width:50px;
+    max-height:50px;
+    object-fit:cover;
+    @keyframes ballEffect{
+        0%{
+            
+        }
+        25%{
+            top:150px;
+            left:100px;
+        }
+        50%{
+            top:100px;
+            left:200px;
+        }
+        75%{
+            top:80px;
+            left:250px;
+        }
+        100%{
+            top:50px;
+            left:70%;
+           
+            transform:rotate(360deg);
+        }
+        
+       
+    }
+  
+
+    animation: ballEffect 0.2s linear forwards;
+    
+    
+`;
+
+
+const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPokemons, setCp,setPkPosition,randomPosition})=>{
 
     setBattle(1);
     let myPokemons=JSON.parse(localStorage.getItem("myPoketmon"));
-    const battlePokmon = PokeDex.pokemon[pokemons[battleIndex[0]].id-1];
-    const battlePokmonName = battlePokmon.name.toLowerCase();
+    const battlePokmon = pokemons[battleIndex[0]] ? PokeDex.pokemon[pokemons[battleIndex[0]].id-1] : "";
+    const battlePokmonName = battlePokmon !=="" ? battlePokmon.name.toLowerCase() :"";
     const myBag = JSON.parse(localStorage.getItem("myBag"));
     let commonUrl = "https://projectpokemon.org/images/normal-sprite/";
     let shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
@@ -189,11 +277,18 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
     let shinyBackUrl = "https://projectpokemon.org/images/sprites-models/shiny-back/";
     const menu =useRef();
     const myMonster = useRef();
+    const battleMonster = useRef();
     const [battlePhysical,setPhysical]=useState(100);
+    const [battleBallCount,setBallCount]=useState(0);
+    // 체력이 0~33 일경우  ballcount 2  33~66일 경우 4  66~100일 경우 6 
+    // 일반볼은 +1  수퍼볼은 +2  울트라 볼은 +3    
+
     const [myPhysical,setMyPhysical]=useState();
     const [initList,setInit]=useState();
     const [list,setList]=useState();
-    const [listIndex,setIndex]=useState(0); 
+    const [listIndex,setIndex]=useState(0);
+    const [ballEffect,setBallEffect]=useState(0);
+    const [ballImage,setBallImg]=useState();
    
     
 
@@ -204,8 +299,106 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
     }
 
+    const removePokemon=()=>{ //잡을 경우나  쓰러트릴 경우  제외시킨다.
+        setPokemons(pokemons.filter((item,index)=>index !== battleIndex[0])); // 포켓몬 내용 삭제
+        setCp(pokemonsCp.filter((item,index)=>index !== battleIndex[0])); // cp 내용 삭제
+        setPkPosition(randomPosition.filter((item,index)=> index !== battleIndex[0])); // 포지션 삭제
+        setBattle(0);
+        setRun(1); 
+    }
   
-    //catchPokemon();
+    const attack = () =>{
+
+        const addDamege = pokemonsCp[battleIndex[0]] > myPokemons[myMonster.current.id-1].cp ?
+            pokemonsCp[battleIndex[0]]/myPokemons[myMonster.current.id-1].cp : (pokemonsCp[battleIndex[0]] !== myPokemons[myMonster.current.id-1].cp ? 
+                myPokemons[myMonster.current.id-1].cp / pokemonsCp[battleIndex[0]] : 0);
+
+        // 상성 효과 적용 코드  필요 ?         
+
+        if(pokemonsCp[battleIndex[0]] > myPokemons[myMonster.current.id-1].cp) // 배틀 포켓몬이  더 높으면 일반 10데미지만 준다.
+        {
+            setPhysical(battlePhysical-10);
+            setTimeout(()=>{
+                
+                if(myPhysical-(10+addDamege) >=0)
+                    setMyPhysical(myPhysical-(10+addDamege));
+                else if(myPhysical -(10+addDamege) <0)
+                    setMyPhysical(0);
+                },1000);
+    
+
+        }
+        else{ // 내가 더 높으면  추가 데미지를 준다.  // 같으면  서로 10씩 만 뺏어간다. 
+            setPhysical(battlePhysical-(10+addDamege));
+             setTimeout(()=>{
+                
+                if(myPhysical-(10) >=0)
+                    setMyPhysical(myPhysical-(10));
+                else if(myPhysical -(10) <0)
+                    setMyPhysical(0);
+                },1000);
+        }
+
+        // 에니메이션 적용
+        myMonster.current.classList.add("attack");
+        setTimeout(()=>myMonster.current.classList.remove("attack"),1000);
+        battleMonster.current.classList.add("reAttack");
+        setTimeout(()=>battleMonster.current.classList.remove("reAttack"),1000);
+
+    }
+   
+
+    const ballCatch=(item)=>{
+        if(item.innerHTML.includes("pokeball")){
+            setBallCount(x=>x+1);
+            setBallImg(`https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeball.png`);
+            myBag["pokeball"] -=1;
+            if(menu.current.querySelector("#pokeball").innerHTML !== "1")
+                menu.current.querySelector("#pokeball").innerHTML =parseInt(menu.current.querySelector("#pokeball").innerHTML)-1;
+            else{    
+                menu.current.removeChild(menu.current.querySelector("#pokeball").parentNode);
+                delete myBag.pokeball;
+            }    
+        }else if(item.innerHTML.includes("superball")){
+            setBallCount(x=>x+2);
+            setBallImg(`https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/superball.png`);
+            myBag["superball"] -=1;
+            if(menu.current.querySelector("#superball").innerHTML !== "1")
+                menu.current.querySelector("#superball").innerHTML =parseInt(menu.current.querySelector("#superball").innerHTML)-1;
+            else{
+                menu.current.removeChild(menu.current.querySelector("#superball").parentNode);
+                delete myBag.superball;
+            }
+        }else if(item.innerHTML.includes("ultra-ball")){
+            setBallCount(x=>x+3);
+            setBallImg(`https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/ultra-ball.png`);
+            myBag["ultra-ball"] -=1;
+            if(menu.current.querySelector("#ultra-ball").innerHTML !=="1")
+                menu.current.querySelector("#ultra-ball").innerHTML =parseInt(menu.current.querySelector("#ultra-ball").innerHTML)-1;
+            else{
+                menu.current.removeChild(menu.current.querySelector("#ultra-ball").parentNode);
+                delete myBag["ultra-ball"];
+            }        
+        }else if(item.innerHTML.includes("berry")){
+            setBallCount(x=>x+2);
+            myBag["razz-berry"] -=1;
+            if(menu.current.querySelector("#razz-berry").innerHTML !=="1")  
+                menu.current.querySelector("#razz-berry").innerHTML =parseInt(menu.current.querySelector("#razz-berry").innerHTML)-1;
+            else{
+                menu.current.removeChild(menu.current.querySelector("#razz-berry").parentNode);
+                delete myBag["razz-berry"];
+            }    
+        }
+
+        localStorage.setItem("myBag",JSON.stringify(myBag));
+        setIndex(0);
+        setBallEffect(1);
+       
+    }
+
+
+
+
 
     const InitWindowEnter=(item)=>{ // 초기하면 리스트에서  목록을고르고  엔터나 스페이스바 누를경우
         
@@ -215,12 +408,8 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
 
 
         if(item.className.includes("attack")){
-            //*** 공격했을 경우  얼마나 달지 계산해주는 코드 작성 필요  */
-            setPhysical(battlePhysical-10);
-            setTimeout(()=>setMyPhysical(myPhysical-10),3000);
-            // myPokemons[myMonster.current.id-1].heatlh=myPhysical;
-            //localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
-
+          
+            attack();
         }else if (item.className.includes("run")){
             setBattle(0);
             setRun(1);
@@ -232,7 +421,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
             keys.forEach(item=> {
                 if(item.includes("ball") || item.includes("berry")){
                     menu.current.innerHTML += `<li><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/${item}.png"/>
-                        <span>${myBag[item]}개 </span>
+                       <span id=${item}>${myBag[item]}</span>개
                     </li>`
                 }
             })
@@ -245,7 +434,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
             if(myPokemons.length !== 1){
             
                 myPokemons.forEach(item =>{ 
-                    if(parseInt(myMonster.current.id) !==item.myId)
+                    if(parseInt(myMonster.current.id) !==item.myId && item.health >0)
                         menu.current.innerHTML +=
                         `<li><img id=${item.myId} src="${commonUrl+item.name.toLowerCase()+".gif"}" />
                              <span>CP ${item.cp}</span>   
@@ -268,11 +457,10 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
             menu.current.innerHTML="";
             initList.forEach(item=>menu.current.appendChild(item));
             setIndex(0);
+            setMyPhysical( myPokemons[myMonster.current.id-1].health); 
+        }else if(item.innerHTML.includes("ball") || item.innerHTML.includes("berry")){
+            ballCatch(item);
         }
-
-
-
-
 
         if(menu.current)
             setList(menu.current.querySelectorAll("li")) ;
@@ -310,7 +498,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
              InitWindowEnter(listCopy[listIndex]);
 
         }
-    },[listIndex]);
+    },[listIndex,battlePhysical,myPhysical]);
 
     const handleKeyUp =useCallback((e)=>{
         
@@ -346,12 +534,76 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
 
     useEffect(()=>{
         if(menu.current){
+            console.log("바뀐다");
             menu.current.querySelectorAll("li")[0].style.backgroundColor="yellow";
         }
-    },[list])
+    },[list]);
+
     useEffect(()=>{
-       if(myMonster.current) setMyPhysical( myPokemons[myMonster.current.id-1].heatlh); 
+       if(myMonster.current) setMyPhysical( myPokemons[myMonster.current.id-1].health); 
     },[])
+
+    useEffect(()=>{
+        if(battlePhysical <=100 && battlePhysical >66){
+            if(battleBallCount >=6){
+                setTimeout(()=>{catchPokemon();
+                    removePokemon();},2000);
+                    
+            }
+            else{
+                setTimeout(()=>setBallEffect(0),1000);
+            }
+        }else if(battlePhysical <=66 && battlePhysical>33){
+            if(battleBallCount >=4){
+                
+                setTimeout(()=>{catchPokemon();
+                removePokemon();},2000);
+                
+             
+            }
+            else{
+                setTimeout(()=>setBallEffect(0),1000);
+                
+            }
+
+        }else{
+            if(battleBallCount >=2){
+                setTimeout(()=>{catchPokemon();
+                    removePokemon();},2000);
+                    
+            }
+            else{
+                setTimeout(()=>setBallEffect(0),1000); 
+            }
+        }
+    },[battleBallCount])
+
+
+    useEffect(()=>{
+        // 저장소에 저장
+        myPokemons[myMonster.current.id-1].health=myPhysical;
+        localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
+        if(battlePhysical <= 0){   
+            removePokemon();
+        }
+        
+        if(myPhysical <=0){
+            //리스트의 첫번째 포켓몬 을 꺼내준다.
+            
+            if(myPokemons.length >1){
+                let changePokemon=myPokemons.filter(item => item.health !== 0)[0];
+                myMonster.current.id = changePokemon.myId;
+                myMonster.current.src = changePokemon.commonBackUrl;
+                setMyPhysical(myPokemons[changePokemon.myId-1].health); 
+                
+            }
+            else
+                setBattle(0);    
+        }    
+
+
+
+    },[battlePhysical,myPhysical])
 
 
 
@@ -364,8 +616,12 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp})=>{
             <BattlePokmons>
                 <div className="field"></div>
                 <MonsterWrapper>
-                    <BattleMonster src={`https://projectpokemon.org/images/normal-sprite/${pokemons[battleIndex[0]].name.toLowerCase()}.gif`}></BattleMonster>
+                    
+                    {ballEffect ? <BallEffect src={ballImage}></BallEffect> : <>
+                    {pokemons[battleIndex[0]] ? <BattleMonster ref={battleMonster} src={`https://projectpokemon.org/images/normal-sprite/${pokemons[battleIndex[0]].name.toLowerCase()}.gif`}></BattleMonster> : "" }
                     <div className="physical1"><Physical physical={battlePhysical}></Physical></div>
+                    </>
+                    }   
                 </MonsterWrapper>
                 
                 <MonsterWrapper>
