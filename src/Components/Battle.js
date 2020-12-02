@@ -5,7 +5,7 @@ import Grass from "../../src/풀.png";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import PokeDex from "pokemon-go-pokedex";
-
+import Message from "../Components/Message";
 
 const BattleEffect = styled.div`
     width:100%;
@@ -63,12 +63,13 @@ const BattleContainer=styled.div`
 const BattleNavi = styled.div`
     margin:0 auto;
     width:90%;
-    height:150px;
-    border:1px solid black; 
-    
+    height:25%;
+    border:1px solid black;
+   
+     
     ul{
         width:100%;
-        height:inherit;
+        height:100%;
         position:relative;
         display:flex;
         flex-direction:column;
@@ -169,16 +170,16 @@ const BattleMonster = styled.img`
      object-fit:contain;
  
     
-     @keyframes ballIn{
-         0%{
+     &.ballIn{@keyframes ballIn{
+            0%{
             
-             transform:scale(0,0);
-         }
-         100%{
-         }
-     }
+                transform:scale(0,0);
+            }
+            100%{
+                }
+        }
      animation: ballIn 1s linear forwards;
-    
+     }
     &.reAttack{
         @keyframes reAttack{
             0%{
@@ -289,6 +290,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
     const [listIndex,setIndex]=useState(0);
     const [ballEffect,setBallEffect]=useState(0);
     const [ballImage,setBallImg]=useState();
+    const [message,setMessage]=useState("");
    
     
 
@@ -340,11 +342,12 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
         }
 
         // 에니메이션 적용
-        myMonster.current.classList.add("attack");
-        setTimeout(()=>myMonster.current.classList.remove("attack"),1000);
-        battleMonster.current.classList.add("reAttack");
-        setTimeout(()=>battleMonster.current.classList.remove("reAttack"),1000);
-
+        if(myMonster.current){
+            battleMonster.current.classList.remove("reAttack")
+            myMonster.current.classList.add("attack");
+            setTimeout(()=>myMonster.current.classList.remove("attack"),1000);
+            setTimeout(()=>battleMonster.current.classList.add("reAttack"),1000);
+        }
     }
    
 
@@ -584,7 +587,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
         myPokemons[myMonster.current.id-1].health=myPhysical;
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
         if(battlePhysical <= 0){   
-            removePokemon();
+            setTimeout(()=>removePokemon(),1000);
         }
         
         if(myPhysical <=0){
@@ -597,8 +600,14 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
                 setMyPhysical(myPokemons[changePokemon.myId-1].health); 
                 
             }
-            else
-                setBattle(0);    
+            else{
+                console.log("체력이 없어 ㅜㅜ");
+                setTimeout(()=>{setBattle(0);
+                                setRun(1);
+                               },1000);
+                // 체력이 없어 배틀을 못한다는 알람 메시지를 보내준다.                    
+                setMessage("There are no Pokemons to fight");               
+            }    
         }    
 
 
@@ -639,8 +648,8 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
                     <Change className="change">포켓몬 교체 (Change Pokemon)</Change>
                 </ul>
             </BattleNavi>
-
         </BattleContainer>
+        <Message message={message}></Message>
         </>
     )
 }

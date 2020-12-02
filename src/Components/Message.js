@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 
 const Container = styled.div`
-    width:30%;
+    width:40%;
     height:50px;
     padding:20px;
     background-color:#f1c40f;
@@ -14,7 +14,7 @@ const Container = styled.div`
     left:0;
     right:0;
     color:white;
-    
+    z-index:5;
     font-size:20px;
     font-weight:600;
     border-radius:30px;

@@ -150,7 +150,7 @@ const GetPokemon = ({setPokemon}) =>{
             // 처음 시작할때  돈을 1000개 정도 준다.
 
             localStorage.setItem("myBag",JSON.stringify({"money":1000}));
-        
+            localStorage.setItem("battlePokemons",JSON.stringify([]));
         }
     
     

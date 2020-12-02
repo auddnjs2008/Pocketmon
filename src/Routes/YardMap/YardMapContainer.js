@@ -59,7 +59,7 @@ const YardMapContainer =()=>{
            
             //도망치고 나서 움직일때 다시  도망모드를 초기화 시킨다.
             if(run) setRun(0);
-            e.preventDefault();
+            //e.preventDefault();
             const initialArray =[ Math.floor(getAbsoluteLeft(char.current) - getAbsoluteLeft(yard.current)),Math.floor(getAbsoluteTop(char.current) - getAbsoluteTop(yard.current))]           
             // 경계선 세우기
             if(e.key === "ArrowUp" && battleon === 0){
@@ -69,7 +69,7 @@ const YardMapContainer =()=>{
             nowPosition.length === 0 ? setPosition([initialArray[0],initialArray[1]+60]):(nowPosition[1]+60 >= windowSize[1] ? setPosition([nowPosition[0],nowPosition[1]]): setPosition([nowPosition[0],nowPosition[1]+60]));
                 setMove(1);
             }else if(e.key ==="ArrowRight" && battleon === 0){
-             nowPosition.length === 0 ? setPosition([initialArray[0]+60,initialArray[1]]):(nowPosition[0]+60 >=windowSize[0] ? setPosition([nowPosition[0],nowPosition[1]]):setPosition([nowPosition[0]+60,nowPosition[1]]));
+             nowPosition.length === 0 ? setPosition([initialArray[0]+60,initialArray[1]]):(nowPosition[0]+60 >=windowSize[0]-50 ? setPosition([nowPosition[0],nowPosition[1]]):setPosition([nowPosition[0]+60,nowPosition[1]]));
 
             }else if(e.key ==="ArrowLeft" && battleon === 0){
                 nowPosition.length === 0 ? setPosition([initialArray[0]-60,initialArray[1]]): (nowPosition[0]-60 <=0? setPosition([nowPosition[0],nowPosition[1]]) :setPosition([nowPosition[0]-60,nowPosition[1]]));

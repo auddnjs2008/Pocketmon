@@ -12,6 +12,7 @@ const GlobalStyles = createGlobalStyle`
         box-sizing:border-box;
     }
     body{
+      
         height:100%;
         &::-webkit-scrollbar{
             display:none;
