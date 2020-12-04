@@ -4,6 +4,15 @@ import PropTypes from "prop-types";
 import Tree from "../../나무.png";
 import Battle from "../../Components/Battle";
 import {Link} from "react-router-dom";
+import Background from "../../../src/들판배경.jpg";
+
+const TestContainer=styled.div`
+background-image:url(${Background});
+background-size:cover;
+background-position:bottom center;
+width:100%;
+height:500px;
+`;
 
 const MapContainer=styled.div`
     position:relative;
@@ -13,6 +22,12 @@ const MapContainer=styled.div`
     grid-template-columns:repeat(11,1fr);
     grid-template-rows:repeat(10,1fr);
     background-color:#659A25;
+    background-color:#9a752d;
+    
+    &.perspective{
+    transform:perspective(700px) rotateX(55deg);
+    transform-style:preserve-3d; 
+    }       
                 
 `;
 
@@ -109,22 +124,38 @@ const Pokemon = styled.img`
 
 `;
 
+const ThreeD = styled.button`
+    position:absolute;
+    top:30px;
+    right:30px;
+    z-index:2;
+    width:100px;
+    height:30px;
+    font-size:15px;
+
+`;
 
 
-const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition})=>{
+
+const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange})=>{
 
     return( 
-        <>
-            <MapContainer ref={yard}>
-                {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper src={Tree}></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
-                <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
-                {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
-            </MapContainer>
-            {battlePokemon.length !==0 && battleon===1?<Battle randomPosition={randomPosition} setRun={run} pokemonsCp={pokemonsCp} setBattle={setBattle} battleon={battleon} battleIndex={battlePokemon}  pokemons={pokemon} setPokemons={setPokemons} setCp={setCp} setPkPosition={setPkPosition}></Battle> : ""}
+        <>  
+            <TestContainer>
+                <MapContainer ref={yard}>
+                    {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper src={Tree}></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
+                    <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
+                    {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
+                </MapContainer>
+            </TestContainer>
+            {battlePokemon.length !==0 && battleon===1?<Battle color={"green"} randomPosition={randomPosition} setRun={run} pokemonsCp={pokemonsCp} setBattle={setBattle} battleon={battleon} battleIndex={battlePokemon}  pokemons={pokemon} setPokemons={setPokemons} setCp={setCp} setPkPosition={setPkPosition}></Battle> : ""}
             <Navigation>
                 <Link to="/navi">Home</Link>
                 <Link to="/game">Map</Link>
             </Navigation>
+            <ThreeD onClick={handleMapChange}>
+               3D 입체보기 
+            </ThreeD>
         </>
     )
 }

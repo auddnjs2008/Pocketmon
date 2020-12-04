@@ -59,7 +59,7 @@ const YardMapContainer =()=>{
            
             //도망치고 나서 움직일때 다시  도망모드를 초기화 시킨다.
             if(run) setRun(0);
-            //e.preventDefault();
+            e.preventDefault();
             const initialArray =[ Math.floor(getAbsoluteLeft(char.current) - getAbsoluteLeft(yard.current)),Math.floor(getAbsoluteTop(char.current) - getAbsoluteTop(yard.current))]           
             // 경계선 세우기
             if(e.key === "ArrowUp" && battleon === 0){
@@ -83,7 +83,7 @@ const YardMapContainer =()=>{
              let rader = pokePosition.map((item,index)=>
                 Math.sqrt(Math.pow(item[0]-(nowPosition[0]),2)+Math.pow(item[1]-(nowPosition[1]),2))<= 40 ? index : "" ).filter(item => item !=="");
 
-            if(rader.length !==0 && !run) {
+            if(rader.length !==0 && !run && JSON.parse(localStorage.getItem("battlePokemons")).length) {
                 window.removeEventListener("keydown",handleKeyPress);
                 setBattlePoke(rader);
                 setBattle(1);
@@ -92,7 +92,17 @@ const YardMapContainer =()=>{
 
     },[charPosition,run]);
 
-
+    const handleMapChange =(e)=>{
+       // yard.current.classList.toggle("perspective");
+       e.preventDefault();
+        if(e.target.innerText==="3D 입체보기"){
+             e.target.innerText = "평면보기"
+             yard.current.classList.add("perspective");
+        }else{
+             e.target.innerText ="3D 입체보기";
+             yard.current.classList.remove("perspective");
+            }
+        }
 
 
 
@@ -147,6 +157,7 @@ const YardMapContainer =()=>{
      pokemonsCp={pokemonsCp}
      setCp={setCp}
      run={setRun}
+     handleMapChange={handleMapChange}
      ></YardMapPresenter>
      </> 
     )

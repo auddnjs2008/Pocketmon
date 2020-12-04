@@ -130,7 +130,140 @@ const Incubator=Ball;
 const OthersWrapper =BallWrapper;
 const Others=Ball;
 
-const BagPresenter= ({windowSize,bag})=>
+
+const ShowPokemon =styled.div`
+    position:absolute;
+    top:${props=>props.scroll ? `${props.scroll+(window.innerHeight)/2}px`:"50%"};
+    left:50%;
+    transform:translate(-50%,-50%);
+    display:none;
+    width:70%;
+    height:70%;
+    border: 1px solid black;
+    background-color:black;
+    color:white;
+  
+ 
+    grid-template-rows: 9fr 1fr;
+    align-items:center;
+    ul{
+    display:grid;
+    grid-auto-flow:column;
+    grid-auto-columns:200px;
+    overflow:auto;
+    gap:5px;
+
+
+
+
+
+        li{
+           height:200px;
+           padding:20px;
+           background-color:rgba(255,255,255,0.7);
+           display:flex;
+           flex-direction:column;
+           justify-content:center;
+           align-items:center;
+           img{
+               width:auto;
+               height:auto;
+               max-width:80px;
+               max-height:80px;
+               margin-bottom:5px;
+               
+           }
+           &:hover{
+              background-color:rgba(255,255,0,0.7);
+           } 
+        }
+        h2{
+            justify-self:center;
+            align-self:center;
+            font-size:30px;
+        }
+        div{
+            span{
+                font-size:20px;
+                margin-right:3px;
+                color:black;
+                font-weight:600;
+            }
+        }
+    
+    }
+    button{
+        width:100px;
+        height:50px;
+        justify-self:center;
+        font-size:20px;
+    }
+`;
+
+
+const EvolveWindow=styled.div`
+    position:absolute;
+    top:0;
+    width:100%;
+    height:200vh;
+    background-color:black;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    img{
+        width:auto;
+        height:auto;
+        min-width:80px;
+        min-height:80px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        &:nth-child(1){
+            @keyframes evolve{
+                0%{
+                    z-index:1;
+                }
+                100%{
+                   opacity:0;
+                }
+            }
+            animation:evolve 1s linear forwards;
+            animation-iteration-count:5;
+        }
+        &:nth-child(2){
+            transform-origin:center;
+            transform:scale(1.5,1.5) translate(-50%,-50%);
+            @keyframes evolvee{
+                0%{
+                    opacity:0;
+                }
+                100%{
+                   opacity:1;
+                }
+            }
+            animation:evolvee 1s linear forwards;
+            animation-iteration-count:5;
+        }
+    }
+
+    @keyframes  windowColor{
+        0%{
+
+        }
+        100%{
+            background-color:#f1c40f;
+        }
+    }
+    animation:windowColor 1s linear forwards;
+    animation-iteration-count:5;
+
+    
+`;
+
+
+
+const BagPresenter= ({evolveUrl, evolveWindow, showWindow, scroll, windowSize,bag,showPokemon,handleUseClick,handleSelectPokemon})=>
 <>
 {windowSize > 810 ? <LongMenu></LongMenu> : <Menu></Menu>}
 <Container windowSize={windowSize}>
@@ -174,9 +307,9 @@ const BagPresenter= ({windowSize,bag})=>
         </BallWrapper>
         <PotionWrapper>
             <h1>Potion</h1>
-            <Potion><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/potion.png"/><h2>Potion</h2></div><div>{bag.Potion ? bag.Potion : 0}개</div></Potion>
-            <Potion><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/super-potion.png"/><h2>Super-Potion</h2></div><div>{bag.SuperPotion ? bag.SuperPotion : 0}개</div></Potion>
-            <Potion><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/hyper-potion.png"/><h2>Hyper-Potion</h2></div><div>{bag.HyperPotion ? bag.HyperPotion : 0}개</div></Potion>
+            <Potion><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/potion.png"/><h2>Potion</h2></div><div>{bag.Potion ? bag.Potion : 0}개</div>{bag.Potion ? <button id="Potion" onClick={handleUseClick}>사용</button> :""}</Potion>
+            <Potion><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/super-potion.png"/><h2>Super-Potion</h2></div><div>{bag.SuperPotion ? bag.SuperPotion : 0}개</div>{bag.SuperPotion ? <button id="superPotion"  onClick={handleUseClick}>사용</button>:""}</Potion>
+            <Potion><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/hyper-potion.png"/><h2>Hyper-Potion</h2></div><div>{bag.HyperPotion ? bag.HyperPotion : 0}개</div>{bag.HyperPotion ? <button id="hyperPotion"  onClick={handleUseClick}>사용</button>:""}</Potion>
         </PotionWrapper> 
         <EggWrapper>
             <h1>Egg</h1>
@@ -192,9 +325,19 @@ const BagPresenter= ({windowSize,bag})=>
             <h1>Others</h1>
             <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png"/><h2>Razz-berry</h2></div><div>{bag["razz-berry"] ? bag["razz-berry"] : 0}개</div></Others>
             <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/incense.png"/><h2>Incense</h2></div><div>{bag.Incense ? bag.Incense : 0}개</div></Others>
-            <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/candy.png"/><h2>Candy</h2></div><div>{bag.Candy ? bag.Candy : 0}개</div></Others>
+            <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/candy.png"/><h2>Candy</h2></div><div>{bag.Candy ? bag.Candy : 0}개</div>{bag.Candy ? <button id="candy"  onClick={handleUseClick}>사용</button> : ""}</Others>
         </OthersWrapper>
     </SubGridWrapper>
 </Container>
+<ShowPokemon ref={showWindow} scroll={scroll}>
+    <ul>
+{showPokemon.length !==0 ? showPokemon.map(pokemon=><li id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.commonUrl}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
+    </ul>
+    <button onClick={()=>showWindow.current.style.display="none"}>Close</button>
+</ShowPokemon>
+<EvolveWindow ref={evolveWindow}>
+    <img src={evolveUrl[0]}/>
+    <img src={evolveUrl[1]}/>
+</EvolveWindow>
 </>
 export default BagPresenter;

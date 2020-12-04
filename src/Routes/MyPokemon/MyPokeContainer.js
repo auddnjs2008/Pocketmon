@@ -19,19 +19,21 @@ const MyPokeContainer =()=>{
     
     const handlePokemonClick=useCallback((e)=>{
         const Id = parseInt(e.currentTarget.id);
-        const Judge = battlePokemons.map(item=>item.id); // 이미 목록에 들어가 있는 포켓몬은 선택하지 못하도록 판단
+        const Judge = battlePokemons.map(item=>item.myId); // 이미 목록에 들어가 있는 포켓몬은 선택하지 못하도록 판단
+        
+        
         if(!Judge.includes(Id)){
             if(battlePokemons.length !== 3)
-                setBattle([...battlePokemons,{id:Id,cp:pokemons[Id].cp,img:pokemons[Id].commonUrl}]);
+                setBattle([...battlePokemons,pokemons[Id-1]]);
             else{ // 들어왔는데  3마리가 다 지정되 있으면
                 if(changeIndex === 1){
-                    setBattle([{id:Id,cp:pokemons[Id].cp,img:pokemons[Id].commonUrl},battlePokemons[1],battlePokemons[2]]);
+                    setBattle([pokemons[Id-1],battlePokemons[1],battlePokemons[2]]);
                     setIndex(x=>x+1);
                 }else if(changeIndex === 2){
-                    setBattle([battlePokemons[0],{id:Id,cp:pokemons[Id].cp,img:pokemons[Id].commonUrl},battlePokemons[2]]);
+                    setBattle([battlePokemons[0],pokemons[Id],battlePokemons[2]]);
                     setIndex(x=>x+1);
                 }else{
-                    setBattle([battlePokemons[0],battlePokemons[1],{id:Id,cp:pokemons[Id].cp,img:pokemons[Id].commonUrl}]);
+                    setBattle([battlePokemons[0],battlePokemons[1],pokemons[Id-1]]);
                     setIndex(1);
                 }
             }

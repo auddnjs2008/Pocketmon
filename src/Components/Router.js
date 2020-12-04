@@ -12,6 +12,10 @@ import MyPokemon from "../Routes/MyPokemon";
 import MyBag from "../Routes/MyBag";
 import Game from "../Routes/Game";
 import YardMap from "../Routes/YardMap";
+import RockMap from "../Routes/RockMap";
+import WaterMap from "../Routes/WaterMap";
+import SkyMap from "../Routes/SkyMap";
+
 export default ()=>{
 
     return (
@@ -24,6 +28,10 @@ export default ()=>{
             <Route path="/bag" component={MyBag}/>
             <Route path="/game" exact component={Game}/>
             <Route path="/game/yardmap" component={YardMap}/>
+            <Route path="/game/rockmap" component={RockMap}/>
+            <Route path="/game/watermap" component={WaterMap}/>
+            <Route path="/game/skymap" component={SkyMap}/>
+
         </Router>
     )
 }    

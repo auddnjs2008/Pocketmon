@@ -39,7 +39,7 @@ animation : battle 2s linear forwards;
 
 const BattleContainer=styled.div`
     position:absolute;
-    background-color:white;
+    background-color:rgba(0,0,0,0.5);
     top:0;
     
     z-index:3;
@@ -110,19 +110,19 @@ position:relative;
 
  perspective:500px;
  perspective-origin:top right;   
- .field{
-    
+
+
+`;
+
+
+const Field =styled.div`
     position:fixed;
     left:30%;
     bottom:20%;
     width:60%;
     height:100%;
-    border: 1px solid green;
-    background-color:green;
+    background-color:${props=>props.color};
     transform:rotateX(87deg) rotateZ(10deg);
-
- }
-
 `;
 
 const Physical=styled.div`
@@ -265,10 +265,11 @@ const BallEffect = styled.img`
 `;
 
 
-const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPokemons, setCp,setPkPosition,randomPosition})=>{
+const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPokemons, setCp,setPkPosition,randomPosition})=>{
 
     setBattle(1);
     let myPokemons=JSON.parse(localStorage.getItem("myPoketmon"));
+    let myBattlePokemons=JSON.parse(localStorage.getItem("battlePokemons"));
     const battlePokmon = pokemons[battleIndex[0]] ? PokeDex.pokemon[pokemons[battleIndex[0]].id-1] : "";
     const battlePokmonName = battlePokmon !=="" ? battlePokmon.name.toLowerCase() :"";
     const myBag = JSON.parse(localStorage.getItem("myBag"));
@@ -299,6 +300,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
         shinyBackUrl:shinyBackUrl+battlePokmonName+".gif"};
         myPokemons.push(catchPokemon);
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
+        myPokeomnsSetting();
     }
 
     const removePokemon=()=>{ //잡을 경우나  쓰러트릴 경우  제외시킨다.
@@ -323,7 +325,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
             setTimeout(()=>{
                 
                 if(myPhysical-(10+addDamege) >=0)
-                    setMyPhysical(myPhysical-(10+addDamege));
+                    setMyPhysical(Math.floor(myPhysical-(10+addDamege)));
                 else if(myPhysical -(10+addDamege) <0)
                     setMyPhysical(0);
                 },1000);
@@ -331,7 +333,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
 
         }
         else{ // 내가 더 높으면  추가 데미지를 준다.  // 같으면  서로 10씩 만 뺏어간다. 
-            setPhysical(battlePhysical-(10+addDamege));
+            setPhysical(Math.floor(battlePhysical-(10+addDamege)));
              setTimeout(()=>{
                 
                 if(myPhysical-(10) >=0)
@@ -416,6 +418,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
         }else if (item.className.includes("run")){
             setBattle(0);
             setRun(1);
+            myPokeomnsSetting();
         }else if(item.className.includes("bag")){
             menu.current.innerHTML="";
             setIndex(0);
@@ -434,9 +437,9 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
             
             menu.current.innerHTML="";
             setIndex(0);
-            if(myPokemons.length !== 1){
+            if(myBattlePokemons.length !== 1){
             
-                myPokemons.forEach(item =>{ 
+                    myBattlePokemons.forEach(item =>{ 
                     if(parseInt(myMonster.current.id) !==item.myId && item.health >0)
                         menu.current.innerHTML +=
                         `<li><img id=${item.myId} src="${commonUrl+item.name.toLowerCase()+".gif"}" />
@@ -463,6 +466,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
             setMyPhysical( myPokemons[myMonster.current.id-1].health); 
         }else if(item.innerHTML.includes("ball") || item.innerHTML.includes("berry")){
             ballCatch(item);
+
         }
 
         if(menu.current)
@@ -511,6 +515,16 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
     },[listIndex,list]);
 
 
+    const myPokeomnsSetting=()=>{ // 배틀이 끝났을때  배틀포켓몬들의 체력을  mypokemon들 저장소 에 새로 반영
+       myPokemons.forEach(
+         item=> myBattlePokemons.forEach(mybattlePoke =>{
+            if(mybattlePoke.name === item.name)
+                mybattlePoke.health = item.health;
+         })
+       )
+       localStorage.setItem("battlePokemons",JSON.stringify(myBattlePokemons));
+    }
+
 
 
 
@@ -537,7 +551,6 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
 
     useEffect(()=>{
         if(menu.current){
-            console.log("바뀐다");
             menu.current.querySelectorAll("li")[0].style.backgroundColor="yellow";
         }
     },[list]);
@@ -581,30 +594,36 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
         }
     },[battleBallCount])
 
-
+    //배틀이 끝난 지점 처리
     useEffect(()=>{
         // 저장소에 저장
-        myPokemons[myMonster.current.id-1].health=myPhysical;
+        myPokemons[myMonster.current.id-1].health = myPhysical;
+        localStorage.setItem("battlePokemons",JSON.stringify(myBattlePokemons));
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
         if(battlePhysical <= 0){   
+            myPokeomnsSetting();
             setTimeout(()=>removePokemon(),1000);
+            
         }
         
         if(myPhysical <=0){
             //리스트의 첫번째 포켓몬 을 꺼내준다.
+            myPokeomnsSetting();
             
-            if(myPokemons.length >1){
-                let changePokemon=myPokemons.filter(item => item.health !== 0)[0];
+            if(myBattlePokemons.length >1){
+                let changePokemon=myBattlePokemons.filter(item => item.health !== 0)[0];
                 myMonster.current.id = changePokemon.myId;
                 myMonster.current.src = changePokemon.commonBackUrl;
                 setMyPhysical(myPokemons[changePokemon.myId-1].health); 
                 
             }
             else{
-                console.log("체력이 없어 ㅜㅜ");
+             
                 setTimeout(()=>{setBattle(0);
                                 setRun(1);
+                               
                                },1000);
+
                 // 체력이 없어 배틀을 못한다는 알람 메시지를 보내준다.                    
                 setMessage("There are no Pokemons to fight");               
             }    
@@ -623,7 +642,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
         </BattleEffect>
         <BattleContainer>
             <BattlePokmons>
-                <div className="field"></div>
+                <Field color={color} className="field"></Field>
                 <MonsterWrapper>
                     
                     {ballEffect ? <BallEffect src={ballImage}></BallEffect> : <>
@@ -634,7 +653,7 @@ const Battle =({battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,setPok
                 </MonsterWrapper>
                 
                 <MonsterWrapper>
-                    <MyMonster id={myPokemons[0].myId}ref={myMonster}src={myPokemons[0].commonBackUrl}></MyMonster>
+                    <MyMonster index={0} id={myBattlePokemons[0].myId} ref={myMonster}src={ myBattlePokemons[0].commonBackUrl}></MyMonster>
                     <div className="physical2"><Physical physical={myPhysical}></Physical></div>
                 </MonsterWrapper>
             

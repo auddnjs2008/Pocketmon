@@ -60,6 +60,12 @@ const BattlePokemon = styled.ul`
       font-size:20px;
       font-weight:600;
       padding:5px;
+      img{
+         width:auto;
+         height:auto;
+         max-width:170px;
+         max-height:170px;
+      }
   
       
    }
@@ -76,14 +82,14 @@ const MyPokePresenter = ({windowSize,pokemons,handlePokemonClick,battlePokemons,
     <Header windowSize={windowSize}>
        <h1>Battle Pokemons</h1>
        <BattlePokemon>
-         <li><img src={battlePokemons[0] ? battlePokemons[0].img :""}/><div>Cp {battlePokemons[0].cp}</div> </li>
-         <li> <img src={battlePokemons[1] ? battlePokemons[1].img :""}/><div>Cp {battlePokemons[1].cp}</div></li>
-         <li><img src={battlePokemons[2] ? battlePokemons[2].img : ""}/><div>Cp {battlePokemons[2].cp}</div></li>
+         <li><img src={battlePokemons[0] ? battlePokemons[0].commonUrl :""}/><div>Cp {battlePokemons[0] ? battlePokemons[0].cp : ""}</div> </li>
+         <li> <img src={battlePokemons[1] ? battlePokemons[1].commonUrl :""}/><div>Cp {battlePokemons[1] ? battlePokemons[1].cp :""}</div></li>
+         <li><img src={battlePokemons[2] ? battlePokemons[2].commonUrl : ""}/><div>Cp {battlePokemons[2] ? battlePokemons[2].cp : ""}</div></li>
        </BattlePokemon>
        <button onClick={changeBtn}>Change Off</button>
     </Header>
     <Container windowSize={windowSize}>
-      {pokemons.map((item,index) => item ? <MyPokemon id={index} border={battlePokemons.map(item=>item.id).includes(index)}changePossible={changePossible} item={item} handlePokemonClick={handlePokemonClick}></MyPokemon>
+      {pokemons.map((item,index) => item ? <MyPokemon id={item.myId} border={battlePokemons.length !==0 ? battlePokemons.map(item=>item.myId).includes(index+1) : false}  changePossible={changePossible} item={item} handlePokemonClick={handlePokemonClick}></MyPokemon>
       : "")}
     </Container>
     </>
