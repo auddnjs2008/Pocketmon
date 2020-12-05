@@ -200,6 +200,42 @@ const ShowPokemon =styled.div`
     }
 `;
 
+const ShowEgg=styled.div`
+    position:absolute;
+    top:${props=>props.scroll ? `${props.scroll+(window.innerHeight)/2}px`:"50%"};
+    left:50%;
+    transform:translate(-50%,-50%);
+    display:none;
+    width:70%;
+    height:70%;
+    border: 1px solid black;
+    background-color:black;
+    color:white;
+    grid-template-rows: 9fr 1fr;
+    align-items:center;
+    li{
+           height:200px;
+           padding:20px;
+           background-color:rgba(255,255,255,0.7);
+           display:flex;
+           flex-direction:column;
+           justify-content:center;
+           align-items:center;
+           img{
+               width:auto;
+               height:auto;
+               max-width:80px;
+               max-height:80px;
+               margin-bottom:5px;
+               
+           }
+           &:hover{
+              background-color:rgba(255,255,0,0.7);
+           } 
+        }
+`;
+
+
 
 const EvolveWindow=styled.div`
     position:absolute;
@@ -263,7 +299,7 @@ const EvolveWindow=styled.div`
 
 
 
-const BagPresenter= ({evolveUrl, evolveWindow, showWindow, scroll, windowSize,bag,showPokemon,handleUseClick,handleSelectPokemon})=>
+const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, windowSize,bag,showPokemon,handleUseClick,handleSelectPokemon,  handleSelectEgg})=>
 <>
 {windowSize > 810 ? <LongMenu></LongMenu> : <Menu></Menu>}
 <Container windowSize={windowSize}>
@@ -318,8 +354,8 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow, scroll, windowSize,ba
         </EggWrapper>   
         <IncubatorWrapper>
             <h1>Incubator</h1>
-            <Incubator><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg-incubator.png"/><h2>Incubator</h2></div><div>{bag.EggIncubator ? bag.EggIncubator : 0}개</div></Incubator>
-            <Incubator><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg-incubator-1.png"/><h2>Super-Incubator</h2></div><div>{bag.SuperEggIncubator ? bag.SuperEggIncubator : 0}개</div></Incubator>
+            <Incubator><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg-incubator.png"/><h2>Incubator</h2></div><div>{bag.EggIncubator ? bag.EggIncubator : 0}개</div>{bag.EggIncubator ? <button id="Incubator" onClick={ handleUseClick}>사용</button>:""}</Incubator>
+            <Incubator><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg-incubator-1.png"/><h2>Super-Incubator</h2></div><div>{bag.SuperEggIncubator ? bag.SuperEggIncubator : 0}개</div>{bag.SuperEggIncubator ? <button id="SuperIncubator" onClick={ handleUseClick}>사용</button>:""}</Incubator>
         </IncubatorWrapper>
         <OthersWrapper>
             <h1>Others</h1>
@@ -331,10 +367,19 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow, scroll, windowSize,ba
 </Container>
 <ShowPokemon ref={showWindow} scroll={scroll}>
     <ul>
-{showPokemon.length !==0 ? showPokemon.map(pokemon=><li id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.commonUrl}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
+        {showPokemon.length !==0 ? showPokemon.map(pokemon=><li id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.commonUrl}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
     </ul>
     <button onClick={()=>showWindow.current.style.display="none"}>Close</button>
 </ShowPokemon>
+
+<ShowEgg ref={eggWindow} scroll={scroll}>
+    <ul>
+       {showPokemon.length !==0? showPokemon.map((egg,index)=>egg !==0 ? 
+       (index === 0 ? <li><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg.png"/></li> 
+        : <li><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/lucky-egg.png"/></li>) :""  ) :"No Eggs"} 
+    </ul>
+    <button onClick={()=>eggWindow.current.style.display="none"}>Close</button>
+</ShowEgg>
 <EvolveWindow ref={evolveWindow}>
     <img src={evolveUrl[0]}/>
     <img src={evolveUrl[1]}/>

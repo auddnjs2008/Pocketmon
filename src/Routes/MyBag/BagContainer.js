@@ -13,6 +13,7 @@ const BagContainer=()=>{
     const [item,setItem]=useState();
     const [evolveUrl,setEvolve]=useState([]);
     const showWindow = useRef();
+    const eggWindow=useRef();
     const evolveWindow= useRef();
 
     let commonUrl = "https://projectpokemon.org/images/normal-sprite/";
@@ -99,26 +100,45 @@ const BagContainer=()=>{
 
 
     const handleUseClick=(e)=>{
-        showWindow.current.style.display="grid";
         const Id=e.target.id;
         const myPokemons = JSON.parse(localStorage.getItem("myPoketmon"));
         setItem(Id); 
         
         //id에 포션이나 캔디가 들어갈경우 포켓몬 창 띄워주어야 한다.
         if(Id.includes("Potion")){
+            showWindow.current.style.display="grid";
             setShowPokemon(myPokemons.filter(item=>item.health !== 100));
         }else if(Id.includes("candy")){ 
+            showWindow.current.style.display="grid";   
             setShowPokemon(myPokemons.filter(item=>item.candy_count <= bag.Candy));
         }else{
-            setShowPokemon([bag.Egg,bag.LuckyEgg]) //알일경우 숫자를 차례대로 저장
-        }
+            //새로운 창을 띄운다.
+            eggWindow.current.style.display="grid";
+            setShowPokemon([bag.Egg,bag.LuckyEgg]);
 
+        }
+    }
+
+    // 인큐베이터를 눌렀을 경우는 다르므로  함수를 하나 더 만들어준다.
+    const handleSelectEgg=(e)=>{
+        console.log(e.target);
     }
 
     
 
 
-    return <BagPresenter evolveUrl={evolveUrl} evolveWindow={evolveWindow} showWindow={showWindow} scroll={scroll} windowSize={windowSize} bag={bag} showPokemon={showPokemon} handleUseClick={handleUseClick} handleSelectPokemon={handleSelectPokemon}></BagPresenter>
+    return <BagPresenter 
+    evolveUrl={evolveUrl} 
+    evolveWindow={evolveWindow} 
+    showWindow={showWindow} 
+    eggWindow={eggWindow}
+    scroll={scroll} 
+    windowSize={windowSize} 
+    bag={bag} 
+    showPokemon={showPokemon} 
+    handleUseClick={handleUseClick} 
+    handleSelectPokemon={handleSelectPokemon} 
+    handleSelectEgg={handleSelectEgg}></BagPresenter>
 }
 
 export default BagContainer;

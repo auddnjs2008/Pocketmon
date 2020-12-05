@@ -52,6 +52,11 @@ const Pointer = styled(Link)`
         transform:translateX(190px);
 
     }
+    &:nth-child(6){
+        left:35%;
+        top:38%;
+
+    }
 
     @keyframes circleWave{
         0%{
@@ -82,6 +87,7 @@ const GamePresenter=({windowSize})=>{
             <Pointer></Pointer>
             <Pointer to="/game/watermap"></Pointer>
             <Pointer to="/game/skymap"></Pointer>
+            <Pointer to="/game/forestmap"></Pointer>
         </Container>
 
         </>

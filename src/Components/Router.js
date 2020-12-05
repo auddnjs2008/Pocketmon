@@ -15,6 +15,7 @@ import YardMap from "../Routes/YardMap";
 import RockMap from "../Routes/RockMap";
 import WaterMap from "../Routes/WaterMap";
 import SkyMap from "../Routes/SkyMap";
+import ForestMap from "../Routes/ForestMap";
 
 export default ()=>{
 
@@ -31,6 +32,7 @@ export default ()=>{
             <Route path="/game/rockmap" component={RockMap}/>
             <Route path="/game/watermap" component={WaterMap}/>
             <Route path="/game/skymap" component={SkyMap}/>
+            <Route path="/game/forestmap" component={ForestMap}/>
 
         </Router>
     )
