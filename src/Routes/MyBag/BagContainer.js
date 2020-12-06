@@ -10,6 +10,7 @@ const BagContainer=()=>{
     const [showPokemon,setShowPokemon]=useState([]);
     const [scroll,setScroll]=useState(window.scrollY);
     const [local,setLocal]=useState(JSON.parse(localStorage.getItem("myPoketmon")));
+    const [egg,setEgg]=useState(JSON.parse(localStorage.getItem("myEggs")));
     const [item,setItem]=useState();
     const [evolveUrl,setEvolve]=useState([]);
     const showWindow = useRef();
@@ -40,6 +41,13 @@ const BagContainer=()=>{
         localStorage.setItem("myBag",JSON.stringify(bag));
     },[bag])
     
+    useEffect(()=>{
+        localStorage.setItem("myEggs",JSON.stringify(egg));
+    },[egg])
+
+
+
+
     const handleSelectPokemon=(e)=>{
         const myPokemons = JSON.parse(localStorage.getItem("myPoketmon"));
         const newBag = JSON.parse(localStorage.getItem("myBag"));
@@ -102,7 +110,7 @@ const BagContainer=()=>{
     const handleUseClick=(e)=>{
         const Id=e.target.id;
         const myPokemons = JSON.parse(localStorage.getItem("myPoketmon"));
-        setItem(Id); 
+        setItem(Id); //어떤 아이템 썼는지 저장 
         
         //id에 포션이나 캔디가 들어갈경우 포켓몬 창 띄워주어야 한다.
         if(Id.includes("Potion")){
@@ -112,7 +120,7 @@ const BagContainer=()=>{
             showWindow.current.style.display="grid";   
             setShowPokemon(myPokemons.filter(item=>item.candy_count <= bag.Candy));
         }else{
-            //새로운 창을 띄운다.
+            //
             eggWindow.current.style.display="grid";
             setShowPokemon([bag.Egg,bag.LuckyEgg]);
 
@@ -121,7 +129,22 @@ const BagContainer=()=>{
 
     // 인큐베이터를 눌렀을 경우는 다르므로  함수를 하나 더 만들어준다.
     const handleSelectEgg=(e)=>{
-        console.log(e.target);
+        const {target:{id}}=e;
+        const newEggs =JSON.parse(localStorage.getItem("myEggs"));
+        let newBag =JSON.parse(localStorage.getItem("myBag")); 
+        newBag[item] -= 1;
+        if(parseInt(id) === 1){ // 일반 알
+            newEggs.push({name:"Egg",walk:0,evolvingWalk:item ==="EggIncubator" ? 8000 :5000,img:"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg.png"});
+            newBag["Egg"] -=1;
+        }else{ // 특별한 알
+            newEggs.push({name:"SpecialEgg",evolvingWalk:item ==="EggIncubator" ? 8000 :5000, walk:0,img:"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/lucky-egg.png"});
+            newBag["LuckyEgg"] -=1;
+        }
+
+        setEgg(newEggs);
+        setBag(newBag);
+        eggWindow.current.style.display="none";
+        
     }
 
     
@@ -134,7 +157,8 @@ const BagContainer=()=>{
     eggWindow={eggWindow}
     scroll={scroll} 
     windowSize={windowSize} 
-    bag={bag} 
+    bag={bag}
+    egg={egg} 
     showPokemon={showPokemon} 
     handleUseClick={handleUseClick} 
     handleSelectPokemon={handleSelectPokemon} 

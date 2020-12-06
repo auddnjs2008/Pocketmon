@@ -151,6 +151,7 @@ const GetPokemon = ({setPokemon}) =>{
 
             localStorage.setItem("myBag",JSON.stringify({"money":1000}));
             localStorage.setItem("battlePokemons",JSON.stringify([]));
+            localStorage.setItem("myEggs",JSON.stringify([]));
         }
     
     
