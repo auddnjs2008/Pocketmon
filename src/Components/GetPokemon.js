@@ -119,15 +119,15 @@ const GetPokemon = ({setPokemon}) =>{
         if(changeNum === Random && turn === 1) {
             clearInterval(RandomNum);
             //Farfetch'd 이 아이 안찾아지므로 예외처리해준다.
-            if(poketmon[changeNum-1].name === "Farfetch'd"){
+            if(poketmon[changeNum-1].name === "Farfetch'd" || poketmon[changeNum-1].name === "Mr. Mime"){
                changeNum =Math.floor(Math.random()*(151-1))+1;
             }
             
             
             myPoketmon= poketmon[changeNum-1].prev_evolution ? 
                 poketmon.filter(item => item.num === poketmon[changeNum-1].prev_evolution[0].num): [poketmon[changeNum-1]];
-            const pokeGif = pokedex.pokemon(myPoketmon[0].name.toLowerCase()).sprites.animated;
-            let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
+            // const pokeGif = pokedex.pokemon(myPoketmon[0].name.toLowerCase()).sprites.animated;
+            // let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
             let smallName;
 
             //예외처리 (nidran (female) , nidoran (male)은 안찾아진다. ,)
@@ -139,13 +139,13 @@ const GetPokemon = ({setPokemon}) =>{
                 smallName = myPoketmon[0].name.toLowerCase();
             
             
-            localStorage.setItem("myPoketmon",JSON.stringify([{...myPoketmon[0],myId:1,cp:Cp,health:100,pokeGif:googleProxyURL + encodeURIComponent(pokeGif),
+            localStorage.setItem("myPoketmon",JSON.stringify([{...myPoketmon[0],myId:1,cp:Cp,health:100,
             commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
-            shinyBackUrl:shinyBackUrl+smallName+".gif"
+            shinyBackUrl:shinyBackUrl+smallName+".gif",color:0
             }]));
            
-            setPokemon([{...myPoketmon[0],myId:1,cp:Cp,health:100,pokeGif: googleProxyURL + encodeURIComponent(pokeGif),commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
-            shinyBackUrl:shinyBackUrl+smallName+".gif"}]);
+            setPokemon([{...myPoketmon[0],myId:1,cp:Cp,health:100,commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
+            shinyBackUrl:shinyBackUrl+smallName+".gif",color:0}]);
         
             // 처음 시작할때  돈을 1000개 정도 준다.
 

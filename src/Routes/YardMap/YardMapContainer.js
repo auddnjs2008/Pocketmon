@@ -3,7 +3,6 @@ import YardMapPresenter from "./YardMapPresenter";
 import Pokemon from "pokemon-go-pokedex";
 
 
-
 const YardMapContainer =()=>{
     
     const newMap = [[1,1,1,1,1,0,1,1,1,1,1],[1,1,1,1,1,0,1,1,1,1,1],[1,1,1,1,1,0,1,1,1,1,1],[1,1,1,1,1,0,1,1,1,1,1],[1,1,1,1,1,0,1,1,1,1,1],[1,1,1,1,1,0,1,1,1,1,1],[1,1,1,1,1,0,1,1,1,1,1],
@@ -23,6 +22,13 @@ const YardMapContainer =()=>{
     const [battlePokemon,setBattlePoke]=useState([]);
     // 랜덤 포켓몬들 cp
     const [pokemonsCp,setCp]=useState([]);
+
+    // 걸음수
+    const [walk,setWalk]=useState(0);
+    //부화될 알 배열 (여러개 일 수 있다.)
+    const [hatchEgg,setHatchEgg]=useState([]);
+    
+    
 
 
     const char=useRef();
@@ -56,6 +62,7 @@ const YardMapContainer =()=>{
     
     const handleKeyPress=useCallback((e)=>{ //useCallback은 함수를 재사용하는 것이다.
      // ArrowUp ArrowDown //ArrowRight ArrowLeft // 60px씩 이동
+         
            
             //도망치고 나서 움직일때 다시  도망모드를 초기화 시킨다.
             if(run) setRun(0);
@@ -65,20 +72,22 @@ const YardMapContainer =()=>{
             if(e.key === "ArrowUp" && battleon === 0){
              nowPosition.length === 0 ? setPosition([initialArray[0],initialArray[1]-60]):(nowPosition[1]-60<=0 ? setPosition([nowPosition[0],nowPosition[1]]):setPosition([nowPosition[0],nowPosition[1]-60]));
               setMove(0);  
+              setWalk(x=>x+1);  
             }else if(e.key ==="ArrowDown" && battleon === 0){ 
             nowPosition.length === 0 ? setPosition([initialArray[0],initialArray[1]+60]):(nowPosition[1]+60 >= windowSize[1] ? setPosition([nowPosition[0],nowPosition[1]]): setPosition([nowPosition[0],nowPosition[1]+60]));
                 setMove(1);
+                setWalk(x=>x+1);
             }else if(e.key ==="ArrowRight" && battleon === 0){
-             nowPosition.length === 0 ? setPosition([initialArray[0]+60,initialArray[1]]):(nowPosition[0]+60 >=windowSize[0]-50 ? setPosition([nowPosition[0],nowPosition[1]]):setPosition([nowPosition[0]+60,nowPosition[1]]));
-
+                nowPosition.length === 0 ? setPosition([initialArray[0]+60,initialArray[1]]):(nowPosition[0]+60 >=windowSize[0]-50 ? setPosition([nowPosition[0],nowPosition[1]]):setPosition([nowPosition[0]+60,nowPosition[1]]));
+                setWalk(x=>x+1);    
             }else if(e.key ==="ArrowLeft" && battleon === 0){
                 nowPosition.length === 0 ? setPosition([initialArray[0]-60,initialArray[1]]): (nowPosition[0]-60 <=0? setPosition([nowPosition[0],nowPosition[1]]) :setPosition([nowPosition[0]-60,nowPosition[1]]));
-
+                setWalk(x=>x+1);
             }
     },[charPosition]);
 
     const handleKeyUp =useCallback((e)=>{
-          // 랜덤포켓몬  주위 10px 반경 에 접촉할경우 메세지 발생 
+          // 랜덤포켓몬  주위  반경 에 접촉할경우 메세지 발생 
              // 좌표 사이의 거리가 반지름 거리보다 크면 인지 못한다.   // 꼭 한명만 배열에 들어가는 건 아니다. 
              let rader = pokePosition.map((item,index)=>
                 Math.sqrt(Math.pow(item[0]-(nowPosition[0]),2)+Math.pow(item[1]-(nowPosition[1]),2))<= 40 ? index : "" ).filter(item => item !=="");
@@ -88,8 +97,8 @@ const YardMapContainer =()=>{
                 setBattlePoke(rader);
                 setBattle(1);
             }
-
-
+         //걸을때마다  걸음 수를 계산하고  그걸  보관하는 인큐베이터 기록에 대입시켜 줘야 한다.
+         
     },[charPosition,run]);
 
     const handleMapChange =(e)=>{
@@ -135,6 +144,34 @@ const YardMapContainer =()=>{
      }
     },[])
 
+    useEffect(()=>{
+        //걸음수가 늘어날 때마다 대입해준다. 
+        
+        let eggs = JSON.parse(localStorage.getItem("myEggs"));
+        let newHatchEggs=[];
+        let newEggs=[];
+        eggs.forEach((item,index)=>{
+            item.walk +=1;
+            if(item.walk >= item.evolvingWalk){
+                //알 부화처리 화면을 보여주고  부화된 알은  리스트에서 빼준다. 그리고 새로운 랜덤 포켓몬은 나의 포켓몬 목록에 집어넣어준다. 
+                newHatchEggs.push(item);
+            }else{
+                newEggs.push(item);
+            }
+        
+        })
+
+        if(newHatchEggs.length !==0){
+            window.removeEventListener("keydown",handleKeyPress); 
+            setHatchEgg(newHatchEggs);
+            setTimeout(()=>setHatchEgg([]),11000);
+        }
+
+        localStorage.setItem("myEggs",JSON.stringify(newEggs));
+
+
+    },[walk])
+
 
   
     return (
@@ -158,6 +195,8 @@ const YardMapContainer =()=>{
      setCp={setCp}
      run={setRun}
      handleMapChange={handleMapChange}
+     hatchEgg={hatchEgg}
+     
      ></YardMapPresenter>
      </> 
     )

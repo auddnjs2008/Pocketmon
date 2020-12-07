@@ -69,7 +69,7 @@ const HomePresenter = ({pokemon,setPokemon,colorArray,setColor})=>
         <FlexWrapper>
             <Title>Your Pokemon</Title>
             <Container colorArray={colorArray}>
-                <img  crossOrigin ="anonymous" ref={Images} src={pokemon[0].pokeGif}
+                <img  crossOrigin ="anonymous" ref={Images} src={pokemon[0].color === 0 ? googleProxyURL +pokemon[0].commonUrl : googleProxyURL+pokemon[0].shinyUrl}
                     alt={"example"}
                     onLoad={()=>{
                         const colorThief = new ColorThief();

@@ -75,9 +75,13 @@ const BagContainer=()=>{
             let battlePokemons=JSON.parse(localStorage.getItem("battlePokemons"));
 
             evolvePokmon ={...evolvePokmon ,cp:newCp,health:100,myId:myPokemons[id-1].myId,commonUrl:commonUrl+name+".gif", commonBackUrl:commonBackUrl + name+".gif",shinyUrl:shinyUrl+name+".gif",
-            shinyBackUrl:shinyBackUrl+name+".gif"     }
+            shinyBackUrl:shinyBackUrl+name+".gif",color:myPokemons[id-1].color}
             
-            setEvolve([myPokemons[id-1].commonUrl,evolvePokmon.commonUrl]);
+            if(myPokemons[id-1].color === 0)
+                setEvolve([myPokemons[id-1].commonUrl,evolvePokmon.commonUrl]);
+            else if(myPokemons[id-1].color === 1)
+                setEvolve([myPokemons[id-1].shinyUrl,evolvePokmon.shinyUrl]);
+            
             evolveWindow.current.style.display="flex";// 진화 화면을 표시해준다. 
             newBag.Candy -= myPokemons[id-1].candy_count; // 사탕개수를 줄인다.
             //진화 해준 아이로 저장해준다.

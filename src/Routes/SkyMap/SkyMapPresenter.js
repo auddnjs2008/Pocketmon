@@ -8,6 +8,7 @@ import airplane from "../../../src/종이비행기.png";
 import RockWay from "../../../src/바위길.png";
 import Background from "../../../src/하늘배경.jpg";
 import {Link} from "react-router-dom";
+import Egg from "../../Components/Egg";
 
 
 const TestContainer=styled.div`
@@ -151,7 +152,32 @@ const ThreeD = styled.button`
     font-size:15px;
 
 `;
-const SkyMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange})=>{
+
+const EggWrapper = styled.div`
+    position:absolute;
+    z-index:100;
+    top:0;
+    width:100%;
+    height:200vh;
+    background-color:black;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding-top:100px;
+    @keyframes  windowColor{
+        0%{
+
+        }
+        100%{
+            background-color:#f1c40f;
+        }
+    }
+    animation:windowColor 1s linear forwards;
+    animation-iteration-count:5;
+
+`;
+
+const SkyMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange,hatchEgg})=>{
 
     return( 
         <>  <TestContainer>
@@ -171,6 +197,8 @@ const SkyMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove
             <ThreeD onClick={handleMapChange}>
                3D 입체보기 
             </ThreeD>
+            {hatchEgg.length !==0 ? <EggWrapper>{hatchEgg.map((item)=><Egg information={item}></Egg>)}</EggWrapper>:""}   
+
         </>
     )
 }

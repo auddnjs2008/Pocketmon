@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import StorePresenter from "./StorePresenter";
+import  evolve from "../../../src/Evolve";
 
 const StoreContainer = ()=>{
     const [windowSize,setWindow]=useState(window.innerWidth);
@@ -11,6 +12,12 @@ const StoreContainer = ()=>{
     const [myMoney,setMyMoney]=useState(JSON.parse(localStorage.getItem("myBag")).money);
     const [bag,setBag]=useState(JSON.parse(localStorage.getItem("myBag")));
     const [message,setMessage]=useState("");
+
+    
+   
+    console.log(evolve);
+
+
 
     const handleBuyBtn=()=>{
         const itemes=bag;
@@ -55,6 +62,20 @@ const StoreContainer = ()=>{
         // 돈차감을 해주어야 한다. 
         setMyMoney(myMoney-money);
         itemes["money"]=(myMoney-money);
+
+
+        //뱃지가 10개이거나  23개일 경우  랜덤 스페셜 포켓몬 증정
+
+        if(itemes["Badges"].length !== 10 || itemes["Badges"].length !== 23){
+            
+
+
+        }
+
+
+
+
+
        
         setBag(itemes);
         localStorage.setItem("myBag",JSON.stringify(bag));

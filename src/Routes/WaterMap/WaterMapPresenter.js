@@ -7,6 +7,8 @@ import Battle from "../../Components/Battle";
 import {Link} from "react-router-dom";
 import Background from "../../../src/바다도시.jpg";
 import Ride from "../../../src/배.png";
+import Egg from "../../Components/Egg";
+
 
 const TestContainer=styled.div`
 background-image:url(${Background});
@@ -148,7 +150,31 @@ const ThreeD = styled.button`
 
 `;
 
-const WaterMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange})=>{
+const EggWrapper = styled.div`
+    position:absolute;
+    z-index:100;
+    top:0;
+    width:100%;
+    height:200vh;
+    background-color:black;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding-top:100px;
+    @keyframes  windowColor{
+        0%{
+
+        }
+        100%{
+            background-color:#f1c40f;
+        }
+    }
+    animation:windowColor 1s linear forwards;
+    animation-iteration-count:5;
+
+`;
+
+const WaterMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange,hatchEgg})=>{
 
     return ( 
         <>  
@@ -169,6 +195,8 @@ const WaterMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMo
             <ThreeD onClick={handleMapChange}>
                3D 입체보기 
             </ThreeD>
+            {hatchEgg.length !==0 ? <EggWrapper>{hatchEgg.map((item)=><Egg information={item}></Egg>)}</EggWrapper>:""}   
+
         </>
     )
 }

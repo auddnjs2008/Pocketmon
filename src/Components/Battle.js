@@ -297,7 +297,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
 
     const catchPokemon=()=>{
         const catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:commonUrl+battlePokmonName+".gif", commonBackUrl:commonBackUrl + battlePokmonName+".gif",shinyUrl:shinyUrl+battlePokmonName+".gif",
-        shinyBackUrl:shinyBackUrl+battlePokmonName+".gif"};
+        shinyBackUrl:shinyBackUrl+battlePokmonName+".gif",color:0};
         myPokemons.push(catchPokemon);
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
         myPokeomnsSetting();
@@ -442,7 +442,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                     myBattlePokemons.forEach(item =>{ 
                     if(parseInt(myMonster.current.id) !==item.myId && item.health >0)
                         menu.current.innerHTML +=
-                        `<li><img id=${item.myId} src="${commonUrl+item.name.toLowerCase()+".gif"}" />
+                        `<li><img id=${item.myId} src="${item.color === 0 ? commonUrl+item.name.toLowerCase()+".gif" : shinyUrl+item.name.toLowerCase()+".gif"}" />
                              <span>CP ${item.cp}</span>   
                         </li>`;
                     })
@@ -455,10 +455,10 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
            setIndex(0);
            initList.forEach(item=>menu.current.appendChild(item));
            
-        }else if(item.innerHTML.includes(commonUrl)){ // 포켓몬 일경우
+        }else if(item.innerHTML.includes(commonUrl) || item.innerHTML.includes(shinyUrl)){ // 포켓몬 일경우
             
             const newSrcName= item.firstChild.src.split("sprite/")[1];
-            myMonster.current.src = commonBackUrl+newSrcName;
+            myMonster.current.src = item.innerHTML.includes(shinyUrl) ? shinyBackUrl + newSrcName : commonBackUrl+newSrcName;
             myMonster.current.id=item.firstChild.id;            
             menu.current.innerHTML="";
             initList.forEach(item=>menu.current.appendChild(item));

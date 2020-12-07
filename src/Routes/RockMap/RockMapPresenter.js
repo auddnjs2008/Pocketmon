@@ -6,6 +6,7 @@ import Rock from "../../../src/바위.png";
 import RockWay from "../../../src/바위길.png";
 import Background from "../../../src/동굴배경.jpg";
 import {Link} from "react-router-dom";
+import Egg from "../../Components/Egg";
 
 
 const TestContainer=styled.div`
@@ -137,8 +138,31 @@ const ThreeD = styled.button`
 
 `;
 
+const EggWrapper = styled.div`
+    position:absolute;
+    z-index:100;
+    top:0;
+    width:100%;
+    height:200vh;
+    background-color:black;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding-top:100px;
+    @keyframes  windowColor{
+        0%{
 
-const RockMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange})=>{
+        }
+        100%{
+            background-color:#f1c40f;
+        }
+    }
+    animation:windowColor 1s linear forwards;
+    animation-iteration-count:5;
+
+`;
+
+const RockMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange, hatchEgg})=>{
     
 
     return( 
@@ -157,6 +181,7 @@ const RockMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMov
             <ThreeD onClick={handleMapChange}>
                3D 입체보기 
             </ThreeD>
+            {hatchEgg.length !==0 ? <EggWrapper>{hatchEgg.map((item)=><Egg information={item}></Egg>)}</EggWrapper>:""}
         </>
     )
 }

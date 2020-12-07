@@ -13,18 +13,22 @@ const Container = styled.div`
     grid-auto-columns:1fr; */
     grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
     grid-auto-rows:300px;
-    gap:20px;
+    gap:5px;
     height:90%;
     width:100%;  
     margin-top:${props=>props.windowSize >810 ? "350px" :"50px"};
     justify-items:center;
+    padding:20px;
 `;
 
 const Header = styled.div`
+   //position:fixed;
    position:absolute;
    color:white;
    top:0;
-   background-color:rgba(20,20,20,0.7);
+   background-color:rgba(20,20,20,0.8);
+   //background-color:black;
+   z-index:1;
    padding:5px;
    margin-top:${props=>props.windowSize >810 ? "90px" :"20px"};
    height:250px;
@@ -82,9 +86,9 @@ const MyPokePresenter = ({windowSize,pokemons,handlePokemonClick,battlePokemons,
     <Header windowSize={windowSize}>
        <h1>Battle Pokemons</h1>
        <BattlePokemon>
-         <li><img src={battlePokemons[0] ? battlePokemons[0].commonUrl :""}/><div>Cp {battlePokemons[0] ? battlePokemons[0].cp : ""}</div> </li>
-         <li> <img src={battlePokemons[1] ? battlePokemons[1].commonUrl :""}/><div>Cp {battlePokemons[1] ? battlePokemons[1].cp :""}</div></li>
-         <li><img src={battlePokemons[2] ? battlePokemons[2].commonUrl : ""}/><div>Cp {battlePokemons[2] ? battlePokemons[2].cp : ""}</div></li>
+         <li><img src={battlePokemons[0] ? (battlePokemons[0].color === 0 ? battlePokemons[0].commonUrl : battlePokemons[0].shinyUrl) :""}/><div>Cp {battlePokemons[0] ? battlePokemons[0].cp : ""}</div> </li>
+         <li> <img src={battlePokemons[1] ? (battlePokemons[1].color === 0 ? battlePokemons[1].commonUrl :battlePokemons[1].shinyUrl ):""}/><div>Cp {battlePokemons[1] ? battlePokemons[1].cp :""}</div></li>
+         <li><img src={battlePokemons[2] ? (battlePokemons[2].color === 0 ? battlePokemons[2].commonUrl : battlePokemons[2].shinyUrl): ""}/><div>Cp {battlePokemons[2] ? battlePokemons[2].cp : ""}</div></li>
        </BattlePokemon>
        <button onClick={changeBtn}>Change Off</button>
     </Header>

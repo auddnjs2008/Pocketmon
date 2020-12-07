@@ -18,6 +18,7 @@ const PokeImg = styled.img`
    height:auto;
    min-width:50px;
    min-height:50px;
+   
  
    @keyframes  touch {
       0%{
@@ -37,33 +38,29 @@ const PokeImg = styled.img`
 const PokeProfile = styled.div`
 height:100%;
 position:relative;
-display:flex;
+/* display:flex;
 flex-direction:column;
 align-items:center;
-justify-content:space-between;
+justify-content:space-between; */
+
+display:grid;
+grid-template-rows:4fr 1fr 1fr 1fr 1fr 1fr;
 color:white;
+justify-items:center;
+align-items:center;
+span{
+   margin-right:5px;
+}
 
 `;
 
-
-
-const Circle = styled.div`
-   width:150px;
-   height:50px;
-   border:1px solid black;
-   border-radius:30%;
-  
-   background:${props => `linear-gradient(to top,rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]}),white)`};
-   transform:perspective(350px) rotateX(40deg);
-
-`;
 
 const CpBox =styled.div`
    width:150px;
    height:25px;
    background-color:white;
    position:relative;
-    border:1px solid black;
+ 
  
      .cpTitle{
         position:absolute;
@@ -81,7 +78,7 @@ const PhyscialBox=styled.div`
    height:25px;
    background-color:white;
    position:relative;
-    border:1px solid black;
+ 
  
 
      .physicalTitle{
@@ -102,7 +99,7 @@ const InnerBox = styled.div`
      height:100%;
      background-color:black;
     
-     background:${props => `linear-gradient(to right,rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]}),black)`};
+     background:${props => `linear-gradient(to left,rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]}),black)`};
      width:${props => `${props.cp}%`};
  
 `;
@@ -112,7 +109,7 @@ const PhysicalInnerBox =styled.div`
 
      position:absolute;
      bottom:0; 
-     background:${props => `linear-gradient(to right,rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]}),black)`};
+     background:${props => `linear-gradient(to left,rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]}),black)`};
      width:${props => `${props.health}%`};
   
    /* @keyframes health{
@@ -139,7 +136,7 @@ const MyPokemon =({id,border,changePossible,item,handlePokemonClick})=>{
 
     return <PokemonWrapper border={border} id={id} onClick={handlePokemonClick}  to={changePossible ? "/mine" : `/navi/${item.id}`}colors={colorArray}>
     <PokeProfile >
-      <PokeImg  crossOrigin="anonymous" ref={Images} src={googleProxyURL +encodeURIComponent(item.commonUrl)}
+      <PokeImg  crossOrigin="anonymous" ref={Images} src={item.color === 0 ? googleProxyURL +encodeURIComponent(item.commonUrl) : googleProxyURL +encodeURIComponent(item.shinyUrl)}
          alt={"example"}
          onLoad={()=>{
             const colorThief =new ColorThief();
@@ -148,15 +145,15 @@ const MyPokemon =({id,border,changePossible,item,handlePokemonClick})=>{
           
          }}
       />  
-      <Circle colors={colorArray}></Circle>   
+      
       <h1>{item.name}</h1>
+      <div className="cpTitle"><span>CP</span>{item.cp}</div>   
       <CpBox>
         <InnerBox colors={colorArray} cp={parseInt(String(item.cp)[0] + String(item.cp)[1])}></InnerBox>   
-        <div className="cpTitle"><span>CP</span>{item.cp}</div>   
      </CpBox>
+      <div className="physicalTitle"><span>Health</span>{Math.floor(item.health)}</div>   
     <PhyscialBox>
       <PhysicalInnerBox colors={colorArray} health={Math.floor(item.health)}></PhysicalInnerBox>   
-      <div className="physicalTitle"><span>Health</span>{Math.floor(item.health)}</div>   
     </PhyscialBox>     
     </PokeProfile>
     
