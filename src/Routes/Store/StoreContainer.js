@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StorePresenter from "./StorePresenter";
-import  evolve from "../../../src/Evolve";
+import  Evolve from "../../../src/Evolve";
+import pokemons from "pokemon-go-pokedex";
 
 const StoreContainer = ()=>{
     const [windowSize,setWindow]=useState(window.innerWidth);
@@ -12,15 +13,15 @@ const StoreContainer = ()=>{
     const [myMoney,setMyMoney]=useState(JSON.parse(localStorage.getItem("myBag")).money);
     const [bag,setBag]=useState(JSON.parse(localStorage.getItem("myBag")));
     const [message,setMessage]=useState("");
+    const [myPokemons,setMyPokemon]=useState(JSON.parse(localStorage.getItem("myPoketmon")));
 
-    
-   
-    console.log(evolve);
+    const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve;
 
 
 
     const handleBuyBtn=()=>{
         const itemes=bag;
+        const BadgesNumber = bag.Badges.length; // 사기 전 뱃지의 숫자
         let itemName=name;
         let number=1;
         let Badges=[];
@@ -34,7 +35,7 @@ const StoreContainer = ()=>{
         }
 
 
-        // 뱃지를 살경우 이미 산 뱃지일 경우   못 사게 한다. ********************************************* 코드 작성 필요 
+        // 뱃지를 살경우 이미 산 뱃지일 경우   못 사게 한다. 
         
         
         if(Badges.length ===0) // 산 아이템이 뱃지가 아닐경우    
@@ -63,13 +64,23 @@ const StoreContainer = ()=>{
         setMyMoney(myMoney-money);
         itemes["money"]=(myMoney-money);
 
-
-        //뱃지가 10개이거나  23개일 경우  랜덤 스페셜 포켓몬 증정
-
-        if(itemes["Badges"].length !== 10 || itemes["Badges"].length !== 23){
+      
+        //뱃지가 10개이거나  23개일 경우  랜덤 스페셜 포켓몬 증정 //메가 포켓몬 증정
+        //사기전 뱃지 넘버와 사고난후 뱃지 넘버가  달라야 한다.
+        if( BadgesNumber !== itemes["Badges"].length && (itemes["Badges"].length === 10 || itemes["Badges"].length === 23)){
+            const newPokemonName = megaPokemon[Math.floor(Math.random()*(megaPokemon.length-1))+1]   
             
+            
+            let newPokemon = pokemons.pokemon.filter(item=>item.name.toLowerCase() === newPokemonName);
+            newPokemon={...newPokemon[0],myId:myPokemons.length+1,cp:Math.floor(Math.random()*(2000-1500))+1500,health:100,
+                commonUrl : urlSearch.commonUrl(newPokemonName), commonBackUrl: urlSearch.commonBackUrl(newPokemonName), shinyUrl:urlSearch.shinyUrl(newPokemonName),shinyBackUrl:urlSearch.shinyBackUrl(newPokemonName),color:0,
+                specialUrl : urlSearch.megaUrl(newPokemonName).megaCommonUrl, specialShinyUrl:urlSearch.megaUrl(newPokemonName).megaShinyUrl, 
+                specialBackUrl:urlSearch.megaBackUrl(newPokemonName).megaBackCommonUrl, specialShinyBackUrl:urlSearch.megaBackUrl(newPokemonName).megaBackShinyUrl
+            }
 
-
+            setMyPokemon([...myPokemons,newPokemon]);
+            //알림메시지를 넣어준다.
+            setMessage("You got a special Pokemon");
         }
 
 
@@ -81,7 +92,8 @@ const StoreContainer = ()=>{
         localStorage.setItem("myBag",JSON.stringify(bag));
     }
 
-
+   
+    
 
     const handleItemClick =(name,info,img,money) =>{
         setName(name);
@@ -111,6 +123,10 @@ const StoreContainer = ()=>{
             window.removeEventListener("scroll",handleScroll);
         }    
     },[]);
+
+    useEffect(()=>{
+        localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
+    },[myPokemons])
 
     return <StorePresenter
         windowSize={windowSize}

@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Menu from "../../Components/Menu";
 import LongMenu from "../../Components/LongMenu";
-
+import Mega from "pokesprite-images/items/mega-stone/banettite.png";
+import Alola from "pokesprite-images/items/mega-stone/aggronite.png";
+import Color from "pokesprite-images/items/z-crystals/snorlium-z--bag.png";
 
 const Container =styled.div`
     width:100%;
@@ -131,6 +133,8 @@ const OthersWrapper =BallWrapper;
 const Others=Ball;
 const WalkingEggWrapper=BallWrapper;
 const WalkingEgg=Ball;
+const SpecialWrapper = BallWrapper;
+const Special=Ball;
 
 
 
@@ -321,8 +325,8 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, win
             <Img badges={bag.Badges} id="Pikachu" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png"/>
             <Img badges={bag.Badges} id="Charmander"src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/charmander.png"/>
             <Img badges={bag.Badges} id="Squirtle" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/squirtle.png"/>
-            <Img badges={bag.Badges} id="bullbasaur" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/bullbasaur.png"/>
-            <Img badges={bag.Badges} id="Psyduck" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/psyduck.png"/>
+            <Img badges={bag.Badges} id="Bullbasaur" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/bullbasaur.png"/>
+            <Img badges={bag.Badges} id="Psydux" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/psyduck.png"/>
             <Img badges={bag.Badges} id="Meowth" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/meowth.png"/>
             <Img badges={bag.Badges} id="Eevee" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/eevee.png"/>
             <Img badges={bag.Badges} id="Jigglypuff" src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/jigglypuff.png"/>
@@ -366,6 +370,19 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, win
             <Incubator><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg-incubator.png"/><h2>Incubator</h2></div><div>{bag.EggIncubator ? bag.EggIncubator : 0}개</div>{bag.EggIncubator ? <button id="EggIncubator" onClick={ handleUseClick}>사용</button>:""}</Incubator>
             <Incubator><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg-incubator-1.png"/><h2>Super-Incubator</h2></div><div>{bag.SuperEggIncubator ? bag.SuperEggIncubator : 0}개</div>{bag.SuperEggIncubator ? <button id="SuperEggIncubator" onClick={ handleUseClick}>사용</button>:""}</Incubator>
         </IncubatorWrapper>
+        <SpecialWrapper>
+            <h1>Special Item</h1>
+            <Special><div><img src={Mega}/><h2>Mega Candy</h2></div><div>{bag.MegaCandy ? bag.MegaCandy : 0}개</div></Special>
+            <Special><div><img src={Alola}/><h2>Alola Candy</h2></div><div>{bag.AlolaCandy ? bag.AlolaCandy : 0}개</div></Special>
+            <Special><div><img src={Color}/><h2>Color Changer</h2></div><div>{bag.ColorChanger ? bag.ColorChanger : 0}개</div></Special>
+
+        </SpecialWrapper>
+        
+        
+        
+        
+        
+        
         <OthersWrapper>
             <h1>Others</h1>
             <Others><div><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png"/><h2>Razz-berry</h2></div><div>{bag["razz-berry"] ? bag["razz-berry"] : 0}개</div></Others>
@@ -381,7 +398,7 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, win
 </Container>
 <ShowPokemon ref={showWindow} scroll={scroll}>
     <ul>
-        {showPokemon.length !==0 ? showPokemon.map(pokemon=><li id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.commonUrl}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
+        {showPokemon.length !==0 ? showPokemon.map(pokemon=><li id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.color ?  (pokemon.specialUrl ? pokemon.specialShinyUrl : pokemon.shinyUrl) : (pokemon.specialUrl ? pokemon.specialUrl : pokemon.commonUrl)}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
     </ul>
     <button onClick={()=>showWindow.current.style.display="none"}>Close</button>
 </ShowPokemon>

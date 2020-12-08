@@ -86,10 +86,19 @@ const MyPokePresenter = ({windowSize,pokemons,handlePokemonClick,battlePokemons,
     <Header windowSize={windowSize}>
        <h1>Battle Pokemons</h1>
        <BattlePokemon>
-         <li><img src={battlePokemons[0] ? (battlePokemons[0].color === 0 ? battlePokemons[0].commonUrl : battlePokemons[0].shinyUrl) :""}/><div>Cp {battlePokemons[0] ? battlePokemons[0].cp : ""}</div> </li>
-         <li> <img src={battlePokemons[1] ? (battlePokemons[1].color === 0 ? battlePokemons[1].commonUrl :battlePokemons[1].shinyUrl ):""}/><div>Cp {battlePokemons[1] ? battlePokemons[1].cp :""}</div></li>
-         <li><img src={battlePokemons[2] ? (battlePokemons[2].color === 0 ? battlePokemons[2].commonUrl : battlePokemons[2].shinyUrl): ""}/><div>Cp {battlePokemons[2] ? battlePokemons[2].cp : ""}</div></li>
-       </BattlePokemon>
+         {battlePokemons[0] && battlePokemons[0].specialUrl ===undefined ?  
+            <li><img src={battlePokemons[0] ? (battlePokemons[0].color === 0 ? battlePokemons[0].commonUrl : battlePokemons[0].shinyUrl) :""}/><div>Cp {battlePokemons[0] ? battlePokemons[0].cp : ""}</div> </li>
+            : <li><img src={battlePokemons[0] ? (battlePokemons[0].color === 0 ? battlePokemons[0].specialUrl : battlePokemons[0].specialShinyUrl) :""}/><div>Cp {battlePokemons[0] ? battlePokemons[0].cp : ""}</div> </li>
+          }
+          {battlePokemons[1] && battlePokemons[1].specialUrl ===undefined ?
+            <li> <img src={battlePokemons[1] ? (battlePokemons[1].color === 0 ? battlePokemons[1].commonUrl :battlePokemons[1].shinyUrl ):""}/><div>Cp {battlePokemons[1] ? battlePokemons[1].cp :""}</div></li>
+            : <li> <img src={battlePokemons[1] ? (battlePokemons[1].color === 0 ? battlePokemons[1].specialUrl :battlePokemons[1].specialShinyUrl ):""}/><div>Cp {battlePokemons[1] ? battlePokemons[1].cp :""}</div></li>   
+          }
+          {battlePokemons[2] && battlePokemons[2].specialUrl ===undefined ?
+            <li><img src={battlePokemons[2] ? (battlePokemons[2].color === 0 ? battlePokemons[2].commonUrl : battlePokemons[2].shinyUrl): ""}/><div>Cp {battlePokemons[2] ? battlePokemons[2].cp : ""}</div></li>
+            :<li><img src={battlePokemons[2] ? (battlePokemons[2].color === 0 ? battlePokemons[2].specialUrl : battlePokemons[2].specialShinyUrl): ""}/><div>Cp {battlePokemons[2] ? battlePokemons[2].cp : ""}</div></li>
+          } 
+      </BattlePokemon>
        <button onClick={changeBtn}>Change Off</button>
     </Header>
     <Container windowSize={windowSize}>

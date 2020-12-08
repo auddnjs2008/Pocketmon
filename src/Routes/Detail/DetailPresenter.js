@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import Menu from "../../Components/Menu";
 import LongMenu from "../../Components/LongMenu";
+import Evolve from "../../../src/Evolve";
 
 
 const Container=styled.div`
@@ -135,71 +136,85 @@ const CommonBox = styled.div`
 
 
 const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
-
+    console.log(pokemon);
     const smallName = pokemon.name.toLowerCase();
+    const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve; // url(smallName).commonUrl 이런식으로 쓸수있다.
 
-
-    const commonUrl = "https://projectpokemon.org/images/normal-sprite/";
-    const shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
+    // const commonUrl = "https://projectpokemon.org/images/normal-sprite/";
+    // const shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
     
-    const commonBackUrl = "https://projectpokemon.org/images/sprites-models/normal-back/";
-    const shinyBackUrl = "https://projectpokemon.org/images/sprites-models/shiny-back/";
-    let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
+    // const commonBackUrl = "https://projectpokemon.org/images/sprites-models/normal-back/";
+    // const shinyBackUrl = "https://projectpokemon.org/images/sprites-models/shiny-back/";
+    // let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
 
     // 진화과정을 한 배열에 담아야 한다. 
     //현재 포켓몬 url
-    const nowCommonUrl = commonUrl+smallName+".gif";
-    const nowShinyUrl = shinyUrl + smallName +".gif";
+    const nowCommonUrl =urlSearch.commonUrl(smallName);
+    const nowShinyUrl = urlSearch.shinyUrl(smallName);
 
 
     // prev evolutoin  next evolution 이 배열일 수도 있고, 없을수도있다.
     let prevEvolution;
     if(pokemon.name !== "Dragonair")
-        prevEvolution = pokemon.prev_evolution ? pokemon.prev_evolution.map(item=>item.name.toLowerCase()) : "";
+        prevEvolution = pokemon.prev_evolution ? pokemon.prev_evolution.map(item=>{
+            let result;
+            if(item.name.toLowerCase() === "nidoran(female)") result= "nidoran_f";
+            else if(item.name.toLowerCase() === "nidoran(male)") result= "nidoran_m";
+            else result = item.name.toLowerCase();
+        
+            return result;
+    }) : "";
     else
         prevEvolution = ["dratini"];
 
+    // if(prevEvolution.includes("(female)")){
+    //     prevEvolution= prevEvolution.map(item=> item.includes("(female)") ? "nidoran_f" :item);
+    // }else{
+    //     prevEvolution = prevEvolution.map(item=>item.includes("(male)") ? "nidoran_m" :item);
+    // }  //nidoran_m, // nidoran_f
+
     const nextEvolution = pokemon.next_evolution ? pokemon.next_evolution.map(item =>item.name.toLowerCase()) : "";
     
-    const prevCommonUrls = prevEvolution ? prevEvolution.map(item=>commonUrl+item+".gif") : "";
-    const prevShinyUrls = prevEvolution ? prevEvolution.map(item=>shinyUrl+item+".gif") : "";
+    const prevCommonUrls = prevEvolution ? prevEvolution.map(item=>urlSearch.commonUrl(item)) : "";
+    const prevShinyUrls = prevEvolution ? prevEvolution.map(item=>urlSearch.shinyUrl(item)) : "";
     
-    const nextCommonUrls = nextEvolution ? nextEvolution.map(item=>commonUrl+item+".gif") : "";
-    const nextShinyUrls = nextEvolution ? nextEvolution.map(item=>shinyUrl+item+".gif") : "";
+    const nextCommonUrls = nextEvolution ? nextEvolution.map(item=>urlSearch.commonUrl(item)) : "";
+    const nextShinyUrls = nextEvolution ? nextEvolution.map(item=>urlSearch.shinyUrl(item)) : "";
 
 
     // 마지막 진화 포켓몬 이름
     const finalPokeName = nextEvolution ? nextEvolution[nextEvolution.length-1] : smallName;
+    
 
     // 그리고 메가 진화 도 포함 (다른 사이트에서 gif 유무를 판단해야 한다.)
-    const megaEvolution = finalPokeName+"-mega";
     
-    const megaCommonUrl = commonUrl + megaEvolution+".gif";
+    const megaCommonUrl =urlSearch.megaUrl(finalPokeName) ? urlSearch.megaUrl(finalPokeName).megaCommonUrl : "";
     
-    
-    const megaShinyUrl = shinyUrl + megaEvolution+".gif";
+    const megaShinyUrl = urlSearch.megaUrl(finalPokeName)? urlSearch.megaUrl(finalPokeName).megaShinyUrl : "";
 
+    
     // alora 진화? 도 포함 
     const aloraEvolution = finalPokeName+"-alola";
     
-    let aloraCommonUrl = commonUrl + aloraEvolution+".gif";
+    const aloraCommonUrl = urlSearch.alolalUrl(finalPokeName) ? urlSearch.alolalUrl(finalPokeName).alolaCommonUrl : "";
  
-    const aloraShinyUrl = shinyUrl + aloraEvolution+".gif";
+    const aloraShinyUrl = urlSearch.alolalUrl(finalPokeName) ? urlSearch.alolalUrl(finalPokeName).alolaShinyUrl : "";
 
     //mega 진화 아니면 megax 와 megay가 있다.
     const megaXEvolution = finalPokeName+"-megax";
     const megaYEvolution = finalPokeName+"-megay";
 
-    const megaXCommonUrl = commonUrl + megaXEvolution+".gif";
-    const megaXShinyUrl = shinyUrl+megaXEvolution+".gif";
-    const megaYCommonUrl = commonUrl + megaYEvolution+".gif";
-    const megaYShinyUrl = shinyUrl+megaYEvolution+".gif";
+    const megaXCommonUrl = urlSearch.megaXUrl(finalPokeName) ? urlSearch.megaXUrl(finalPokeName).megaXCommonUrl : "";
+    const megaXShinyUrl = urlSearch.megaXUrl(finalPokeName) ? urlSearch.megaXUrl(finalPokeName).megaXShinyUrl : "";
+    const megaYCommonUrl = urlSearch.megaYUrl(finalPokeName) ? urlSearch.megaYUrl(finalPokeName).megaYCommonUrl : "";    
+    const megaYShinyUrl = urlSearch.megaYUrl(finalPokeName) ? urlSearch.megaYUrl(finalPokeName).megaYShinyUrl : "";
 
 
     // commonUrl과 shinyUrl배열 만들자 [일반진화, 알로라진화, 메가진화]
     let commonEvolveUrl = [...prevCommonUrls,nowCommonUrl,...nextCommonUrls,aloraCommonUrl, megaCommonUrl,megaXCommonUrl,megaYCommonUrl];
     let shinyEvolveUrl = [...prevShinyUrls,nowShinyUrl,...nextShinyUrls,aloraShinyUrl,megaShinyUrl,megaXShinyUrl,megaYShinyUrl];
     
+ 
 
     return(
     <>
@@ -207,10 +222,10 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
     <Container windowSize={windowSize}>
         <ImgWrapper>
             <img src={nowCommonUrl} />
-            <img src={commonBackUrl + smallName+".gif"}/>
+            <img src={urlSearch.commonBackUrl(smallName)}/>
             <img src={pokemon.pokeGif}/>
             <img src={nowShinyUrl}/>
-            <img src={shinyBackUrl+smallName+".gif"}/>
+            <img src={urlSearch.shinyBackUrl(smallName)}/>
         </ImgWrapper>
         <InfoBox>
             <li><span className="liTitle">Name</span> <span>{pokemon.name}</span></li>
@@ -234,10 +249,10 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
                 <div>MegaY Evolution</div>
             </EvolveTitle>
             <CommonBox common={commonLength}>
-               {commonEvolveUrl.map(item=><img src={item} onError={(e)=>e.target.remove ? e.target.style.opacity="0" :""}/> )} 
+               {commonEvolveUrl.map(item=>item !== undefined ? <img src={item} /> :<img></img> )} 
             </CommonBox>
             <CommonBox common={commonLength}>
-               {shinyEvolveUrl.map(item=><img src={item} onError={(e)=>e.target.remove ? e.target.style.opacity="0" : ""}/> )} 
+               {shinyEvolveUrl.map(item=>item !== undefined ? <img src={item} /> : <img></img> )} 
             </CommonBox>
         </EvolveBox>
     </Container>

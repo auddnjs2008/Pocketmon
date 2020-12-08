@@ -119,7 +119,7 @@ const GetPokemon = ({setPokemon}) =>{
         if(changeNum === Random && turn === 1) {
             clearInterval(RandomNum);
             //Farfetch'd 이 아이 안찾아지므로 예외처리해준다.
-            if(poketmon[changeNum-1].name === "Farfetch'd" || poketmon[changeNum-1].name === "Mr. Mime"){
+            if(poketmon[changeNum-1].name === "Farfetch'd" || poketmon[changeNum-1].name.includes("Mime")){
                changeNum =Math.floor(Math.random()*(151-1))+1;
             }
             

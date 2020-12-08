@@ -6,6 +6,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import PokeDex from "pokemon-go-pokedex";
 import Message from "../Components/Message";
+import Evolve from "../../src/Evolve";
+
 
 const BattleEffect = styled.div`
     width:100%;
@@ -293,11 +295,11 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const [ballImage,setBallImg]=useState();
     const [message,setMessage]=useState("");
    
-    
+    const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve;
 
     const catchPokemon=()=>{
-        const catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:commonUrl+battlePokmonName+".gif", commonBackUrl:commonBackUrl + battlePokmonName+".gif",shinyUrl:shinyUrl+battlePokmonName+".gif",
-        shinyBackUrl:shinyBackUrl+battlePokmonName+".gif",color:0};
+        const catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:urlSearch(battlePokmonName).commonUrl, commonBackUrl:urlSearch(battlePokmonName).commonBackUrl,shinyUrl:urlSearch(battlePokmonName).shinyUrl,
+        shinyBackUrl:urlSearch(battlePokmonName).shinyBackUrl,color:0};
         myPokemons.push(catchPokemon);
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
         myPokeomnsSetting();
@@ -442,9 +444,12 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                     myBattlePokemons.forEach(item =>{ 
                     if(parseInt(myMonster.current.id) !==item.myId && item.health >0)
                         menu.current.innerHTML +=
-                        `<li><img id=${item.myId} src="${item.color === 0 ? commonUrl+item.name.toLowerCase()+".gif" : shinyUrl+item.name.toLowerCase()+".gif"}" />
+                        item.specialUrl === undefined ?
+                        `<li><img id=${item.myId} src="${item.color === 0 ? urlSearch.commonUrl(item.name.toLowerCase()) : urlSearch.shinyUrl(item.name.toLowerCase())}" />
                              <span>CP ${item.cp}</span>   
-                        </li>`;
+                        </li>` :  `<li><img id=${item.myId} src="${item.color === 0 ? item.specialUrl : item.speicalShinyUrl}" />
+                        <span>CP ${item.cp}</span>   
+                   </li>`
                     })
                 menu.current.innerHTML += "<li>뒤로가기</li>";    
             }else
@@ -457,8 +462,16 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
            
         }else if(item.innerHTML.includes(commonUrl) || item.innerHTML.includes(shinyUrl)){ // 포켓몬 일경우
             
-            const newSrcName= item.firstChild.src.split("sprite/")[1];
-            myMonster.current.src = item.innerHTML.includes(shinyUrl) ? shinyBackUrl + newSrcName : commonBackUrl+newSrcName;
+            let newSrcName= item.firstChild.src.split("sprite/")[1].split(".gif")[0];
+            if(newSrcName.includes("-mega") || newSrcName.includes("-alola")) newSrcName= newSrcName.split("-")[0];
+
+            const newBattlePokemon = myBattlePokemons.filter(item=>item.name.toLowerCase() === newSrcName)[0];
+            console.log(newSrcName); console.log(newBattlePokemon);
+            if(newBattlePokemon.specialUrl === undefined)
+                myMonster.current.src = item.innerHTML.includes(shinyUrl) ? newBattlePokemon.shinyBackUrl : newBattlePokemon.commonBackUrl;
+            else
+                myMonster.current.src=item.innerHTML.includes(shinyUrl) ?  newBattlePokemon.specialShinyBackUrl : newBattlePokemon.specialBackUrl;
+            
             myMonster.current.id=item.firstChild.id;            
             menu.current.innerHTML="";
             initList.forEach(item=>menu.current.appendChild(item));
@@ -653,7 +666,10 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                 </MonsterWrapper>
                 
                 <MonsterWrapper>
-                    <MyMonster index={0} id={myBattlePokemons[0].myId} ref={myMonster}src={ myBattlePokemons[0].commonBackUrl}></MyMonster>
+                    { myBattlePokemons[0].specialUrl === undefined ?
+                    <MyMonster index={0} id={myBattlePokemons[0].myId} ref={myMonster}src={myBattlePokemons[0].color === 0 ?  myBattlePokemons[0].commonBackUrl : myBattlePokemons[0].shinyBackUrl }></MyMonster>
+                        :<MyMonster index={0} id={myBattlePokemons[0].myId} ref={myMonster}src={myBattlePokemons[0].color === 0 ?  myBattlePokemons[0].specialBackUrl : myBattlePokemons[0].specialShinyBackUrl }></MyMonster>
+                    }
                     <div className="physical2"><Physical physical={myPhysical}></Physical></div>
                 </MonsterWrapper>
             

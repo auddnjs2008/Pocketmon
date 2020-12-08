@@ -136,6 +136,7 @@ const MyPokemon =({id,border,changePossible,item,handlePokemonClick})=>{
 
     return <PokemonWrapper border={border} id={id} onClick={handlePokemonClick}  to={changePossible ? "/mine" : `/navi/${item.id}`}colors={colorArray}>
     <PokeProfile >
+      {item.specialUrl ===undefined ? 
       <PokeImg  crossOrigin="anonymous" ref={Images} src={item.color === 0 ? googleProxyURL +encodeURIComponent(item.commonUrl) : googleProxyURL +encodeURIComponent(item.shinyUrl)}
          alt={"example"}
          onLoad={()=>{
@@ -144,8 +145,16 @@ const MyPokemon =({id,border,changePossible,item,handlePokemonClick})=>{
             setColor(colorThief.getColor(img));
           
          }}
-      />  
-      
+      /> :   <PokeImg  crossOrigin="anonymous" ref={Images} src={item.color === 0 ? googleProxyURL +encodeURIComponent(item.specialUrl) : googleProxyURL +encodeURIComponent(item.specialShinyUrl)}
+      alt={"example"}
+      onLoad={()=>{
+         const colorThief =new ColorThief();
+         const img =Images.current;
+         setColor(colorThief.getColor(img));
+       
+      }}
+   />
+      }
       <h1>{item.name}</h1>
       <div className="cpTitle"><span>CP</span>{item.cp}</div>   
       <CpBox>

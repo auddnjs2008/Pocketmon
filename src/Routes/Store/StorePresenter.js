@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import Menu from "../../Components/Menu";
 import LongMenu from "../../Components/LongMenu";
 import Message from "../../Components/Message";
+import Mega from "pokesprite-images/items/mega-stone/banettite.png";
+import Alola from "pokesprite-images/items/mega-stone/aggronite.png";
+import Color from "pokesprite-images/items/z-crystals/snorlium-z--bag.png";
 const Container = styled.div`
     position:absolute;
     top:0;
@@ -63,6 +66,8 @@ const InfoProfile=styled.div`
     img{
         width:auto;
         height:auto;
+        min-width:200px;
+        min-height:200px;
         max-width:250px;
         max-height:250px;
         margin-bottom:5px;
@@ -124,6 +129,11 @@ const Img = styled.img`
     max-width:200px;
     max-height:200px;
     object-fit:cover;
+    &.stone{
+        width:100px;
+        height:100px;
+        object-fit:cover;
+    }
 `;
 
 const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,info,img,money,scroll,myMoney,message})=>
@@ -191,7 +201,23 @@ const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/candy.png"/>
             <Title>Candy</Title>
         </ImgWrapper>
+        <ImgWrapper>
+            <Img className="stone" src={Mega} onClick={()=>handleItemClick("MegaCandy","This helpes evolving  Mega Pokemon or MegaXY Pokemon",Mega,3000)}/>   
+            <Title>Mega Candy</Title>
+        </ImgWrapper>
+        <ImgWrapper>
+            <Img  className="stone" src={Alola} onClick={()=>handleItemClick("AlolaCandy","This helpes evoving alola Pokemon",Alola,3000)}/>
+            <Title>Alola Candy</Title>
+        </ImgWrapper>
+        <ImgWrapper>
+            <Img  className="stone" src={Color} onClick={()=>handleItemClick("ColorChanger" ,"This helpes changing Pokemon's color",Color,1500)}/>
+            <Title>Color Changer</Title>
+        </ImgWrapper>
         
+
+
+
+
         
         <ImgWrapper onClick={()=>handleItemClick("Pikachu-Badge",text,"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png",25)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png"/>
