@@ -29,7 +29,7 @@ const NaviPresenter =({pokemons,windowSize}) =>
     <>
         {windowSize > 810 ? <LongMenu></LongMenu> : <Menu></Menu>}
         <PokeWrapper windowSize={windowSize}>
-        {pokemons.map(item=>item.name !=="Farfetch'd" && !item.name.includes("Mime") ? <Pokemon pokemon={item}/> :"")}
+        {pokemons.map(item=><Pokemon pokemon={item}/>)}
         </PokeWrapper>
     </>
     )

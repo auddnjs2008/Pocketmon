@@ -13,7 +13,7 @@ const GlobalStyles = createGlobalStyle`
     }
     body{
       
-        height:100%;
+         
         &::-webkit-scrollbar{
             display:none;
         }

@@ -140,16 +140,11 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
     const smallName = pokemon.name.toLowerCase();
     const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve; // url(smallName).commonUrl 이런식으로 쓸수있다.
 
-    // const commonUrl = "https://projectpokemon.org/images/normal-sprite/";
-    // const shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
-    
-    // const commonBackUrl = "https://projectpokemon.org/images/sprites-models/normal-back/";
-    // const shinyBackUrl = "https://projectpokemon.org/images/sprites-models/shiny-back/";
-    // let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
 
     // 진화과정을 한 배열에 담아야 한다. 
-    //현재 포켓몬 url
-    const nowCommonUrl =urlSearch.commonUrl(smallName);
+    //현재 포켓몬 url (mime은 데이터 오률상 mr.mime으로 수정 -> 원래는 mr._mime)
+    const nowCommonUrl = smallName === "mr._mime" ? urlSearch.commonUrl("mr.mime") : urlSearch.commonUrl(smallName);
+    
     const nowShinyUrl = urlSearch.shinyUrl(smallName);
 
 
@@ -167,11 +162,6 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
     else
         prevEvolution = ["dratini"];
 
-    // if(prevEvolution.includes("(female)")){
-    //     prevEvolution= prevEvolution.map(item=> item.includes("(female)") ? "nidoran_f" :item);
-    // }else{
-    //     prevEvolution = prevEvolution.map(item=>item.includes("(male)") ? "nidoran_m" :item);
-    // }  //nidoran_m, // nidoran_f
 
     const nextEvolution = pokemon.next_evolution ? pokemon.next_evolution.map(item =>item.name.toLowerCase()) : "";
     
@@ -194,15 +184,12 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
 
     
     // alora 진화? 도 포함 
-    const aloraEvolution = finalPokeName+"-alola";
     
     const aloraCommonUrl = urlSearch.alolalUrl(finalPokeName) ? urlSearch.alolalUrl(finalPokeName).alolaCommonUrl : "";
  
     const aloraShinyUrl = urlSearch.alolalUrl(finalPokeName) ? urlSearch.alolalUrl(finalPokeName).alolaShinyUrl : "";
 
     //mega 진화 아니면 megax 와 megay가 있다.
-    const megaXEvolution = finalPokeName+"-megax";
-    const megaYEvolution = finalPokeName+"-megay";
 
     const megaXCommonUrl = urlSearch.megaXUrl(finalPokeName) ? urlSearch.megaXUrl(finalPokeName).megaXCommonUrl : "";
     const megaXShinyUrl = urlSearch.megaXUrl(finalPokeName) ? urlSearch.megaXUrl(finalPokeName).megaXShinyUrl : "";
@@ -214,6 +201,10 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
     let commonEvolveUrl = [...prevCommonUrls,nowCommonUrl,...nextCommonUrls,aloraCommonUrl, megaCommonUrl,megaXCommonUrl,megaYCommonUrl];
     let shinyEvolveUrl = [...prevShinyUrls,nowShinyUrl,...nextShinyUrls,aloraShinyUrl,megaShinyUrl,megaXShinyUrl,megaYShinyUrl];
     
+    //mr.mime  데이터 오류처리   일반만 mr.mime  나머지는 mr._mime
+    if(smallName === "mr._mime"){
+        commonEvolveUrl[0]=urlSearch.commonUrl("mr.mime");
+    }
  
 
     return(

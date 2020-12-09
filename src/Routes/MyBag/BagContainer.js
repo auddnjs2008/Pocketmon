@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import BagPresenter from "./BagPresenter";
 import PokeDex from "pokemon-go-pokedex";
-import { number } from "prop-types";
+import Evolve from "../../../src/Evolve";
 
 
 const BagContainer=()=>{
@@ -16,6 +16,8 @@ const BagContainer=()=>{
     const showWindow = useRef();
     const eggWindow=useRef();
     const evolveWindow= useRef();
+
+    const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve;
 
     let commonUrl = "https://projectpokemon.org/images/normal-sprite/";
     let shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
@@ -44,6 +46,28 @@ const BagContainer=()=>{
     useEffect(()=>{
         localStorage.setItem("myEggs",JSON.stringify(egg));
     },[egg])
+
+
+    
+    //진화후  뒷정리 함수 
+   
+   
+    const BattlePokemonSetting =(myPokemons,evolvePokmon,id )=>{
+
+        let battlePokemons=JSON.parse(localStorage.getItem("battlePokemons"));
+        battlePokemons = battlePokemons.map(item=>{
+            if(item.myId === myPokemons[id-1].myId)  return evolvePokmon;
+            else return item;
+        });
+        
+        localStorage.setItem("battlePokemons",JSON.stringify(battlePokemons));
+
+    }
+
+    const EvolveDisplayNone=()=>{
+        setTimeout(()=>evolveWindow.current ? evolveWindow.current.style.display="none" : "",8000);
+        showWindow.current.style.display="none";
+    }
 
 
 
@@ -88,18 +112,107 @@ const BagContainer=()=>{
             myPokemons[id-1] = evolvePokmon;
 
             // 만일 배틀 포켓몬이 지정되 있으면 바꾸어준다. 
-           
-            battlePokemons = battlePokemons.map(item=>{
-                if(item.myId === myPokemons[id-1].myId)  return evolvePokmon;
-                else return item;
-            });
-            
-            localStorage.setItem("battlePokemons",JSON.stringify(battlePokemons));
+        
+            BattlePokemonSetting(myPokemons,evolvePokmon,id);
 
             //진화 화면을  지워준다.
-            setTimeout(()=>evolveWindow.current.style.display="none",8000);
-            showWindow.current.style.display="none";
+            EvolveDisplayNone()
             
+        }else if(item === "MegaCandy"){
+            //메가 진화인지  메가xy진화인지 구분 필요 
+            const smallName = myPokemons[id-1].name.toLowerCase();
+            if(megaPokemon.includes(smallName)){
+                const megaUrl = urlSearch.megaUrl(smallName);
+                const megaBackUrl=urlSearch.megaBackUrl(smallName);
+                myPokemons[id-1].cp = myPokemons[id-1].cp*2;
+                myPokemons[id-1] = {...myPokemons[id-1],specialUrl:megaUrl.megaCommonUrl, specialBackUrl:megaBackUrl.megaBackCommonUrl,
+                specialShinyUrl : megaUrl.megaShinyUrl, specialShinyBackUrl: megaBackUrl.megaBackShinyUrl
+                }
+
+            }else{// 메가 xy진화  랜덤 진화를 해준다. x 나  y 둘중  
+                const xy=["X","Y"];
+                const random = xy[Math.floor(Math.random()*2)];
+                const randomUrl=urlSearch["mega"+random+"Url"](smallName);
+                const randomBackUrl=urlSearch["mega"+random+"BackUrl"](smallName);
+                myPokemons[id-1].cp = Math.floor(myPokemons[id-1].cp*2.5);
+                myPokemons[id-1]= {...myPokemons[id-1],specialUrl:randomUrl["mega"+random+"CommonUrl"], specialBackUrl:randomBackUrl["mega"+random+"BackCommonUrl"],
+                    specialShinyUrl : randomUrl["mega"+random+"ShinyUrl"], specialShinyBackUrl:randomBackUrl["mega"+random+"BackShinyUrl"]
+                }
+
+
+            }
+            
+            //배틀 포켓몬이 지정되 있으면  바꾸어 주어야 한다.
+           
+            BattlePokemonSetting(myPokemons,myPokemons[id-1],id);
+
+
+
+            // setEvolve에  진화전 진화후 url 저징
+            if(myPokemons[id-1].color === 0){
+                setEvolve([myPokemons[id-1].commonUrl,myPokemons[id-1].specialUrl]);
+            }
+            else{
+                setEvolve([myPokemons[id-1].shinyUrl,myPokemons[id-1].specialShinyUrl]);
+            }
+
+
+            evolveWindow.current.style.display="flex";// 진화 화면을 표시해준다.
+            newBag.MegaCandy -= 1; // 사탕개수를 줄인다.
+
+             //진화 화면을  지워준다.
+            EvolveDisplayNone()
+
+
+        } else if(item === "AlolaCandy"){
+            const smallName = myPokemons[id-1].name.toLowerCase();
+            const alolaUrl = urlSearch.alolalUrl(smallName);
+            const alolaBackUrl =urlSearch.alolaBackUrl(smallName);
+            myPokemons[id-1].cp = Math.floor(myPokemons[id-1].cp*1.5);
+            myPokemons[id-1] = {...myPokemons[id-1],specialUrl:alolaUrl.alolaCommonUrl, specialBackUrl:alolaBackUrl.alolaBackCommonUrl,
+                specialShinyUrl : alolaUrl.alolaShinyUrl, specialShinyBackUrl: alolaBackUrl.alolaBackShinyUrl
+            }
+
+               //배틀 포켓몬이 지정되 있으면  바꾸어 주어야 한다.
+            BattlePokemonSetting(myPokemons,myPokemons[id-1],id);
+
+
+
+            // setEvolve에  진화전 진화후 url 저징
+            if(myPokemons[id-1].color === 0){
+                setEvolve([myPokemons[id-1].commonUrl,myPokemons[id-1].specialUrl]);
+            }
+            else{
+                setEvolve([myPokemons[id-1].shinyUrl,myPokemons[id-1].specialShinyUrl]);
+            }
+
+            evolveWindow.current.style.display="flex";// 진화 화면을 표시해준다.
+            newBag.AlolaCandy -= 1; // 사탕개수를 줄인다.
+
+             //진화 화면을  지워준다.
+            EvolveDisplayNone()
+
+
+
+        } else if(item === "ColorChanger"){
+            
+            myPokemons[id-1].color = myPokemons[id-1].color === 0 ? 1 : 0;
+            evolveWindow.current.style.display="flex";// 진화 화면을 표시해준다.
+            newBag.ColorChanger -= 1; // 사탕개수를 줄인다.
+
+             // setEvolve에  칼라전 칼라후 url 저징
+             if(myPokemons[id-1].color === 0){
+               myPokemons[id-1].specialUrl ? setEvolve([myPokemons[id-1].specialShinyUrl,myPokemons[id-1].specialUrl])
+                : setEvolve([myPokemons[id-1].shinyUrl,myPokemons[id-1].commonUrl]);
+            }
+            else{
+               myPokemons[id-1].specialUrl ? setEvolve([myPokemons[id-1].specialUrl,myPokemons[id-1].specialShinyUrl]) : setEvolve([myPokemons[id-1].commonUrl,myPokemons[id-1].shinyUrl]);
+            }
+               //배틀 포켓몬이 지정되 있으면  바꾸어 주어야 한다.
+    
+            BattlePokemonSetting(myPokemons,myPokemons[id-1],id);
+            
+            EvolveDisplayNone()       
         }
 
 
@@ -120,15 +233,30 @@ const BagContainer=()=>{
         if(Id.includes("Potion")){
             showWindow.current.style.display="grid";
             setShowPokemon(myPokemons.filter(item=>item.health !== 100));
-        }else if(Id.includes("candy")){ 
+        }else if(Id.includes("candy")){ //일반 캔디 사용할 때
             showWindow.current.style.display="grid";   
             setShowPokemon(myPokemons.filter(item=>item.candy_count <= bag.Candy));
-        }else{
+        }else if(Id.includes("Incubator")){ // 인큐베이터 사용할 때
             //
             eggWindow.current.style.display="grid";
             setShowPokemon([bag.Egg,bag.LuckyEgg]);
 
+        }else if(Id === "MegaCandy"){ // 메가 캔디는  메가진화 또는 megax  megay진화를 결정 
+            showWindow.current.style.display="grid";
+            setShowPokemon(myPokemons.filter(item=> item.specialUrl === undefined && 
+                (megaPokemon.includes(item.name.toLowerCase()) || megaXYPokemon.includes(item.name.toLowerCase()))));    
+        }else if(Id === "AlolaCandy"){
+            showWindow.current.style.display="grid";
+            setShowPokemon(myPokemons.filter(item=> item.specialUrl === undefined && alolaPokemon.includes(item.name.toLowerCase())));
+        }else if(Id === "ColorChanger"){
+            showWindow.current.style.display="grid";
+            setShowPokemon(myPokemons);
+
         }
+
+
+
+
     }
 
     // 인큐베이터를 눌렀을 경우는 다르므로  함수를 하나 더 만들어준다.

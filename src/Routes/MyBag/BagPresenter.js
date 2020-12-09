@@ -372,9 +372,9 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, win
         </IncubatorWrapper>
         <SpecialWrapper>
             <h1>Special Item</h1>
-            <Special><div><img src={Mega}/><h2>Mega Candy</h2></div><div>{bag.MegaCandy ? bag.MegaCandy : 0}개</div></Special>
-            <Special><div><img src={Alola}/><h2>Alola Candy</h2></div><div>{bag.AlolaCandy ? bag.AlolaCandy : 0}개</div></Special>
-            <Special><div><img src={Color}/><h2>Color Changer</h2></div><div>{bag.ColorChanger ? bag.ColorChanger : 0}개</div></Special>
+            <Special><div><img src={Mega}/><h2>Mega Candy</h2></div><div>{bag.MegaCandy ? bag.MegaCandy : 0}개</div>{bag.MegaCandy ? <button id="MegaCandy"  onClick={handleUseClick}>사용</button> : ""}</Special>
+            <Special><div><img src={Alola}/><h2>Alola Candy</h2></div><div>{bag.AlolaCandy ? bag.AlolaCandy : 0}개</div>{bag.AlolaCandy ? <button id="AlolaCandy"  onClick={handleUseClick}>사용</button> : ""}</Special>
+            <Special><div><img src={Color}/><h2>Color Changer</h2></div><div>{bag.ColorChanger ? bag.ColorChanger : 0}개</div>{bag.ColorChanger ? <button id="ColorChanger"  onClick={handleUseClick}>사용</button> : ""}</Special>
 
         </SpecialWrapper>
         

@@ -39,7 +39,7 @@ alolaPokemon =alolaPokemon.filter(item =>{
     return result;
 }).map(item=>item.name.eng.toLowerCase());
 
-alolaPokemon.push("marowak");
+alolaPokemon.push("marowak","golem");
 
 megaXYPokemon=megaXYPokemon.filter(item =>{
     let result=false;

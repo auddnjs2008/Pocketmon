@@ -298,8 +298,8 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve;
 
     const catchPokemon=()=>{
-        const catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:urlSearch(battlePokmonName).commonUrl, commonBackUrl:urlSearch(battlePokmonName).commonBackUrl,shinyUrl:urlSearch(battlePokmonName).shinyUrl,
-        shinyBackUrl:urlSearch(battlePokmonName).shinyBackUrl,color:0};
+        const catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:urlSearch.commonUrl(battlePokmonName), commonBackUrl:urlSearch.commonBackUrl(battlePokmonName),shinyUrl:urlSearch.shinyUrl(battlePokmonName),
+        shinyBackUrl:urlSearch.shinyBackUrl(battlePokmonName),color:0};
         myPokemons.push(catchPokemon);
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
         myPokeomnsSetting();

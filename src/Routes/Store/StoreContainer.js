@@ -21,7 +21,7 @@ const StoreContainer = ()=>{
 
     const handleBuyBtn=()=>{
         const itemes=bag;
-        const BadgesNumber = bag.Badges.length; // 사기 전 뱃지의 숫자
+        const BadgesNumber = bag.Badges ?  bag.Badges.length : 0; // 사기 전 뱃지의 숫자
         let itemName=name;
         let number=1;
         let Badges=[];
@@ -67,7 +67,7 @@ const StoreContainer = ()=>{
       
         //뱃지가 10개이거나  23개일 경우  랜덤 스페셜 포켓몬 증정 //메가 포켓몬 증정
         //사기전 뱃지 넘버와 사고난후 뱃지 넘버가  달라야 한다.
-        if( BadgesNumber !== itemes["Badges"].length && (itemes["Badges"].length === 10 || itemes["Badges"].length === 23)){
+        if( itemes["Badges"] && BadgesNumber !== itemes["Badges"].length && (itemes["Badges"].length === 10 || itemes["Badges"].length === 23)){
             const newPokemonName = megaPokemon[Math.floor(Math.random()*(megaPokemon.length-1))+1]   
             
             

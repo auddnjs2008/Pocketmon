@@ -75,8 +75,8 @@ const EggContainer =({information})=>{
 
  
     // 이 이름은 예외처리
-    if(poketmon[changeNum-1].name === "Farfetch'd" || poketmon[changeNum-1].name==="Articuno" || poketmon[changeNum-1].name==="Zapdos" || poketmon[changeNum-1].name==="Moltres"
-       || poketmon[changeNum-1].name === "Mewtwo" || poketmon[changeNum-1].name === "Mew" || poketmon[changeNum-1].name === "Mr. Mime"
+    if( poketmon[changeNum-1].name==="Articuno" || poketmon[changeNum-1].name==="Zapdos" || poketmon[changeNum-1].name==="Moltres"
+       || poketmon[changeNum-1].name === "Mewtwo" || poketmon[changeNum-1].name === "Mew"
     ){
         changeNum =Math.floor(Math.random()*(151-1))+1;
     }
@@ -95,6 +95,10 @@ const EggContainer =({information})=>{
         smallName ="nidoran_f";
     else if(hatchPokemon.name.includes("male"))
         smallName="nidoran_m";
+    else if(hatchPokemon.name === "Farfetch'd")
+        smallName="farfetchd";
+    else if(hatchPokemon.includes("Mime"))
+        smallName="mr._mime";    
     else
         smallName = hatchPokemon.name.toLowerCase();
  

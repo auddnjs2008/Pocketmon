@@ -13,6 +13,10 @@ const DetailContainer = ()=>{
         thisPokemon[0].name="nidoran_f";
     else if (thisPokemon[0].name.includes("Male"))
         thisPokemon[0].name="nidoran_m";
+    else if(thisPokemon[0].name.includes("fetch'd"))
+        thisPokemon[0].name="farfetchd";
+    else if(thisPokemon[0].name.includes("Mime"))
+        thisPokemon[0].name="mr._mime";
     
     const prevLength = thisPokemon[0].prev_evolution ? thisPokemon[0].prev_evolution.length : 0;
     const nextLength = thisPokemon[0].next_evolution ? thisPokemon[0].next_evolution.length : 0;

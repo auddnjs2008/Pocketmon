@@ -118,8 +118,11 @@ const GetPokemon = ({setPokemon}) =>{
         
         if(changeNum === Random && turn === 1) {
             clearInterval(RandomNum);
-            //Farfetch'd 이 아이 안찾아지므로 예외처리해준다.
-            if(poketmon[changeNum-1].name === "Farfetch'd" || poketmon[changeNum-1].name.includes("Mime")){
+            //전설포켓몬이랑 희귀포켓몬은 제외 시킨다. 
+            if(poketmon[changeNum-1].name === "Articuno" || poketmon[changeNum-1].name === "Zapdos" || poketmon[changeNum-1].name === "Moltres"
+                || poketmon[changeNum-1].name === "Dragonite" || poketmon[changeNum-1].name === "Mewtwo" || poketmon[changeNum-1].name === "Mew"
+                || poketmon[changeNum-1].name === "Gyarados"
+            ){
                changeNum =Math.floor(Math.random()*(151-1))+1;
             }
             
@@ -130,11 +133,15 @@ const GetPokemon = ({setPokemon}) =>{
             // let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
             let smallName;
 
-            //예외처리 (nidran (female) , nidoran (male)은 안찾아진다. ,)
+            //예외처리 (nidran (female) , nidoran (male)은 안찾아진다. ,) //Mr. mime ->mr.mime ,farfetchd
             if(myPoketmon[0].name.includes("female"))
                 smallName ="nidoran_f";
             else if(myPoketmon[0].name.includes("male"))
                 smallName="nidoran_m";
+            else if(myPoketmon[0].name.includes("Mime"))
+                smallName ="mr.mime";
+            else if(myPoketmon[0].name.includes("fetch'd"))
+                smallName="farfetchd";    
             else
                 smallName = myPoketmon[0].name.toLowerCase();
             

@@ -30,7 +30,7 @@ const MyPokeContainer =()=>{
                     setBattle([pokemons[Id-1],battlePokemons[1],battlePokemons[2]]);
                     setIndex(x=>x+1);
                 }else if(changeIndex === 2){
-                    setBattle([battlePokemons[0],pokemons[Id],battlePokemons[2]]);
+                    setBattle([battlePokemons[0],pokemons[Id-1],battlePokemons[2]]);
                     setIndex(x=>x+1);
                 }else{
                     setBattle([battlePokemons[0],battlePokemons[1],pokemons[Id-1]]);
