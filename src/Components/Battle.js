@@ -273,7 +273,15 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     let myPokemons=JSON.parse(localStorage.getItem("myPoketmon"));
     let myBattlePokemons=JSON.parse(localStorage.getItem("battlePokemons"));
     const battlePokmon = pokemons[battleIndex[0]] ? PokeDex.pokemon[pokemons[battleIndex[0]].id-1] : "";
-    const battlePokmonName = battlePokmon !=="" ? battlePokmon.name.toLowerCase() :"";
+  
+    let battlePokmonName = battlePokmon !=="" ? battlePokmon.name.toLowerCase() :"";
+
+        if(battlePokmonName.includes("fetch'd")) battlePokmonName="farfetchd";
+        if(battlePokmonName.includes("mime")) battlePokmonName="mr.mime";
+        if(battlePokmonName.includes("female")) battlePokmonName="nidoran_f";
+        if(battlePokmonName.includes("male")) battlePokmonName="nidoran_m";
+  
+
     const myBag = JSON.parse(localStorage.getItem("myBag"));
     let commonUrl = "https://projectpokemon.org/images/normal-sprite/";
     let shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
@@ -298,8 +306,18 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve;
 
     const catchPokemon=()=>{
-        const catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:urlSearch.commonUrl(battlePokmonName), commonBackUrl:urlSearch.commonBackUrl(battlePokmonName),shinyUrl:urlSearch.shinyUrl(battlePokmonName),
-        shinyBackUrl:urlSearch.shinyBackUrl(battlePokmonName),color:0};
+        let catchPokemon;
+        if(!battlePokmonName.includes("mime")){
+            catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:urlSearch.commonUrl(battlePokmonName), commonBackUrl:urlSearch.commonBackUrl(battlePokmonName),shinyUrl:urlSearch.shinyUrl(battlePokmonName),
+            shinyBackUrl:urlSearch.shinyBackUrl(battlePokmonName),color:0};
+        }else{
+            catchPokemon = {...battlePokmon, cp:pokemonsCp[battleIndex[0]],health:100,myId:myPokemons.length+1, commonUrl:urlSearch.commonUrl("mr.mime"), commonBackUrl:urlSearch.commonBackUrl("mr._mime"),shinyUrl:urlSearch.shinyUrl("mr._mime"),
+                shinyBackUrl:urlSearch.shinyBackUrl("mr._mime"),color:0};
+        }    
+
+
+
+
         myPokemons.push(catchPokemon);
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
         myPokeomnsSetting();

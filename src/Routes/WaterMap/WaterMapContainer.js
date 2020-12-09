@@ -130,7 +130,13 @@ const WaterMapContainer =()=>{
         let randomPosition=[];
         let randomCp=[];
         for(let i=0; i<6;i++){
-            randomPokemon.push(pokemon[getRandom(pokemon.length,1)-1]);
+            let who = pokemon[getRandom(pokemon.length,1)-1];
+            if(who.name === "Farfetch'd") who.name="farfetchd";
+            else if(who.name.includes("Mr.")) who.name="mr.mime";
+            else if(who.name.includes("Female")) who.name="nidoran_f";
+            else if(who.name.includes("Male")) who.name="nidoran_m";
+
+            randomPokemon.push(who);
             randomPosition.push([getRandom(yard.current.clientWidth-100,1),getRandom(yard.current.clientHeight-100,1)]);
             randomCp.push(getRandom(900,100));
         }

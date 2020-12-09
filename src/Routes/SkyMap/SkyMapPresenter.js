@@ -186,7 +186,7 @@ const SkyMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove
                 <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
                 <Airplane frontMove={frontMove} src={airplane} ref={char} position={charPosition} windowSize={windowSize}></Airplane>
 
-                {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={item.name !== "Farfetch'd" ? `https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif` : `https://projectpokemon.org/images/normal-sprite/farfetchd.gif`}/> : "")}
+                {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={ `https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif` }/> : "")}
             </MapContainer>
             </TestContainer>
             {battlePokemon.length !==0 && battleon===1?<Battle color={"#dff9fb"}randomPosition={randomPosition} setRun={run} pokemonsCp={pokemonsCp} setBattle={setBattle} battleon={battleon} battleIndex={battlePokemon}  pokemons={pokemon} setPokemons={setPokemons} setCp={setCp} setPkPosition={setPkPosition}></Battle> : ""}

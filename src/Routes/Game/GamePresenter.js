@@ -84,7 +84,7 @@ const GamePresenter=({windowSize})=>{
         <Container>
             <Pointer to="/game/yardmap"></Pointer>
             <Pointer to="/game/rockmap"></Pointer>
-            <Pointer></Pointer>
+            <Pointer to="/game/bossmap"></Pointer>
             <Pointer to="/game/watermap"></Pointer>
             <Pointer to="/game/skymap"></Pointer>
             <Pointer to="/game/forestmap"></Pointer>

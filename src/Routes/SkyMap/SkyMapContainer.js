@@ -14,7 +14,7 @@ const SkyMapContainer =()=>{
     const [run,setRun]=useState(0); // 도망가고 나오면 1로 상태를 만든다.
     // 랜덤 포켓몬은  3단계 최종진화 포켓몬은 나오지 못하게 한다. 
     const [pokemon,setPokemon]=useState(Pokemon.pokemon.filter(item=>
-        item.name !== "Farfetch'd" && item.name !== "Articuno" && item.name !== "Zapdos" && item.name!=="Moltres" && item.name!=="Gyarados" &&
+         item.name !== "Articuno" && item.name !== "Zapdos" && item.name!=="Moltres" && item.name!=="Gyarados" &&
         item.type.includes("Flying")&& (item.prev_evolution ? item.prev_evolution.length!==2 : 1)));
     //랜덤 포켓몬의 좌표들
     const [pokePosition,setPkPosition]=useState([]);
@@ -130,7 +130,13 @@ const SkyMapContainer =()=>{
         let randomPosition=[];
         let randomCp=[];
         for(let i=0; i<6;i++){
-            randomPokemon.push(pokemon[getRandom(pokemon.length,1)-1]);
+            let who = pokemon[getRandom(pokemon.length,1)-1];
+            if(who.name === "Farfetch'd") who.name="farfetchd";
+            else if(who.name.includes("Mr.")) who.name="mr.mime";
+            else if(who.name.includes("Female")) who.name="nidoran_f";
+            else if(who.name.includes("Male")) who.name="nidoran_m";
+
+            randomPokemon.push(who);
             randomPosition.push([getRandom(yard.current.clientWidth-100,1),getRandom(yard.current.clientHeight-100,1)]);
             randomCp.push(getRandom(900,100));
         }
