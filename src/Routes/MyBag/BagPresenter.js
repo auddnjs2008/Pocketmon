@@ -398,7 +398,7 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, win
 </Container>
 <ShowPokemon ref={showWindow} scroll={scroll}>
     <ul>
-        {showPokemon.length !==0 ? showPokemon.map(pokemon=><li id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.color ?  (pokemon.specialUrl ? pokemon.specialShinyUrl : pokemon.shinyUrl) : (pokemon.specialUrl ? pokemon.specialUrl : pokemon.commonUrl)}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
+        {showPokemon.length !==0 && showPokemon[0].myId ? showPokemon.map(pokemon=><li id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.color ?  (pokemon.specialUrl ? pokemon.specialShinyUrl : pokemon.shinyUrl) : (pokemon.specialUrl ? pokemon.specialUrl : pokemon.commonUrl)}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
     </ul>
     <button onClick={()=>showWindow.current.style.display="none"}>Close</button>
 </ShowPokemon>

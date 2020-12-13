@@ -50,6 +50,13 @@ const MyPokeContainer =()=>{
         }
     }
 
+    const clearBtnClick=()=>{
+       //로컬 스토리지를 지워준다. 
+       localStorage.setItem("battlePokemons",JSON.stringify([]));
+       //배틀 포켓몬 초기화
+       setBattle([]);
+    }
+
 
     return <MyPokePresenter
         windowSize={windowSize}
@@ -57,6 +64,7 @@ const MyPokeContainer =()=>{
         battlePokemons={battlePokemons}
         handlePokemonClick={handlePokemonClick}
         changeBtn={changeBtnClick}
+        clearBtnClick={clearBtnClick}
         changePossible={changePossible}    
     ></MyPokePresenter>
 }

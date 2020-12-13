@@ -292,8 +292,13 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const battleMonster = useRef();
     const [battlePhysical,setPhysical]=useState(100);
     const [battleBallCount,setBallCount]=useState(0);
-    // 체력이 0~33 일경우  ballcount 2  33~66일 경우 4  66~100일 경우 6 
     // 일반볼은 +1  수퍼볼은 +2  울트라 볼은 +3    
+    // 체력이 0~33 일경우  ballcount 2  33~66일 경우 4  66~100일 경우 6 
+    // 일반 포켓몬  ballcount 1~2   3~4  5~6
+    // 보스 포켓몬  ballcount 5~10  10~15  15~20
+    const [catchBallCount,setCatchBall]=useState(battlePokmonName.includes("mew") || battlePokmonName === "moltres" || battlePokmonName === "zapdos"  || battlePokmonName === "articuno"? 
+    [Math.floor(Math.random()*(10-5))+5,Math.floor(Math.random()*(15-10))+10,Math.floor(Math.random()*(20-15))+15]:
+    [Math.floor(Math.random()*(2-1))+1,Math.floor(Math.random()*(4-3))+3,Math.floor(Math.random()*(6-5))+5]);
 
     const [myPhysical,setMyPhysical]=useState();
     const [initList,setInit]=useState();
@@ -303,7 +308,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const [ballImage,setBallImg]=useState();
     const [message,setMessage]=useState("");
    
-    const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve;
+    const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL,DamegeCalc}=Evolve;
 
     const catchPokemon=()=>{
         let catchPokemon;
@@ -315,8 +320,10 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                 shinyBackUrl:urlSearch.shinyBackUrl("mr._mime"),color:0};
         }    
 
-
-
+        if(battlePokmonName.includes("nidoran") || battlePokmonName.includes("mime") || battlePokmonName.includes("fetchd")){
+            delete catchPokemon.name;
+            catchPokemon["name"] = battlePokmonName;
+        }
 
         myPokemons.push(catchPokemon);
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
@@ -337,31 +344,52 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             pokemonsCp[battleIndex[0]]/myPokemons[myMonster.current.id-1].cp : (pokemonsCp[battleIndex[0]] !== myPokemons[myMonster.current.id-1].cp ? 
                 myPokemons[myMonster.current.id-1].cp / pokemonsCp[battleIndex[0]] : 0);
 
-        // 상성 효과 적용 코드  필요 ?         
+        // 상성 효과 적용 코드  필요 ?  // 상대방 약점에 내 타입이 포함되는지  // 내 약점에   상대방 타입이 포함되는지 확인        
+      
+     
+        const myType=myMonster.current ?  myPokemons[myMonster.current.id-1].type : ""; //내 타입
+        const battleType = battlePokmon.type; // 배틀 포켓몬 타입
+        // const myWeakness = myPokemons[myMonster.current.id-1].weaknesses; // 내약접
+        // const battleWeakness = battlePokmon.weaknesses; // 배틀 포켓몬 약점
+       const myTypeDamege=DamegeCalc(myType,battleType);
+       const battleTypeDamege=DamegeCalc(battleType,myType); 
+    
+    
+        
+        
+    
+        
+
 
         if(pokemonsCp[battleIndex[0]] > myPokemons[myMonster.current.id-1].cp) // 배틀 포켓몬이  더 높으면 일반 10데미지만 준다.
-        {
-            setPhysical(battlePhysical-10);
+        {                                                                       // 타입에 따라 효과 메세지를 넣어준다. 
+            setPhysical(battlePhysical-10*myTypeDamege);
             setTimeout(()=>{
                 
-                if(myPhysical-(10+addDamege) >=0)
+                if(myPhysical-(10+addDamege*battleTypeDamege) >=0)
                     setMyPhysical(Math.floor(myPhysical-(10+addDamege)));
-                else if(myPhysical -(10+addDamege) <0)
+                else if(myPhysical -(10+addDamege*battleTypeDamege) <0){
                     setMyPhysical(0);
+                  
+                }
                 },1000);
     
 
         }
         else{ // 내가 더 높으면  추가 데미지를 준다.  // 같으면  서로 10씩 만 뺏어간다. 
-            setPhysical(Math.floor(battlePhysical-(10+addDamege)));
+            setPhysical(Math.floor(battlePhysical-(10+addDamege*myTypeDamege)));
              setTimeout(()=>{
                 
-                if(myPhysical-(10) >=0)
-                    setMyPhysical(myPhysical-(10));
-                else if(myPhysical -(10) <0)
+                if(myPhysical-(10)*battleTypeDamege >=0)
+                    setMyPhysical(myPhysical-(10)*battleTypeDamege);
+                else if(myPhysical -(10)*battleTypeDamege <0){
                     setMyPhysical(0);
+                 
+                }
                 },1000);
         }
+
+        
 
         // 에니메이션 적용
         if(myMonster.current){
@@ -406,6 +434,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             }        
         }else if(item.innerHTML.includes("berry")){
             setBallCount(x=>x+2);
+            setBallImg("https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png");
             myBag["razz-berry"] -=1;
             if(menu.current.querySelector("#razz-berry").innerHTML !=="1")  
                 menu.current.querySelector("#razz-berry").innerHTML =parseInt(menu.current.querySelector("#razz-berry").innerHTML)-1;
@@ -463,7 +492,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                     if(parseInt(myMonster.current.id) !==item.myId && item.health >0)
                         menu.current.innerHTML +=
                         item.specialUrl === undefined ?
-                        `<li><img id=${item.myId} src="${item.color === 0 ? urlSearch.commonUrl(item.name.toLowerCase()) : urlSearch.shinyUrl(item.name.toLowerCase())}" />
+                        `<li><img id=${item.myId} src="${item.color === 0 ? urlSearch.commonUrl(item.name.toLowerCase()) : (item.name.includes("mime") ?urlSearch.shinyUrl("mr._mime") :urlSearch.shinyUrl(item.name.toLowerCase()))}" />
                              <span>CP ${item.cp}</span>   
                         </li>` :  `<li><img id=${item.myId} src="${item.color === 0 ? item.specialUrl : item.speicalShinyUrl}" />
                         <span>CP ${item.cp}</span>   
@@ -482,9 +511,13 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             
             let newSrcName= item.firstChild.src.split("sprite/")[1].split(".gif")[0];
             if(newSrcName.includes("-mega") || newSrcName.includes("-alola")) newSrcName= newSrcName.split("-")[0];
-
-            const newBattlePokemon = myBattlePokemons.filter(item=>item.name.toLowerCase() === newSrcName)[0];
-            console.log(newSrcName); console.log(newBattlePokemon);
+            let newBattlePokemon
+            if(newSrcName === "mr._mime"){
+             newBattlePokemon = myBattlePokemons.filter(item=>item.name.toLowerCase() === "mr.mime")[0];
+            }else{
+             newBattlePokemon = myBattlePokemons.filter(item=>item.name.toLowerCase() === newSrcName)[0];
+            }
+        
             if(newBattlePokemon.specialUrl === undefined)
                 myMonster.current.src = item.innerHTML.includes(shinyUrl) ? newBattlePokemon.shinyBackUrl : newBattlePokemon.commonBackUrl;
             else
@@ -592,7 +625,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
 
     useEffect(()=>{
         if(battlePhysical <=100 && battlePhysical >66){
-            if(battleBallCount >=6){
+            if(battleBallCount >=catchBallCount[2]){
                 setTimeout(()=>{catchPokemon();
                     removePokemon();},2000);
                     
@@ -601,7 +634,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                 setTimeout(()=>setBallEffect(0),1000);
             }
         }else if(battlePhysical <=66 && battlePhysical>33){
-            if(battleBallCount >=4){
+            if(battleBallCount >=catchBallCount[1]){
                 
                 setTimeout(()=>{catchPokemon();
                 removePokemon();},2000);
@@ -614,7 +647,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             }
 
         }else{
-            if(battleBallCount >=2){
+            if(battleBallCount >=catchBallCount[0]){
                 setTimeout(()=>{catchPokemon();
                     removePokemon();},2000);
                     
@@ -634,19 +667,31 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
         if(battlePhysical <= 0){   
             myPokeomnsSetting();
             setTimeout(()=>removePokemon(),1000);
-            
+            setPhysical(0);
+            //배틀이 끝나면 보상을 주어야 한다.
+            if(battlePokmonName.includes("mew") || battlePokmonName.includes("moltres") || battlePokmonName.includes("zapdos")|| battlePokmonName.includes("articuno"))
+            {    
+                myBag["money"] +=3000; 
+                setMessage(`you got 3000 coin`);
+            }else{
+                myBag["money"]+=50;
+                setMessage(`you got 50 coin`);
+            }
+
+        
         }
         
         if(myPhysical <=0){
             //리스트의 첫번째 포켓몬 을 꺼내준다.
             myPokeomnsSetting();
             
-            if(myBattlePokemons.length >1){
+            if(myBattlePokemons.length >1 && myBattlePokemons.filter(item => item.health !== 0)[0]){
                 let changePokemon=myBattlePokemons.filter(item => item.health !== 0)[0];
-                myMonster.current.id = changePokemon.myId;
-                myMonster.current.src = changePokemon.commonBackUrl;
-                setMyPhysical(myPokemons[changePokemon.myId-1].health); 
-                
+      
+                    myMonster.current.id = changePokemon.myId;
+                    myMonster.current.src = changePokemon.commonBackUrl;
+                    setMyPhysical(myPokemons[changePokemon.myId-1].health); 
+              
             }
             else{
              

@@ -101,10 +101,22 @@ const EggContainer =({information})=>{
         smallName="mr._mime";    
     else
         smallName = hatchPokemon.name.toLowerCase();
- 
+            
     hatchPokemon ={...hatchPokemon,myId:myPokemons.length+1,cp:Math.floor(Math.random()*(900-100))+100,health:100,  commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
     shinyBackUrl:shinyBackUrl+smallName+".gif",color:0}
     
+    if(smallName.includes("nidoran") || smallName.includes("mime") || smallName.includes("fetchd")){
+        delete hatchPokemon.name;
+        hatchPokemon["name"] = smallName;
+        if(smallName.includes("mime")){
+            hatchPokemon.commonBackUrl = commonBackUrl + "mr._mime" +".gif";
+            hatchPokemon.shinyUrl =shinyUrl+"mr._mime"+".gif";
+            hatchPokemon.shinyBackUrl =shinyBackUrl+"mr._mime" +".gif";
+        }
+    }        
+
+
+
     myPokemons.push(hatchPokemon);
 
     localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));

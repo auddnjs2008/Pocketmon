@@ -17,6 +17,9 @@ import WaterMap from "../Routes/WaterMap";
 import SkyMap from "../Routes/SkyMap";
 import ForestMap from "../Routes/ForestMap";
 import BossMap from "../Routes/BossMap";
+import IceMap from "../Routes/IceMap";
+import ElectricMap from "../Routes/ElectricMap";
+import FireMap from "../Routes/FireMap";
 
 export default ()=>{
 
@@ -35,6 +38,9 @@ export default ()=>{
             <Route path="/game/skymap" component={SkyMap}/>
             <Route path="/game/forestmap" component={ForestMap}/>
             <Route path="/game/bossmap" component={BossMap}/>
+            <Route path="/game/icemap" component={IceMap}/>
+            <Route path ="/game/electricmap" component={ElectricMap}/>
+            <Route path="/game/firemap" component={FireMap}/>
 
         </Router>
     )

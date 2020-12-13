@@ -52,6 +52,47 @@ megaXYPokemon=megaXYPokemon.filter(item =>{
     return result;
 }).map(item=>item.name.eng.toLowerCase());
 
+
+const Damege ={ // 키: 공격하는 쪽  value 공격받는 값들 
+  Normal:{Rock:0.5,Ghost:0},
+  Fire:{Fire:0.5,Wahter:0.5,Grass:2,Ice:2,Bug:2,Dragon:0.5},
+  Water:{Fire:2,Water:2,Grass:0.5,Ground:2,Rock:2,Dragon:0.5},
+  Electric:{Water:2,Electric:0.5,Grass:0.5,Ground:0,Flying:2,Dragon:0.5},
+  Grass:{Fire:0.5,Water:2,Grass:0.5,Poison:0.5,Ground:2,Flying:0.5,Bug:0.5,Rock:2,Dragon:0.5},
+  Ice:{Fire:0.5,Water:0.5,Grass:2,Ice:0.5,Ground:2,Flying:2,Dragon:2},
+  Fighting:{Normal:2,Ice:2,Poison:0.5,Flying:0.5,Psychic:0.5,Bug:0.5,Rock:2,Ghost:0}, //악이랑  강철타입은 뺌
+  Poison:{Grass:2,Poison:0.5,Ground:0.5,Rock:0.5,Ghost:0.5},
+  Ground:{Fire:2,Electric:2,Grass:0.5,Poison:2,Flying:0,Bug:0.5,Rock:2},
+  Flying:{Electric:0.5,Grass:2,Fighting:2,Bug:2,Rock:0.5},
+  Psychic:{Fighting:2,Poison:2,Psychic:0.5}, // 악뺌
+  Bug:{Fire:0.5,Grass:2,Fighting:0.5,Poison:0.5,Flying:0.5,Psychic:2,Ghost:0.5}, // 악뺌
+  Rock:{Fire:2,Ice:2,Fighting:0.5,Ground:0.5,Flying:2,Bug:2},
+  Ghost:{Normal:0,Psychic:2,Ghost:2}, //악뺌
+  Dragon:{Dragon:2},
+} // 악 강철뺌
+
+const DamegeCalc=(attackType,defenseType)=>{
+// 어택타입이랑 방어타입이 배열일 수 있다.
+let attackDamege=1;
+if(attackType.length !==0 && defenseType !== 0){
+    attackType.forEach(item=>{
+        const KeyArray = Object.keys(Damege[item]);
+     
+        defenseType.forEach(value=>{
+            // 포함되는 쪽이랑 안되는 쪽으로 나눈다.
+            if(KeyArray.includes(value)){ // 포함되면  그 배율을 곱해준다. 
+                attackDamege = attackDamege * Damege[item][value];
+               
+            }
+
+        })
+
+    });
+}
+return attackDamege;
+}
+
+
 const urlSearch =
      {
         commonUrl:(smallName)=> commonUrl+smallName+".gif",
@@ -71,6 +112,6 @@ const urlSearch =
 
 
 
-const  PokemonEvolve ={megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL};
+const  PokemonEvolve ={megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL,DamegeCalc};
 
 export default PokemonEvolve;

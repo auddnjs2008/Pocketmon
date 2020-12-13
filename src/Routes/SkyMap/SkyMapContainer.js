@@ -28,6 +28,12 @@ const SkyMapContainer =()=>{
      //부화될 알 배열 (여러개 일 수 있다.)
      const [hatchEgg,setHatchEgg]=useState([]);
 
+
+      //포켓몬들 요소를 얻기위해 생성
+    const centerArray =[];
+    const pokemonScale = document.querySelectorAll(".pokemon");
+    pokemonScale.forEach(item=>centerArray.push([item.getBoundingClientRect().width/2,item.getBoundingClientRect().height/2]));
+    
     const char=useRef();
     const yard=useRef();
 
@@ -88,8 +94,10 @@ const SkyMapContainer =()=>{
     const handleKeyUp =useCallback((e)=>{
           // 랜덤포켓몬  주위 10px 반경 에 접촉할경우 메세지 발생 
              // 좌표 사이의 거리가 반지름 거리보다 크면 인지 못한다.   // 꼭 한명만 배열에 들어가는 건 아니다. 
+             let charCenter=[char.current.getBoundingClientRect().width/2,char.current.getBoundingClientRect().height/2];
+           
              let rader = pokePosition.map((item,index)=>
-                Math.sqrt(Math.pow(item[0]-(nowPosition[0]),2)+Math.pow(item[1]-(nowPosition[1]),2))<= 40 ? index : "" ).filter(item => item !=="");
+                Math.sqrt(Math.pow((item[0]+centerArray[index][0])-(nowPosition[0]+charCenter[0]),2)+Math.pow((item[1]+centerArray[index][1])-(nowPosition[1]+charCenter[1]),2))<= 80 ? index : "" ).filter(item => item !=="");
 
             if(rader.length !==0 && !run && JSON.parse(localStorage.getItem("battlePokemons")).length) {
                 window.removeEventListener("keydown",handleKeyPress);

@@ -173,7 +173,7 @@ const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove
                 <MapContainer ref={yard}>
                     {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper src={Tree}></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
                     <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
-                    {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
+                    {pokemon.map((item,index) => item ? <Pokemon className="pokemon" random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
                 </MapContainer>
             </TestContainer>
             {battlePokemon.length !==0 && battleon===1?<Battle color={"green"} randomPosition={randomPosition} setRun={run} pokemonsCp={pokemonsCp} setBattle={setBattle} battleon={battleon} battleIndex={battlePokemon}  pokemons={pokemon} setPokemons={setPokemons} setCp={setCp} setPkPosition={setPkPosition}></Battle> : ""}

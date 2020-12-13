@@ -41,6 +41,8 @@ const Pointer = styled(Link)`
         left:50%;
         top:155px;
         transform:translateX(-80px);
+        border: 5px solid #34495e;
+        background-color:rgba(0,0,0,0.6);
     }
     &:nth-child(4){
         left:50%;
@@ -56,6 +58,24 @@ const Pointer = styled(Link)`
         left:35%;
         top:38%;
 
+    }
+    &:nth-child(7){
+        left:53%;
+        top:15%;
+        border: 5px solid #7ed6df;
+        background-color:rgba(223,249,251,0.6);    
+    }
+    &:nth-child(8){
+        left:60%;
+        top:20%;
+        border: 5px solid yellow;
+        background-color:rgb(249, 202, 36,0.7);
+
+    }
+    &:nth-child(9){
+        left:30%;
+        top:35%;
+        border: 5px solid red;
     }
 
     @keyframes circleWave{
@@ -88,6 +108,9 @@ const GamePresenter=({windowSize})=>{
             <Pointer to="/game/watermap"></Pointer>
             <Pointer to="/game/skymap"></Pointer>
             <Pointer to="/game/forestmap"></Pointer>
+            <Pointer to="/game/icemap"></Pointer>
+            <Pointer to="/game/electricmap"></Pointer>
+            <Pointer to="/game/firemap"></Pointer>
         </Container>
 
         </>

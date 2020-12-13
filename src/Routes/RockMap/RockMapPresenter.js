@@ -170,7 +170,7 @@ const RockMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMov
             <MapContainer ref={yard}>
                 {map.map(items=>items.map(item=>item === 1 ? <RockWrapper src={Rock}></RockWrapper>:<RoadWrapper src={RockWay}></RoadWrapper>))}
                 <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
-                {pokemon.map((item,index) => item ? <Pokemon  random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
+                {pokemon.map((item,index) => item ? <Pokemon className="pokemon" random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
             </MapContainer>
             </TestContainer>
             {battlePokemon.length !==0 && battleon===1?<Battle color={"#74654F"}randomPosition={randomPosition} setRun={run} pokemonsCp={pokemonsCp} setBattle={setBattle} battleon={battleon} battleIndex={battlePokemon}  pokemons={pokemon} setPokemons={setPokemons} setCp={setCp} setPkPosition={setPkPosition}></Battle> : ""}

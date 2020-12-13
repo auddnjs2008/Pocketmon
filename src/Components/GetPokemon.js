@@ -125,7 +125,8 @@ const GetPokemon = ({setPokemon}) =>{
             ){
                changeNum =Math.floor(Math.random()*(151-1))+1;
             }
-            
+            // //테스트 코드            
+            // changeNum =poketmon.filter(item=>item.name.includes("Female"))[0].id;
             
             myPoketmon= poketmon[changeNum-1].prev_evolution ? 
                 poketmon.filter(item => item.num === poketmon[changeNum-1].prev_evolution[0].num): [poketmon[changeNum-1]];
@@ -145,14 +146,24 @@ const GetPokemon = ({setPokemon}) =>{
             else
                 smallName = myPoketmon[0].name.toLowerCase();
             
+            let local =    [{...myPoketmon[0],myId:1,cp:Cp,health:100,
+                commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
+                shinyBackUrl:shinyBackUrl+smallName+".gif",color:0
+                }];
             
-            localStorage.setItem("myPoketmon",JSON.stringify([{...myPoketmon[0],myId:1,cp:Cp,health:100,
-            commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
-            shinyBackUrl:shinyBackUrl+smallName+".gif",color:0
-            }]));
+            if(smallName.includes("nidoran") || smallName.includes("mime") || smallName.includes("fetchd")){
+                delete local[0].name;
+                local[0]["name"] = smallName;
+                if(smallName.includes("mime")){
+                    local[0].commonBackUrl = commonBackUrl + "mr._mime" +".gif";
+                    local[0].shinyUrl =shinyUrl+"mr._mime"+".gif";
+                    local[0].shinyBackUrl =shinyBackUrl+"mr._mime" +".gif";
+                }
+            }
+
+            localStorage.setItem("myPoketmon",JSON.stringify(local));
            
-            setPokemon([{...myPoketmon[0],myId:1,cp:Cp,health:100,commonUrl:commonUrl+smallName+".gif", commonBackUrl:commonBackUrl + smallName+".gif",shinyUrl:shinyUrl+smallName+".gif",
-            shinyBackUrl:shinyBackUrl+smallName+".gif",color:0}]);
+            setPokemon(local);
         
             // 처음 시작할때  돈을 1000개 정도 준다.
 

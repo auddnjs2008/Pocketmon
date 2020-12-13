@@ -78,16 +78,16 @@ const BagContainer=()=>{
         const{currentTarget :{id}}=e;
        
 
-        if(item === "Potion"){
+        if(item === "Potion" && newBag.Potion >0){
             myPokemons[id-1].health +=20;
             newBag.Potion -=1;
-        }else if (item==="superPotion"){
+        }else if (item==="superPotion" && newBag.SuperPotion >0){
             myPokemons[id-1].health +=40;
             newBag.SuperPotion -=1;
-        }else if(item === "hyperPotion"){
+        }else if(item === "hyperPotion" && newBag.HyperPotion >0){
             myPokemons[id-1].health +=60;
             newBag.HyperPotion -=1;
-        }else if(item === "candy"){
+        }else if(item === "candy" && newBag.Candy > 0){
             /// 진화를 처리해주어야 한다.
             const Beforeevolve = parseInt(myPokemons[id-1].next_evolution[0].num);
             let evolvePokmon =  PokeDex.pokemon[Beforeevolve-1];
@@ -118,7 +118,7 @@ const BagContainer=()=>{
             //진화 화면을  지워준다.
             EvolveDisplayNone()
             
-        }else if(item === "MegaCandy"){
+        }else if(item === "MegaCandy" && newBag.MegaCandy > 0){
             //메가 진화인지  메가xy진화인지 구분 필요 
             const smallName = myPokemons[id-1].name.toLowerCase();
             if(megaPokemon.includes(smallName)){
@@ -164,7 +164,7 @@ const BagContainer=()=>{
             EvolveDisplayNone()
 
 
-        } else if(item === "AlolaCandy"){
+        } else if(item === "AlolaCandy" && newBag.AlolaCandy>0){
             const smallName = myPokemons[id-1].name.toLowerCase();
             const alolaUrl = urlSearch.alolalUrl(smallName);
             const alolaBackUrl =urlSearch.alolaBackUrl(smallName);
@@ -194,7 +194,7 @@ const BagContainer=()=>{
 
 
 
-        } else if(item === "ColorChanger"){
+        } else if(item === "ColorChanger" && newBag.ColorChanger > 0){
             
             myPokemons[id-1].color = myPokemons[id-1].color === 0 ? 1 : 0;
             evolveWindow.current.style.display="flex";// 진화 화면을 표시해준다.
@@ -237,7 +237,7 @@ const BagContainer=()=>{
             showWindow.current.style.display="grid";   
             setShowPokemon(myPokemons.filter(item=>item.candy_count <= bag.Candy));
         }else if(Id.includes("Incubator")){ // 인큐베이터 사용할 때
-            //
+           
             eggWindow.current.style.display="grid";
             setShowPokemon([bag.Egg,bag.LuckyEgg]);
 

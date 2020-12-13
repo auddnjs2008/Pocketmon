@@ -12,6 +12,7 @@ background-color:  ${props => `rgba(${props.colors[0]},${props.colors[1]},${prop
 
 border:${props=>props.border ? "10px solid yellow" :""};
 
+
 `;
 const PokeImg = styled.img`
    width:auto;
@@ -134,7 +135,13 @@ const MyPokemon =({id,border,changePossible,item,handlePokemonClick})=>{
     let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
    
 
-    return <PokemonWrapper border={border} id={id} onClick={handlePokemonClick}  to={changePossible ? "/mine" : `/navi/${item.id}`}colors={colorArray}>
+
+
+
+
+    return (
+    <>
+    <PokemonWrapper  border={border} id={id} onClick={handlePokemonClick}  to={changePossible ? "/mine" : `/navi/${item.id}`}colors={colorArray}>
     <PokeProfile >
       {item.specialUrl ===undefined ? 
       <PokeImg  crossOrigin="anonymous" ref={Images} src={item.color === 0 ? googleProxyURL +encodeURIComponent(item.commonUrl) : googleProxyURL +encodeURIComponent(item.shinyUrl)}
@@ -165,8 +172,9 @@ const MyPokemon =({id,border,changePossible,item,handlePokemonClick})=>{
       <PhysicalInnerBox colors={colorArray} health={Math.floor(item.health)}></PhysicalInnerBox>   
     </PhyscialBox>     
     </PokeProfile>
-    
-   </PokemonWrapper> 
+   
+   </PokemonWrapper>
+   </> )
 }
 
 export default MyPokemon;

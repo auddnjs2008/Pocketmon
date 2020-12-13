@@ -16,7 +16,7 @@ const Container = styled.div`
     gap:5px;
     height:90%;
     width:100%;  
-    margin-top:${props=>props.windowSize >810 ? "350px" :"50px"};
+    margin-top:${props=>props.windowSize >810 ? "380px" :"50px"};
     justify-items:center;
     padding:20px;
 `;
@@ -31,10 +31,10 @@ const Header = styled.div`
    z-index:1;
    padding:5px;
    margin-top:${props=>props.windowSize >810 ? "90px" :"20px"};
-   height:250px;
+   height:300px;
    width:100%;
    display:grid;
-   grid-template-rows:1fr 3fr 1fr;
+   grid-template-rows:1fr 3fr 1.5fr;
    gap:10px;
    h1{
       justify-self:center;
@@ -76,9 +76,12 @@ const BattlePokemon = styled.ul`
 
 `;
 
+const BtnWrapper =styled.div`
+   justify-self:center;
+`;
 
 
-const MyPokePresenter = ({windowSize,pokemons,handlePokemonClick,battlePokemons,changeBtn,changePossible}) =>{
+const MyPokePresenter = ({windowSize,pokemons,handlePokemonClick,battlePokemons,changeBtn,changePossible,clearBtnClick}) =>{
   
    return( 
     <>
@@ -99,7 +102,10 @@ const MyPokePresenter = ({windowSize,pokemons,handlePokemonClick,battlePokemons,
             :<li><img src={battlePokemons[2] ? (battlePokemons[2].color === 0 ? battlePokemons[2].specialUrl : battlePokemons[2].specialShinyUrl): ""}/><div>Cp {battlePokemons[2] ? battlePokemons[2].cp : ""}</div></li>
           } 
       </BattlePokemon>
-       <button onClick={changeBtn}>Change Off</button>
+      <BtnWrapper>
+         <button onClick={changeBtn}>Change Off</button>
+         <button onClick={clearBtnClick}>Clear</button>
+      </BtnWrapper>    
     </Header>
     <Container windowSize={windowSize}>
       {pokemons.map((item,index) => item ? <MyPokemon id={item.myId} border={battlePokemons.length !==0 ? battlePokemons.map(item=>item.myId).includes(index+1) : false}  changePossible={changePossible} item={item} handlePokemonClick={handlePokemonClick}></MyPokemon>
