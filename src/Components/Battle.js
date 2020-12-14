@@ -436,6 +436,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                 delete myBag["ultra-ball"];
             }        
         }else if(item.innerHTML.includes("berry")){
+            
             setBallCount(x=>x+2);
             setBallImg("https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png");
             myBag["razz-berry"] -=1;
@@ -461,7 +462,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
         
         
         item.style.backgroundColor="";
-        
+        console.log(item.innerHTML);
 
 
         if(item.className.includes("attack")){
@@ -534,6 +535,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
         }else if(item.innerHTML.includes("ball") || item.innerHTML.includes("berry")){
             window.removeEventListener("keydown",handleKeyDown);
             setTimeout(()=>window.addEventListener("keydown",handleKeyDown),1700);
+            setIndex(0);
             ballCatch(item);
             
         }
@@ -546,10 +548,12 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     
     
     const handleKeyDown=useCallback((e)=>{ // 키를 눌렀을경우  위치셋팅해준다. 
-        let listCopy = menu.current.querySelectorAll("li");
+        let listCopy;
+        if(menu.current){
+             listCopy = menu.current.querySelectorAll("li");
         // ArrowUp ArrowDown //ArrowRight ArrowLeft // 엔터 -키코드 13
         // 배틀시작화면에서는  처음 리스트값을 가리키고 있다   .
-        
+        }
        
         if(e.key === "ArrowUp"){
             // 위치가 1에 있을경우  맨 마지막껄루 

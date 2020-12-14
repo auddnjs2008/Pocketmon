@@ -11,9 +11,12 @@ padding:10px;
 background-color:  ${props => `rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]})`};
 
 border:${props=>props.border ? "10px solid yellow" :""};
+display:grid;
+grid-template-rows:11fr 0.5fr;
 
    button{
-      height:35px;
+      height:25px;
+      margin-top:5px;
    }
 `;
 const PokeImg = styled.img`
@@ -21,7 +24,7 @@ const PokeImg = styled.img`
    height:auto;
    min-width:50px;
    min-height:50px;
-   
+   max-height:105px;
  
    @keyframes  touch {
       0%{
@@ -47,7 +50,7 @@ align-items:center;
 justify-content:space-between; */
 
 display:grid;
-grid-template-rows:4fr 1fr 1fr 1fr 1fr 1fr;
+grid-template-rows:4fr 1fr 1fr 1fr 1fr 1fr ;
 color:white;
 justify-items:center;
 align-items:center;

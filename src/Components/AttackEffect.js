@@ -23,18 +23,19 @@ const Container =styled.div`
     & .myAttack{
 
         div{
-
+ 
           &:nth-child(1){  
             @keyframes fastAttack{
                 0%{
                     left:0%;
+             
                 }
                 90%{
                     opacity:1;
                 }
                 100%{
                     left:100%;
-                    transform:scale(2,2);
+                    transform:scale(2,2) rotate(360deg);
                     opacity:0;
 
                 }
@@ -45,6 +46,8 @@ const Container =styled.div`
               @keyframes secondAttack{
                   0%{
                     left:0%;
+               
+
                   }
                   20%{
                       left:0%;
@@ -54,7 +57,7 @@ const Container =styled.div`
                   }
                   100%{
                     left:100%;
-                    transform:scale(2,2);
+                    transform:scale(2,2) rotate(360deg);
                     opacity:0;
 
                   }
@@ -75,13 +78,15 @@ const Container =styled.div`
             @keyframes BattleAttack{
                 50%{
                     left:100%;
+             
+
                 }
                 90%{
                     opacity:1;
                 }
                 100%{
                     left:0%;
-                    transform:scale(2,2);
+                    transform:scale(2,2) rotate(360deg);
                     opacity:0;
                 }
             }
@@ -91,6 +96,8 @@ const Container =styled.div`
                 @keyframes BattleSecondAttack{
                     50%{
                     left:100%;
+                 
+
                     }
                     70%{
                         left:100%;
@@ -100,7 +107,7 @@ const Container =styled.div`
                     }
                     100%{
                     left:0%;
-                    transform:scale(2,2);
+                    transform:scale(2,2) rotate(360deg);
                     opacity:0;
                     }
                 }

@@ -20,7 +20,7 @@ const MyPokeContainer =()=>{
     
  
     const handlePokemonClick=useCallback((e)=>{
-      
+       console.log(changePossible);
         if(changePossible !== 1) return;
 
         const Id = parseInt(e.currentTarget.id);
@@ -65,9 +65,11 @@ const MyPokeContainer =()=>{
     const sendBtnClick=(e)=>{
         e.stopPropagation();
         setChange(3);
-        const newBag = JSON.parse(localStorage.getItem("myBag"));
+        let newBag = JSON.parse(localStorage.getItem("myBag"));
         const id =parseInt(e.target.parentNode.id);
+        let newBattlePokemon = battlePokemons;
         const pickPokemon=pokemons[id-1];
+        if(newBag.Candy === undefined)newBag.Candy =0;
         //state 변수 리셋
         if(battlePokemons.filter(item=>item.myId === (id)).length === 0){
             // 포켓몬을 보낼시  보상으로 사탕을 준다.(cp에 따라 다르게 준다.)
@@ -82,6 +84,12 @@ const MyPokeContainer =()=>{
                 newBag.Candy +=15;
                 setMessage("you got  15 candy");
             }
+            newBattlePokemon = battlePokemons.map((item)=>{
+                let newItem =item;
+    
+                if(item.myId > id) newItem.myId -=1;
+                return newItem;
+            })
             
             const newPokemon = JSON.parse(localStorage.getItem("myPoketmon")).filter(item=>item.myId !== (id)).map((item,index)=>{
                 let newItem=item;
@@ -90,11 +98,14 @@ const MyPokeContainer =()=>{
                 }
                 return newItem;
             });  // myId 인덱스 정리를 해주고 (타겟 포켓몬 뒤쪽 아이들의 아이디를 하나씩 줄여주고  타겟을 삭제)
+            // 배틀 포켓몬 인덱스도 정리해줘야 한다.
+            
 
-
+            localStorage.setItem("battlePokemons",JSON.stringify(newBattlePokemon));
             localStorage.setItem("myPoketmon",JSON.stringify(newPokemon));
             setPokemon(newPokemon);
-            localStorage.setItem("myBag",JSON.parse(newBag));
+            setBattle(newBattlePokemon);
+            localStorage.setItem("myBag",JSON.stringify(newBag));
 
         }else{
             //베틀 포켓몬을 해제시켜달라고 메세지를 보낸다. 
