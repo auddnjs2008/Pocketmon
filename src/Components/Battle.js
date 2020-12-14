@@ -8,6 +8,7 @@ import PokeDex from "pokemon-go-pokedex";
 import Message from "../Components/Message";
 import Evolve from "../../src/Evolve";
 import BattleMessage from "./BattleMessage";
+import AttackEffect from "./AttackEffect";
 
 
 const BattleEffect = styled.div`
@@ -308,7 +309,8 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const [ballEffect,setBallEffect]=useState(0);
     const [ballImage,setBallImg]=useState();
     const [message,setMessage]=useState("");
-    const [attackDamege,setAttack]=useState([]);
+    const [attackDamege,setAttack]=useState([0,0]);
+    const [type,setType]=useState([]);
    
     const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL,DamegeCalc}=Evolve;
 
@@ -350,11 +352,11 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
       
      
         const myType=myMonster.current ?  myPokemons[myMonster.current.id-1].type : ""; //내 타입
-        const battleType = battlePokmon.type; // 배틀 포켓몬 타입
-        // const myWeakness = myPokemons[myMonster.current.id-1].weaknesses; // 내약접
-        // const battleWeakness = battlePokmon.weaknesses; // 배틀 포켓몬 약점
-       const myTypeDamege=DamegeCalc(myType,battleType);
-       const battleTypeDamege=DamegeCalc(battleType,myType); 
+        const battleType =battlePokmon ? battlePokmon.type : ""; // 배틀 포켓몬 타입
+        const myTypeDamege=DamegeCalc(myType,battleType);
+        const battleTypeDamege=DamegeCalc(battleType,myType); 
+        setType([myType,battleType]);
+        setTimeout(()=>setType([]),2000);        
     
                 
         
@@ -373,7 +375,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                   
                 }
                 },1000);
-            setAttack([10*myTypeDamege,(10+addDamege)*battleTypeDamege]);    
+            setAttack([Math.floor(10*myTypeDamege),Math.floor((10+addDamege)*battleTypeDamege)]);    
 
         }
         else{ // 내가 더 높으면  추가 데미지를 준다.  // 같으면  서로 10씩 만 뺏어간다. 
@@ -387,17 +389,17 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                  
                 }
                 },1000);
-                setAttack([(10+addDamege)*myTypeDamege,10*battleTypeDamege]);
+                setAttack([Math.floor((10+addDamege)*myTypeDamege),Math.floor(10*battleTypeDamege)]);
         }
 
         
 
         // 에니메이션 적용  // 메세지 에니메이션도 줘야 한다.
-        if(myMonster.current){
+        if(myMonster.current && battleMonster.current){
             battleMonster.current.classList.remove("reAttack")
             myMonster.current.classList.add("attack");
-            setTimeout(()=>myMonster.current.classList.remove("attack"),1000);
-            setTimeout(()=>battleMonster.current.classList.add("reAttack"),1000);
+            setTimeout(()=>myMonster.current ? myMonster.current.classList.remove("attack") :"",1000);
+            setTimeout(()=>battleMonster.current ? battleMonster.current.classList.add("reAttack") : "",1000);
         }
     }
    
@@ -751,8 +753,9 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                 </ul>
             </BattleNavi>
         </BattleContainer>
-        <Message message={message}></Message>
+        <Message message={message} setMessage={setMessage}></Message>
         <BattleMessage attack={attackDamege}></BattleMessage>
+        <AttackEffect type={type}></AttackEffect>
         </>
     )
 }

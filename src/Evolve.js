@@ -53,6 +53,13 @@ megaXYPokemon=megaXYPokemon.filter(item =>{
 }).map(item=>item.name.eng.toLowerCase());
 
 
+const attackColor={
+    Normal:"#A8A878",Fire:"#F08030",Water:"#6890F0",Electric:"#F8D030", Grass:"#78C850",Ice:"#98D8D8",Fighting:"#C03028",Poison:"#A040A0",
+    Ground:"#E0C068",Flying:"#A890F0", Psychic:"#F85888",Bug:"#A8B820",Rock:"#B8A038",Ghost:"#705898",Dragon:"#7038F8"
+}
+
+
+
 const Damege ={ // 키: 공격하는 쪽  value 공격받는 값들 
   Normal:{Rock:0.5,Ghost:0},
   Fire:{Fire:0.5,Wahter:0.5,Grass:2,Ice:2,Bug:2,Dragon:0.5},
@@ -93,6 +100,8 @@ return attackDamege;
 }
 
 
+
+
 const urlSearch =
      {
         commonUrl:(smallName)=> commonUrl+smallName+".gif",
@@ -112,6 +121,6 @@ const urlSearch =
 
 
 
-const  PokemonEvolve ={megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL,DamegeCalc};
+const  PokemonEvolve ={megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL,attackColor,DamegeCalc};
 
 export default PokemonEvolve;
