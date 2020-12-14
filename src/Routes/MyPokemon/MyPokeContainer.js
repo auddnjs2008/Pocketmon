@@ -8,6 +8,7 @@ const MyPokeContainer =()=>{
     const [battlePokemons,setBattle]=useState(JSON.parse(localStorage.getItem("battlePokemons")));
     const [changePossible, setChange]=useState(0);
     const [changeIndex,setIndex]=useState(1);
+    const [message,setMessage]=useState("");
     useEffect(()=>{
         window.addEventListener("resize",()=>setWindow(window.innerWidth));
         return window.removeEventListener("resize",()=>setWindow(window.innerWidth));
@@ -17,7 +18,11 @@ const MyPokeContainer =()=>{
         localStorage.setItem("battlePokemons",JSON.stringify(battlePokemons));
     },[battlePokemons])
     
+ 
     const handlePokemonClick=useCallback((e)=>{
+      
+        if(changePossible !== 1) return;
+
         const Id = parseInt(e.currentTarget.id);
         const Judge = battlePokemons.map(item=>item.myId); // 이미 목록에 들어가 있는 포켓몬은 선택하지 못하도록 판단
         
@@ -38,7 +43,7 @@ const MyPokeContainer =()=>{
                 }
             }
         }    
-    },[battlePokemons])
+    },[battlePokemons,changePossible])
     
     const changeBtnClick=(e)=>{
         if(e.target.innerHTML === "Change Off"){
@@ -57,15 +62,58 @@ const MyPokeContainer =()=>{
        setBattle([]);
     }
 
+    const sendBtnClick=(e)=>{
+        e.stopPropagation();
+        setChange(3);
+        const newBag = JSON.parse(localStorage.getItem("myBag"));
+        const id =parseInt(e.target.parentNode.id);
+        const pickPokemon=pokemons[id-1];
+        //state 변수 리셋
+        if(battlePokemons.filter(item=>item.myId === (id)).length === 0){
+            // 포켓몬을 보낼시  보상으로 사탕을 준다.(cp에 따라 다르게 준다.)
+            
+            if(pickPokemon.cp>=100 && pickPokemon.cp<1000){
+                newBag.Candy +=5;
+                setMessage("you got  5 candy");
+            }else if(pickPokemon.cp >=1000 && pickPokemon.cp < 5000){
+                newBag.Candy +=10;
+                setMessage("you got  10 candy");
+            }else{
+                newBag.Candy +=15;
+                setMessage("you got  15 candy");
+            }
+            
+            const newPokemon = JSON.parse(localStorage.getItem("myPoketmon")).filter(item=>item.myId !== (id)).map((item,index)=>{
+                let newItem=item;
+                if(index >=id-1){ 
+                    newItem.myId -=1;
+                }
+                return newItem;
+            });  // myId 인덱스 정리를 해주고 (타겟 포켓몬 뒤쪽 아이들의 아이디를 하나씩 줄여주고  타겟을 삭제)
+
+
+            localStorage.setItem("myPoketmon",JSON.stringify(newPokemon));
+            setPokemon(newPokemon);
+            localStorage.setItem("myBag",JSON.parse(newBag));
+
+        }else{
+            //베틀 포켓몬을 해제시켜달라고 메세지를 보낸다. 
+            setMessage("This Pokemon is  BattlePokemon");
+        }
+        
+    }
 
     return <MyPokePresenter
         windowSize={windowSize}
         pokemons={pokemons}
         battlePokemons={battlePokemons}
+        message={message}
+        setMessage={setMessage}
         handlePokemonClick={handlePokemonClick}
         changeBtn={changeBtnClick}
         clearBtnClick={clearBtnClick}
         changePossible={changePossible}    
+        sendBtnClick={sendBtnClick}
     ></MyPokePresenter>
 }
 

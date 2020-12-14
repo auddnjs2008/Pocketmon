@@ -5,14 +5,16 @@ import ColorThief from "colorthief";
 import {Link} from "react-router-dom";
 
 const PokemonWrapper = styled(Link)`
-
+position:relative;
 padding:10px;
 
 background-color:  ${props => `rgba(${props.colors[0]},${props.colors[1]},${props.colors[2]})`};
 
 border:${props=>props.border ? "10px solid yellow" :""};
 
-
+   button{
+      height:35px;
+   }
 `;
 const PokeImg = styled.img`
    width:auto;
@@ -127,7 +129,7 @@ const PhysicalInnerBox =styled.div`
 
 
 
-const MyPokemon =({id,border,changePossible,item,handlePokemonClick})=>{
+const MyPokemon =({ sendBtnClick, id,border,changePossible,item,handlePokemonClick})=>{
 
 
     const Images= useRef();
@@ -172,7 +174,7 @@ const MyPokemon =({id,border,changePossible,item,handlePokemonClick})=>{
       <PhysicalInnerBox colors={colorArray} health={Math.floor(item.health)}></PhysicalInnerBox>   
     </PhyscialBox>     
     </PokeProfile>
-   
+    <button onClick={sendBtnClick}>Send Pokemon</button>  
    </PokemonWrapper>
    </> )
 }

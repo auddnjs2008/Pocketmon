@@ -35,7 +35,10 @@ const Container = styled.div`
 `;
 
 
-const Message=({message})=>{
+const Message=({message,setMessage})=>{
+
+    if(message !== "")
+        setTimeout(()=>setMessage(""),3000);
 
     return <>{message !=="" ? <Container>{message}</Container> : ""}</>
 }

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Menu from "../../Components/Menu";
 import LongMenu from "../../Components/LongMenu";
 import MyPokemon from "../../Components/MyPokemon";
+import Message from "../../Components/Message";
 
 const Container = styled.div`
    
@@ -19,6 +20,7 @@ const Container = styled.div`
     margin-top:${props=>props.windowSize >810 ? "380px" :"50px"};
     justify-items:center;
     padding:20px;
+    
 `;
 
 const Header = styled.div`
@@ -81,7 +83,7 @@ const BtnWrapper =styled.div`
 `;
 
 
-const MyPokePresenter = ({windowSize,pokemons,handlePokemonClick,battlePokemons,changeBtn,changePossible,clearBtnClick}) =>{
+const MyPokePresenter = ({windowSize,pokemons,message,setMessage,handlePokemonClick,battlePokemons,changeBtn,changePossible,clearBtnClick,sendBtnClick}) =>{
   
    return( 
     <>
@@ -108,9 +110,12 @@ const MyPokePresenter = ({windowSize,pokemons,handlePokemonClick,battlePokemons,
       </BtnWrapper>    
     </Header>
     <Container windowSize={windowSize}>
-      {pokemons.map((item,index) => item ? <MyPokemon id={item.myId} border={battlePokemons.length !==0 ? battlePokemons.map(item=>item.myId).includes(index+1) : false}  changePossible={changePossible} item={item} handlePokemonClick={handlePokemonClick}></MyPokemon>
+      {pokemons.map((item,index) => item ?
+         <MyPokemon sendBtnClick={sendBtnClick} id={item.myId} border={battlePokemons.length !==0 ? battlePokemons.map(item=>item.myId).includes(index+1) : false}  changePossible={changePossible} item={item} handlePokemonClick={handlePokemonClick}></MyPokemon>
+        
       : "")}
     </Container>
+    <Message message={message} setMessage={setMessage}></Message>
     </>
    )
 }

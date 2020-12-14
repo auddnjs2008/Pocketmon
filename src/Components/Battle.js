@@ -7,6 +7,7 @@ import {faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import PokeDex from "pokemon-go-pokedex";
 import Message from "../Components/Message";
 import Evolve from "../../src/Evolve";
+import BattleMessage from "./BattleMessage";
 
 
 const BattleEffect = styled.div`
@@ -307,6 +308,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const [ballEffect,setBallEffect]=useState(0);
     const [ballImage,setBallImg]=useState();
     const [message,setMessage]=useState("");
+    const [attackDamege,setAttack]=useState([]);
    
     const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL,DamegeCalc}=Evolve;
 
@@ -354,30 +356,28 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
        const myTypeDamege=DamegeCalc(myType,battleType);
        const battleTypeDamege=DamegeCalc(battleType,myType); 
     
-    
+                
         
         
-    
-        
-
 
         if(pokemonsCp[battleIndex[0]] > myPokemons[myMonster.current.id-1].cp) // 배틀 포켓몬이  더 높으면 일반 10데미지만 준다.
         {                                                                       // 타입에 따라 효과 메세지를 넣어준다. 
             setPhysical(battlePhysical-10*myTypeDamege);
+
             setTimeout(()=>{
                 
-                if(myPhysical-(10+addDamege*battleTypeDamege) >=0)
-                    setMyPhysical(Math.floor(myPhysical-(10+addDamege)));
-                else if(myPhysical -(10+addDamege*battleTypeDamege) <0){
+                if(myPhysical-((10+addDamege)*battleTypeDamege) >=0)
+                    setMyPhysical(Math.floor(myPhysical-((10+addDamege)*battleTypeDamege)));
+                else if(myPhysical -((10+addDamege)*battleTypeDamege) <0){
                     setMyPhysical(0);
                   
                 }
                 },1000);
-    
+            setAttack([10*myTypeDamege,(10+addDamege)*battleTypeDamege]);    
 
         }
         else{ // 내가 더 높으면  추가 데미지를 준다.  // 같으면  서로 10씩 만 뺏어간다. 
-            setPhysical(Math.floor(battlePhysical-(10+addDamege*myTypeDamege)));
+            setPhysical(Math.floor(battlePhysical-((10+addDamege)*myTypeDamege)));
              setTimeout(()=>{
                 
                 if(myPhysical-(10)*battleTypeDamege >=0)
@@ -387,11 +387,12 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                  
                 }
                 },1000);
+                setAttack([(10+addDamege)*myTypeDamege,10*battleTypeDamege]);
         }
 
         
 
-        // 에니메이션 적용
+        // 에니메이션 적용  // 메세지 에니메이션도 줘야 한다.
         if(myMonster.current){
             battleMonster.current.classList.remove("reAttack")
             myMonster.current.classList.add("attack");
@@ -529,8 +530,10 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             setIndex(0);
             setMyPhysical( myPokemons[myMonster.current.id-1].health); 
         }else if(item.innerHTML.includes("ball") || item.innerHTML.includes("berry")){
+            window.removeEventListener("keydown",handleKeyDown);
+            setTimeout(()=>window.addEventListener("keydown",handleKeyDown),1700);
             ballCatch(item);
-
+            
         }
 
         if(menu.current)
@@ -566,6 +569,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                setIndex(x=>x+1);
            }  
         }else if (e.keyCode === 13 || e.keyCode === 32){ //엔터나 스페이스바를 누를경우
+            e.preventDefault();
              InitWindowEnter(listCopy[listIndex]);
 
         }
@@ -748,6 +752,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             </BattleNavi>
         </BattleContainer>
         <Message message={message}></Message>
+        <BattleMessage attack={attackDamege}></BattleMessage>
         </>
     )
 }
