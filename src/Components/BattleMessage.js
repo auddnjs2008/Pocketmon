@@ -52,3 +52,7 @@ return <Container>
 }
 
 export default BattleMessage;
+
+BattleMessage.propTypes={
+    attack:PropTypes.array
+}

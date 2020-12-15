@@ -87,3 +87,10 @@ const HomePresenter = ({pokemon,setPokemon,colorArray,setColor})=>
 }
 
 export default HomePresenter;
+
+HomePresenter.propTypes={
+    pokemon:PropTypes.array,
+    setPokemon:PropTypes.func,
+    colorArray:PropTypes.array,
+    setColor:PropTypes.func
+}

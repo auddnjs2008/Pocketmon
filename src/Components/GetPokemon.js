@@ -201,3 +201,7 @@ return(
 
 
 export default GetPokemon;
+
+GetPokemon.propTypes={
+    setPokemon:PropTypes.func
+}

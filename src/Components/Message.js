@@ -44,3 +44,8 @@ const Message=({message,setMessage})=>{
 }
 
 export default Message;
+
+Message.propTypes={
+    message:PropTypes.string,
+    setMessage:PropTypes.func
+}

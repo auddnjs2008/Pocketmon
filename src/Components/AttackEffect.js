@@ -32,6 +32,7 @@ const Container =styled.div`
                 }
                 90%{
                     opacity:1;
+                    
                 }
                 100%{
                     left:100%;
@@ -73,13 +74,14 @@ const Container =styled.div`
 
     & .battleAttack{
         div{
-
+            left:100%;
+            opacity:0;
             &:nth-child(1){  
             @keyframes BattleAttack{
                 50%{
                     left:100%;
-             
-
+                    transform:scale(1,1) rotate(0deg);
+                    opacity:0;
                 }
                 90%{
                     opacity:1;
@@ -96,7 +98,7 @@ const Container =styled.div`
                 @keyframes BattleSecondAttack{
                     50%{
                     left:100%;
-                 
+                    transform:scale(1,1) rotate(0deg);
 
                     }
                     70%{
@@ -157,3 +159,7 @@ const AttackEffect =({type})=>{
 }
 
 export default AttackEffect;
+
+AttackEffect.propTypes={
+    type:PropTypes.array
+}

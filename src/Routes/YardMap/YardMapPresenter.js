@@ -1,15 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import Tree from "../../나무.png";
 import Battle from "../../Components/Battle";
 import {Link} from "react-router-dom";
-import Background from "../../../src/들판배경.jpg";
 import Egg from "../../Components/Egg";
 
 
 const TestContainer=styled.div`
-background-image:url(${Background});
+background-image:url("https://usecloud.s3-ap-northeast-1.amazonaws.com/pokmonImages/%EB%93%A4%ED%8C%90%EB%B0%B0%EA%B2%BD.jpg");
 background-size:cover;
 background-position:bottom center;
 width:100%;
@@ -90,7 +88,27 @@ const Navigation =styled.div`
                 }
             animation: move2 0.5s linear forwards;
             }
+    
+            
         }
+
+        div{
+            &:nth-child(3){
+                @keyframes move3{
+                    0%{
+
+                    }
+                    100%{
+                        top:0;
+                        left:0;
+                        opacity:1;
+                    }
+                }
+                animation: move3 0.5s linear forwards;
+            }
+        }
+
+
      
     }
     transition: all 5s linear;
@@ -161,8 +179,25 @@ const EggWrapper = styled.div`
 
 `;
 
+const Incense =styled.div`
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:50px;
+    height:50px;
+    border:1px solid black;
+    opacity:0;
+    background-color:#ff7675;
+    img{
+        width:35px;
+        height:35px;
+    }
+    
 
-const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange,hatchEgg})=>{
+`;
+
+const YardMapPresenter=({map,trainer,bag,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange,handleClickItem,hatchEgg})=>{
 
 
     
@@ -171,7 +206,7 @@ const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove
         <>  
             <TestContainer>
                 <MapContainer ref={yard}>
-                    {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper src={Tree}></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
+                    {map.map(items=>items.map(item=>item === 1 ? <TreeWrapper src={"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokmonImages/%EB%82%98%EB%AC%B4.png"}></TreeWrapper>:<RoadWrapper></RoadWrapper>))}
                     <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
                     {pokemon.map((item,index) => item ? <Pokemon className="pokemon" random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}
                 </MapContainer>
@@ -180,6 +215,7 @@ const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove
             <Navigation>
                 <Link to="/navi">Home</Link>
                 <Link to="/game">Map</Link>
+                {bag.Incense !== 0 ? <Incense onClick={handleClickItem}><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/incense.png"/>{bag.Incense}</Incense> :""}
             </Navigation>
             <ThreeD onClick={handleMapChange}>
                3D 입체보기 
@@ -193,3 +229,30 @@ const YardMapPresenter=({map,trainer,char,yard,charPosition,windowSize,frontMove
 
 
 export default YardMapPresenter;
+
+
+
+YardMapPresenter.propTypes={
+    map:PropTypes.array,
+    trainer:PropTypes.array,
+    bag:PropTypes.object,
+    char:PropTypes.object,
+    yard:PropTypes.object,
+    charPosition:PropTypes.array,
+    windowSize:PropTypes.array,
+    frontMove:PropTypes.number,
+    pokemon:PropTypes.array,
+    randomPosition:PropTypes.array,
+    battlePookemon:PropTypes.array,
+    setBattle:PropTypes.func,
+    battleon:PropTypes.number,
+    run:PropTypes.number,
+    pokemonsCp:PropTypes.array,
+    setPokemons:PropTypes.func,
+    setCp:PropTypes.func,
+    setPkPosition:PropTypes.func,
+    handleMapChange:PropTypes.func,
+    handleClickItem:PropTypes.func,
+    hatchEgg:PropTypes.array
+
+}

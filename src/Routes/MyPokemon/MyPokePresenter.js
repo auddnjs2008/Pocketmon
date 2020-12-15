@@ -121,3 +121,17 @@ const MyPokePresenter = ({windowSize,pokemons,message,setMessage,handlePokemonCl
 }
 
 export default MyPokePresenter;
+
+
+MyPokePresenter.propTypes={
+   windowSize:PropTypes.number,
+   pokemons:PropTypes.array,
+   message:PropTypes.string,
+   setMessage:PropTypes.func,
+   handlePokemonClick:PropTypes.func,
+   battlePokemons:PropTypes.array,
+   changeBtn:PropTypes.func,
+   changePossible:PropTypes.number,
+   clearBtnClick:PropTypes.func,
+   sendBtnClick:PropTypes.func
+}

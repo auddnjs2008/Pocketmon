@@ -35,3 +35,9 @@ const NaviPresenter =({pokemons,windowSize}) =>
     )
 }    
 export default NaviPresenter;
+
+NaviPresenter.propTypes={
+    pokemons:PropTypes.array,
+    windowSize:PropTypes.number
+
+}

@@ -1,19 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-
-import Flame from "../../레드불꽃.png";
-import Pillar from "../../기둥.png";
-import Roof from "../../아치.png";
-
-
 import Battle from "../../Components/Battle";
 import {Link} from "react-router-dom";
-import Background from "../../../src/산불배경.jpg";
 import Egg from "../../Components/Egg";
 
 const TestContainer=styled.div`
-background-image:url(${Background});
+background-image:url("https://usecloud.s3-ap-northeast-1.amazonaws.com/pokmonImages/%EC%82%B0%EB%B6%88%EB%B0%B0%EA%B2%BD.jpg");
 background-size:cover;
 background-position:50% 100%;
 
@@ -95,7 +88,21 @@ const Navigation =styled.div`
             animation: move2 0.5s linear forwards;
             }
         }
-     
+        div{
+            &:nth-child(3){
+                @keyframes move3{
+                    0%{
+
+                    }
+                    100%{
+                        top:0;
+                        left:0;
+                        opacity:1;
+                    }
+                }
+                animation: move3 0.5s linear forwards;
+            }
+        }
     }
     transition: all 5s linear;
 `;
@@ -180,19 +187,35 @@ const EggWrapper = styled.div`
     animation-iteration-count:5;
 
 `;
+const Incense =styled.div`
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:50px;
+    height:50px;
+    border:1px solid black;
+    opacity:0;
+    background-color:#ff7675;
+    img{
+        width:35px;
+        height:35px;
+    }
+    
 
+`;
 
-const FireMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange,hatchEgg})=>{
+const FireMapPresenter =({map,trainer,bag,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange,handleClickItem,hatchEgg})=>{
 
 
     return ( 
         <>  
             <TestContainer>
                 <MapContainer ref={yard}>
-                    {map.map(items=>items.map(item=>item === 1 ? <FlameWrapper src={Flame}></FlameWrapper>:
-                    (item === 2 ? <PillarWrapper src={Pillar}></PillarWrapper>
+                    {map.map(items=>items.map(item=>item === 1 ? <FlameWrapper src={"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokmonImages/%EB%A0%88%EB%93%9C%EB%B6%88%EA%BD%83.png"}></FlameWrapper>:
+                    (item === 2 ? <PillarWrapper src={"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokmonImages/%EA%B8%B0%EB%91%A5.png"}></PillarWrapper>
                         : (
-                        item===3? <RoofWrapper src={Roof}></RoofWrapper>
+                        item===3? <RoofWrapper src={"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokmonImages/%EC%95%84%EC%B9%98.png"}></RoofWrapper>
                         :<RoadWrapper></RoadWrapper>))))}
                     <Trainer     src={frontMove ? trainer[0] : trainer[1]} ref={char} position={charPosition} windowSize={windowSize}></Trainer>
                     {pokemon.map((item,index) => item ? <Pokemon className="pokemon" random={randomPosition[index]} src={`https://projectpokemon.org/images/normal-sprite/${item.name.toLowerCase()}.gif`}/> : "")}                            
@@ -202,6 +225,7 @@ const FireMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMov
             <Navigation>
                 <Link to="/navi">Home</Link>
                 <Link to="/game">Map</Link>
+                {bag.Incense !== 0 ? <Incense onClick={handleClickItem}><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/incense.png"/>{bag.Incense}</Incense> :""}             
             </Navigation>
             <ThreeD onClick={handleMapChange}>
                3D 입체보기 
@@ -214,3 +238,28 @@ const FireMapPresenter =({map,trainer,char,yard,charPosition,windowSize,frontMov
 }
 
 export default FireMapPresenter;
+
+FireMapPresenter.propTypes={
+    map:PropTypes.array,
+    trainer:PropTypes.array,
+    bag:PropTypes.object,
+    char:PropTypes.object,
+    yard:PropTypes.object,
+    charPosition:PropTypes.array,
+    windowSize:PropTypes.array,
+    frontMove:PropTypes.number,
+    pokemon:PropTypes.array,
+    randomPosition:PropTypes.array,
+    battlePookemon:PropTypes.array,
+    setBattle:PropTypes.func,
+    battleon:PropTypes.number,
+    run:PropTypes.number,
+    pokemonsCp:PropTypes.array,
+    setPokemons:PropTypes.func,
+    setCp:PropTypes.func,
+    setPkPosition:PropTypes.func,
+    handleMapChange:PropTypes.func,
+    handleClickItem:PropTypes.func,
+    hatchEgg:PropTypes.array
+
+}

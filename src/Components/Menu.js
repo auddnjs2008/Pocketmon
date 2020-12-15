@@ -23,7 +23,7 @@ const Container =styled.div`
     border: 1px solid black;
     transform:translateX(100%);
     display:grid;
-    grid-template-rows:repeat(4,50px);
+    grid-template-rows:repeat(6,50px);
     justify-self:end;
     margin-left:20px;
     z-index:1;
@@ -101,6 +101,8 @@ const Menu = (props) =>{
                 <MLink to="/mine" color={props.location.pathname === "/mine" ? true: false}>My Pokemons<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pikachu-2.png"></img></MLink>
                 <MLink to="/bag" color={props.location.pathname === "/bag" ? true: false}>My Bag<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/backpack.png"/></MLink>
                 <MLink to="/game" color={props.location.pathname.includes("/game") ? true: false}>Game<img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/fist.png"/></MLink>
+                <MLink to="/doc" color={props.location.pathname.includes("/doc") ? true: false}>Docs <img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/smartphone.png"/></MLink>    
+
             </Container>
         </MenuWrapper>
 

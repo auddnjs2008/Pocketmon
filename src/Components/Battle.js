@@ -1,9 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from 'styled-components';
 import PropTypes from "prop-types";
-import Grass from "../../src/풀.png";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import PokeDex from "pokemon-go-pokedex";
 import Message from "../Components/Message";
 import Evolve from "../../src/Evolve";
@@ -449,7 +446,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
         }
 
         localStorage.setItem("myBag",JSON.stringify(myBag));
-        setIndex(0);
+        //setIndex(0);
         setBallEffect(1);
        
     }
@@ -461,12 +458,12 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const InitWindowEnter=(item)=>{ // 초기하면 리스트에서  목록을고르고  엔터나 스페이스바 누를경우
         
         
+        
         item.style.backgroundColor="";
-        console.log(item.innerHTML);
+ 
 
 
         if(item.className.includes("attack")){
-          
             attack();
         }else if (item.className.includes("run")){
             setBattle(0);
@@ -533,22 +530,21 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             setIndex(0);
             setMyPhysical( myPokemons[myMonster.current.id-1].health); 
         }else if(item.innerHTML.includes("ball") || item.innerHTML.includes("berry")){
-            window.removeEventListener("keydown",handleKeyDown);
-            setTimeout(()=>window.addEventListener("keydown",handleKeyDown),1700);
-            setIndex(0);
             ballCatch(item);
-            
+            window.removeEventListener("keydown",handleKeyDown);
+            setTimeout(()=>{window.addEventListener("keydown",handleKeyDown);},1700);
         }
-
+        
         if(menu.current)
             setList(menu.current.querySelectorAll("li")) ;
-
+    
     }
 
     
     
     const handleKeyDown=useCallback((e)=>{ // 키를 눌렀을경우  위치셋팅해준다. 
         let listCopy;
+
         if(menu.current){
              listCopy = menu.current.querySelectorAll("li");
         // ArrowUp ArrowDown //ArrowRight ArrowLeft // 엔터 -키코드 13
@@ -567,10 +563,10 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             }
         
         }else if(e.key === "ArrowDown"){
-           if(listIndex === listCopy.length-1){
-               setIndex(0);
-               listCopy[listCopy.length-1].style.backgroundColor="";
-           }else{
+            if(listIndex === listCopy.length-1){
+                setIndex(0);
+                listCopy[listCopy.length-1].style.backgroundColor="";
+            }else{
                listCopy[listIndex].style.backgroundColor="";
                setIndex(x=>x+1);
            }  
@@ -579,6 +575,8 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
              InitWindowEnter(listCopy[listIndex]);
 
         }
+      
+
     },[listIndex,battlePhysical,myPhysical]);
 
     const handleKeyUp =useCallback((e)=>{
@@ -625,7 +623,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
 
     useEffect(()=>{
         if(menu.current){
-            menu.current.querySelectorAll("li")[0].style.backgroundColor="yellow";
+            menu.current.querySelectorAll("li")[listIndex].style.backgroundColor="yellow";
         }
     },[list]);
 
@@ -687,7 +685,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                 myBag["money"]+=50;
                 setMessage(`you got 50 coin`);
             }
-
+            
         
         }
         
@@ -766,3 +764,17 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
 
 
 export default Battle;
+
+Battle.propTypes={
+    color:PropTypes.string,
+    battleIndex:PropTypes.array,
+    pokemons:PropTypes.array,
+    setBattle:PropTypes.func,
+    battleon:PropTypes.number,
+    setRun:PropTypes.func,
+    pokemonsCp:PropTypes.array,
+    setPokemons:PropTypes.func, 
+    setCp:PropTypes.func,
+    setPkPosition:PropTypes.func,
+    randomPosition:PropTypes.array
+}

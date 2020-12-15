@@ -130,3 +130,7 @@ const EggContainer =({information})=>{
 }
 
 export default EggContainer;
+
+EggContainer.propTypes={
+    information:PropTypes.object
+}

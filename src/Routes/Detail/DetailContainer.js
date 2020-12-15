@@ -33,10 +33,7 @@ const DetailContainer = ()=>{
         return ()=> window.removeEventListener("reszie",()=>setWindow(window.innerWidth));
     },[])
     
-    
-    
-    
-    
+
     return <DetailPresenter pokemon={PokeObject} commonLength ={commonEvolveLength} windowSize={windowSize}></DetailPresenter>
 }
 

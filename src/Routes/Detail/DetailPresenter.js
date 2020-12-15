@@ -252,3 +252,10 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
 }
 
 export default DetailPresenter;
+
+
+DetailPresenter.propTypes={
+    pokemon:PropTypes.object,
+    commonLength:PropTypes.number,
+    windowSize:PropTypes.number
+}

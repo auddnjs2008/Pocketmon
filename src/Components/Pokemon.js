@@ -53,3 +53,7 @@ const Pokemon=({pokemon})=>{
 }
 
 export default Pokemon;
+
+Pokemon.propTypes={
+    pokemon:PropTypes.object
+}

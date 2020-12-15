@@ -183,3 +183,11 @@ const MyPokemon =({ sendBtnClick, id,border,changePossible,item,handlePokemonCli
 }
 
 export default MyPokemon;
+
+MyPokemon.propTypes={
+   sendBtnClick:PropTypes.func, 
+  border:PropTypes.bool,
+  changePossible:PropTypes.number,
+  item:PropTypes.object,
+  handlePokemonClick:PropTypes.func
+}

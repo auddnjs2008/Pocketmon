@@ -20,6 +20,7 @@ import BossMap from "../Routes/BossMap";
 import IceMap from "../Routes/IceMap";
 import ElectricMap from "../Routes/ElectricMap";
 import FireMap from "../Routes/FireMap";
+import Doc from "../Routes/Doc";
 
 export default ()=>{
 
@@ -32,6 +33,7 @@ export default ()=>{
             <Route path="/mine" component={MyPokemon}/>
             <Route path="/bag" component={MyBag}/>
             <Route path="/game" exact component={Game}/>
+            <Route path="/doc" component={Doc}/>
             <Route path="/game/yardmap" component={YardMap}/>
             <Route path="/game/rockmap" component={RockMap}/>
             <Route path="/game/watermap" component={WaterMap}/>

@@ -4,14 +4,13 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import Menu from "../../Components/Menu";
 import LongMenu from "../../Components/LongMenu";
-import Map from "../../지도.png";
 const Container =styled.div`
     position:absolute;
     top:0;
     width:100%;
     height:100%;
     margin-top:${props=>props.windowSize >810 ? "90px" :"0px"};
-    background-image:url(${Map});
+    background-image:url("https://usecloud.s3-ap-northeast-1.amazonaws.com/pokmonImages/%EC%A7%80%EB%8F%84.png");
     background-size:700px 500px;
     background-repeat:no-repeat;
     background-position:center center;
@@ -121,3 +120,7 @@ const GamePresenter=({windowSize})=>{
 }
 
 export default GamePresenter;
+
+GamePresenter.propTypes={
+    windowSize:PropTypes.number
+}

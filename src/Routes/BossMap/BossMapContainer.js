@@ -18,12 +18,8 @@ const BossMapContainer =()=>{
     const [battleon,setBattle]=useState(0); // battle 상태 표시 0 이면 배틀이 아니고 1이면 배틀 상태이다.
     const [run,setRun]=useState(0); // 도망가고 나오면 1로 상태를 만든다.
     // 랜덤 포켓몬은  3단계 최종진화 포켓몬은 나오지 못하게 한다. 
-    const [pokemon,setPokemon]=useState(Pokemon.pokemon.filter(item=>item.type.length === 1 && item.type.includes("Psychic")&& !item.name.includes("Mew") && (item.prev_evolution ? item.prev_evolution.length!==2 : 1)));
-    
-
-  
-    
-    
+    const [pokemon,setPokemon]=useState(Pokemon.pokemon.filter(item=> (item.type.includes("Dragon") ||item.type.includes("Psychic"))&& !item.name.includes("Mew") && (item.prev_evolution ? item.prev_evolution.length!==2 : 1)));
+    const [wildPokemon,setwildPokemon]=useState([]); // 야생포켓몬들 저장 (랜덤으로 나오는 포켓몬들)
     
     //랜덤 포켓몬의 좌표들
     const [pokePosition,setPkPosition]=useState([]);
@@ -31,6 +27,8 @@ const BossMapContainer =()=>{
     const [battlePokemon,setBattlePoke]=useState([]);
     // 랜덤 포켓몬들 cp
     const [pokemonsCp,setCp]=useState([]);
+
+    const [bag,setBag]=useState(JSON.parse(localStorage.getItem("myBag")));
 
     // 걸음수
     const [walk,setWalk]=useState(0);
@@ -131,7 +129,36 @@ const BossMapContainer =()=>{
              yard.current.classList.remove("perspective");
             }
         }
+    const randomPokemonSetting=(randomPokemon,randomPosition,randomCp)=>{
+    
+        for(let i=0; i<6;i++){
+            let who = pokemon[getRandom(pokemon.length+1,1)-1];
+            if(who.name === "Farfetch'd") who["name"]="farfetchd";
+            else if(who.name.includes("Mr.")) who["name"]="mr.mime";
+            else if(who.name.includes("Female")) who["name"]="nidoran_f";
+            else if(who.name.includes("Male")) who["name"]="nidoran_m";
 
+            randomPokemon.push(who);
+            randomPosition.push([getRandom(yard.current.clientWidth-100,1),getRandom(yard.current.clientHeight-100,1)]);
+            randomCp.push(getRandom(900,100));
+        }
+    }    
+    
+    const handleClickItem=(e)=>{
+        let newbag = bag;
+        newbag.Incense -=1;
+        setBag(newbag);
+        localStorage.setItem("myBag",JSON.stringify(newbag));
+        //포켓몬을 더 불러온다. 
+        let randomPokemon=[];
+        let randomPosition=[];
+        let randomCp=[];
+        randomPokemonSetting(randomPokemon,randomPosition,randomCp);
+        setwildPokemon([...wildPokemon,...randomPokemon]); 
+        setPkPosition([...pokePosition,...randomPosition]);
+        setCp([...pokemonsCp,...randomCp]);
+
+    }    
 
 
     useEffect(()=>{
@@ -173,7 +200,7 @@ const BossMapContainer =()=>{
 
 
 
-       setPokemon(randomPokemon); 
+        setwildPokemon([...wildPokemon,...randomPokemon]); 
        setPkPosition(randomPosition);
        setCp(randomCp);
      }
@@ -211,13 +238,14 @@ const BossMapContainer =()=>{
     return <BossMapPresenter
     map={map} 
     trainer={trainerImg} 
+    bag={bag}
     char={char} 
     yard={yard} 
     setBattle={setBattle}
     charPosition={charPosition} 
     frontMove={frontMove} 
     windowSize={windowSize}
-    pokemon={pokemon}
+    pokemon={wildPokemon}
     setPokemons={setPokemon}
     randomPosition={pokePosition}
     setPkPosition={setPkPosition}
@@ -227,6 +255,7 @@ const BossMapContainer =()=>{
     setCp={setCp}
     run={setRun}
     handleMapChange={handleMapChange}
+    handleClickItem={handleClickItem}
     hatchEgg={hatchEgg}
    
     
