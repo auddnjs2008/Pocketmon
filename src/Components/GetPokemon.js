@@ -23,15 +23,21 @@ const ImageWrapper = styled.div`
    @keyframes poketball {
     
         0%{
-           transform:rotate(25deg); 
+           transform:rotate(40deg); 
+        }
+        10%{
+           transform:none;
         }
         25%{
             transform:none;
         }
+        40%{
+           transform:none; 
+        }
         50%{
             transform:rotate(-25deg);
         }
-        75%{
+        90%{
             transform:none;
         }
         100%{
@@ -57,6 +63,9 @@ const Container = styled.div`
 `;
 
 const Info = styled.h1`
+   margin-top: 50px;
+   font-size:50px;
+   font-weight:600;
     width:100%;
     text-align:center;
 `;
