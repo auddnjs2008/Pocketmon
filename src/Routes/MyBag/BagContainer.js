@@ -239,7 +239,9 @@ const BagContainer=()=>{
         }else if(Id.includes("Incubator")){ // 인큐베이터 사용할 때
            
             eggWindow.current.style.display="grid";
-            setShowPokemon([bag.Egg,bag.LuckyEgg]);
+            const egg= bag.Egg ? bag.Egg : 0;
+            const luckyEgg=bag.LuckyEgg ? bag.LuckyEgg: 0;
+            setShowPokemon([egg,luckyEgg]);
 
         }else if(Id === "MegaCandy"){ // 메가 캔디는  메가진화 또는 megax  megay진화를 결정 
             showWindow.current.style.display="grid";
@@ -266,10 +268,10 @@ const BagContainer=()=>{
         let newBag =JSON.parse(localStorage.getItem("myBag")); 
         newBag[item] -= 1;
         if(parseInt(id) === 1){ // 일반 알
-            newEggs.push({name:"Egg",walk:0,evolvingWalk:item ==="EggIncubator" ? 8000 :5000,img:"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg.png"});
+            newEggs.push({name:"Egg",walk:0,evolvingWalk:item ==="EggIncubator" ? 1000 :500,img:"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg.png"});
             newBag["Egg"] -=1;
         }else{ // 특별한 알
-            newEggs.push({name:"SpecialEgg",evolvingWalk:item ==="EggIncubator" ? 8000 :5000, walk:0,img:"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/lucky-egg.png"});
+            newEggs.push({name:"SpecialEgg",evolvingWalk:item ==="EggIncubator" ? 1000 :500, walk:0,img:"https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/lucky-egg.png"});
             newBag["LuckyEgg"] -=1;
         }
 

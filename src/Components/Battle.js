@@ -697,7 +697,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
                 let changePokemon=myBattlePokemons.filter(item => item.health !== 0)[0];
       
                     myMonster.current.id = changePokemon.myId;
-                    myMonster.current.src = changePokemon.commonBackUrl;
+                    myMonster.current.src = changePokemon.specialUrl ? (changePokemon.color ? changePokemon.specialShinyBackUrl : changePokemon.specialBackUrl) :(changePokemon.color ? changePokemon.shinyBackUrl: changePokemon.commonBackUrl);
                     setMyPhysical(myPokemons[changePokemon.myId-1].health); 
               
             }

@@ -196,7 +196,7 @@ const BossMapContainer =()=>{
 
         randomPokemon.push(Pokemon.pokemon[149]);
         randomPosition.push([695,15]);
-        randomCp.push(10000);
+        randomCp.push(20000);
 
 
 

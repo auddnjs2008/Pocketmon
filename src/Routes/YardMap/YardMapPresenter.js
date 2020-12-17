@@ -197,7 +197,7 @@ const Incense =styled.div`
 
 `;
 
-const YardMapPresenter=({map,trainer,bag,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange,handleClickItem,hatchEgg})=>{
+const YardMapPresenter=({map,trainer,bag,char,yard,charPosition,windowSize,frontMove,pokemon,randomPosition,battlePokemon,setBattle,battleon,run,pokemonsCp,setPokemons,setCp,setPkPosition,handleMapChange,handleClickItem,hatchEgg,})=>{
 
 
     
@@ -253,6 +253,6 @@ YardMapPresenter.propTypes={
     setPkPosition:PropTypes.func,
     handleMapChange:PropTypes.func,
     handleClickItem:PropTypes.func,
-    hatchEgg:PropTypes.array
+    hatchEgg:PropTypes.array,
 
 }

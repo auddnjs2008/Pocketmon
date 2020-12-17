@@ -7,6 +7,7 @@ import Message from "../../Components/Message";
 import Mega from "pokesprite-images/items/mega-stone/banettite.png";
 import Alola from "pokesprite-images/items/mega-stone/aggronite.png";
 import Color from "pokesprite-images/items/z-crystals/snorlium-z--bag.png";
+
 const Container = styled.div`
     position:absolute;
     top:0;
@@ -136,7 +137,7 @@ const Img = styled.img`
     }
 `;
 
-const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,info,img,money,scroll,myMoney,message})=>
+const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,info,img,money,scroll,myMoney,message,setMessage})=>
     <>
     {windowSize > 810 ? <LongMenu></LongMenu> :<Menu></Menu>}
     <Container windowSize={windowSize}>
@@ -169,15 +170,15 @@ const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/razz-berry.png"/>
             <Title>Razz-Berry</Title>
         </ImgWrapper>
-        <ImgWrapper onClick={()=>handleItemClick("Potion","Can hill the Pokemon HP","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/potion.png",30)}>
+        <ImgWrapper onClick={()=>handleItemClick("Potion","Can hill the Pokemon HP","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/potion.png",10)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/potion.png"/>
             <Title>Potion</Title>
         </ImgWrapper>
-        <ImgWrapper onClick={()=>handleItemClick("SuperPotion","Can hill the Pokemon HP","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/super-potion.png",40)}>
+        <ImgWrapper onClick={()=>handleItemClick("SuperPotion","Can hill the Pokemon HP","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/super-potion.png",20)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/super-potion.png"/>
             <Title>Super-Potion</Title>
         </ImgWrapper>    
-        <ImgWrapper onClick={()=>handleItemClick("HyperPotion","Can hill the Pokemon HP","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/hyper-potion.png",50)}>
+        <ImgWrapper onClick={()=>handleItemClick("HyperPotion","Can hill the Pokemon HP","https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/hyper-potion.png",30)}>
             <Img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/hyper-potion.png"/>
             <Title>Hyper-Potion</Title>
         </ImgWrapper>
@@ -333,7 +334,7 @@ const StorePresenter=({windowSize,handleItemClick,handleClose,handleBuyBtn,name,
             <button onClick={handleClose}>Close</button>     
         </BtnWrapper>   
     </InfoWrapper>
-    <Message message={message} ></Message>       
+    <Message message={message} setMessage={setMessage} ></Message>       
     </>
 
 export default StorePresenter;

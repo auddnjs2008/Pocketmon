@@ -140,6 +140,7 @@ const StoreContainer = ()=>{
         scroll={scroll}
         myMoney={myMoney}
         message={message}
+        setMessage={setMessage}
        
     ></StorePresenter>
 }
