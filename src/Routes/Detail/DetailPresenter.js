@@ -10,10 +10,11 @@ const Container=styled.div`
     width:100%;
     background-color:rgba(20,20,20,0.7);
     margin-top:${props=>props.windowSize >810 ? "70px" :"0px"};
-    height:90%;
-   display:grid;
+    height:${props=>props.windowSize>810 ? "90%" :"180%"};
+    display:grid;
    //grid-template-rows:0.5fr 0.5fr 1fr;
-   grid-template-columns:0.4fr 0.5fr 1fr;
+   grid-template-columns:${props=>props.windowSize >810 ? "0.4fr 0.5fr 1.5fr" :""};
+   grid-template-rows:${props=>props.windowSize <= 810 ? "0.4fr 0.5fr 1fr" : ""};
    padding:20px 10px;
    position:absolute;
    top:0;
@@ -28,7 +29,8 @@ const ImgWrapper=styled.div`
     }
     
     display:grid;
-    grid-template-rows:repeat(5,110px);
+    grid-template-rows:${props=>props.windowSize >810 ? "repeat(5,110px)" :""};
+    grid-template-columns:${props=>props.windowSize<=810 ? "repeat(5,110px)":""};
     align-items:center;
     justify-items:center;
     padding:20px;
@@ -40,7 +42,8 @@ const InfoBox = styled.ul`
     gap:5px;
    
     display:grid;
-    grid-template-rows:repeat(9,50px);
+    grid-template-rows:${props=>props.windowSize>810? "repeat(9,50px)" :"repeat(9,50px)"};
+    grid-template-columns:${props=>props.windowSize <=810 ?"repeat(1,0.5fr)" :"" };
     align-self:center;
     li{
         display:grid;
@@ -126,7 +129,7 @@ const CommonTitle = styled.div`
 const CommonBox = styled.div`
    // border: 1px solid white;
     display:grid;
-    grid-template-columns:${props => props.common ? `repeat(${props.common+4},minmax(120px,1fr))` : ""};
+    grid-template-columns:${props =>   props.common ? `repeat(${props.common+4},minmax(120px,1fr))` : ""};
     align-items:center;
     justify-items:center;
   
@@ -136,7 +139,7 @@ const CommonBox = styled.div`
 
 
 const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
-    console.log(pokemon);
+   
     const smallName = pokemon.name.toLowerCase();
     const {megaPokemon, alolaPokemon,megaXYPokemon,urlSearch,googleProxyURL}=Evolve; // url(smallName).commonUrl 이런식으로 쓸수있다.
 
@@ -150,7 +153,7 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
 
     // prev evolutoin  next evolution 이 배열일 수도 있고, 없을수도있다.
     let prevEvolution;
-    if(pokemon.name !== "Dragonair")
+    if(pokemon.name !== "Dragonair" && pokemon.name !== "Dragonite")
         prevEvolution = pokemon.prev_evolution ? pokemon.prev_evolution.map(item=>{
             let result;
             if(item.name.toLowerCase() === "nidoran(female)") result= "nidoran_f";
@@ -159,9 +162,11 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
         
             return result;
     }) : "";
-    else
+    else if(pokemon.name === "Dragonair")
         prevEvolution = ["dratini"];
-
+    else if(pokemon.name==="Dragonite")
+        prevEvolution=["dratini","dragonair"];
+    
 
     const nextEvolution = pokemon.next_evolution ? pokemon.next_evolution.map(item =>item.name.toLowerCase()) : "";
     
@@ -171,7 +176,8 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
     const nextCommonUrls = nextEvolution ? nextEvolution.map(item=>urlSearch.commonUrl(item)) : "";
     const nextShinyUrls = nextEvolution ? nextEvolution.map(item=>urlSearch.shinyUrl(item)) : "";
 
-
+    console.log(prevCommonUrls);
+    console.log(nextCommonUrls);
     // 마지막 진화 포켓몬 이름
     const finalPokeName = nextEvolution ? nextEvolution[nextEvolution.length-1] : smallName;
     
@@ -200,7 +206,7 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
     // commonUrl과 shinyUrl배열 만들자 [일반진화, 알로라진화, 메가진화]
     let commonEvolveUrl = [...prevCommonUrls,nowCommonUrl,...nextCommonUrls,aloraCommonUrl, megaCommonUrl,megaXCommonUrl,megaYCommonUrl];
     let shinyEvolveUrl = [...prevShinyUrls,nowShinyUrl,...nextShinyUrls,aloraShinyUrl,megaShinyUrl,megaXShinyUrl,megaYShinyUrl];
-    
+    console.log(commonEvolveUrl);
     //mr.mime  데이터 오류처리   일반만 mr.mime  나머지는 mr._mime
     if(smallName === "mr._mime"){
         commonEvolveUrl[0]=urlSearch.commonUrl("mr.mime");
@@ -211,14 +217,14 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
     <>
     {windowSize > 810 ? <LongMenu></LongMenu> : <Menu></Menu>}
     <Container windowSize={windowSize}>
-        <ImgWrapper>
+        <ImgWrapper windowSize={windowSize}>
             <img src={nowCommonUrl} />
             <img src={urlSearch.commonBackUrl(smallName)}/>
             <img src={pokemon.pokeGif}/>
             <img src={nowShinyUrl}/>
             <img src={urlSearch.shinyBackUrl(smallName)}/>
         </ImgWrapper>
-        <InfoBox>
+        <InfoBox windowSize={windowSize}>
             <li><span className="liTitle">Name</span> <span>{pokemon.name}</span></li>
             <li><span className="liTitle">Type</span> <span>{pokemon.type.map(item=><span>{item}</span>)}</span></li>
             <li><span className="liTitle">Height</span> <span>{pokemon.height}</span></li>
@@ -230,7 +236,7 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
             <li><span className="liTitle">Weakenss</span> <span>{pokemon.weaknesses.map(item=><span>{item}</span>)}</span></li>
         </InfoBox>
 
-        <EvolveBox>
+        <EvolveBox windowSize={windowSize}>
             <h1>Evolutionary process</h1>
             <EvolveTitle common={commonLength}>
                 <CommonTitle common={commonLength}>General evolution</CommonTitle>
@@ -239,10 +245,10 @@ const DetailPresenter= ({pokemon,commonLength,windowSize})=>{
                 <div>MegaX Evolution</div>
                 <div>MegaY Evolution</div>
             </EvolveTitle>
-            <CommonBox common={commonLength}>
+            <CommonBox  windowSize={windowSize} common={commonLength}>
                {commonEvolveUrl.map(item=>item !== undefined ? <img src={item} /> :<img></img> )} 
             </CommonBox>
-            <CommonBox common={commonLength}>
+            <CommonBox  windowSize={windowSize} common={commonLength}>
                {shinyEvolveUrl.map(item=>item !== undefined ? <img src={item} /> : <img></img> )} 
             </CommonBox>
         </EvolveBox>

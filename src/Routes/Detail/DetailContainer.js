@@ -21,7 +21,9 @@ const DetailContainer = ()=>{
     const prevLength = thisPokemon[0].prev_evolution ? thisPokemon[0].prev_evolution.length : 0;
     const nextLength = thisPokemon[0].next_evolution ? thisPokemon[0].next_evolution.length : 0;
 
-    const commonEvolveLength = prevLength +nextLength +1;
+    let commonEvolveLength = prevLength +nextLength +1;
+    if(thisPokemon[0].name === "Dragonair" || thisPokemon[0].name==="Dragonite")
+        commonEvolveLength =3;
 
     const thisGif = pokedex.pokemon(thisPokemon[0].name.toLowerCase()).sprites
                     ? pokedex.pokemon(thisPokemon[0].name.toLowerCase()).sprites.animated :"";

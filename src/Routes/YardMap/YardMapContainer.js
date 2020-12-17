@@ -52,7 +52,7 @@ const YardMapContainer =()=>{
     }
 
   
-
+    console.log(wildPokemon);
 
 
     // 부모요소의 시작점을 기준으로 한 상대좌표 구하기
@@ -150,6 +150,7 @@ const YardMapContainer =()=>{
        setwildPokemon([...wildPokemon,...randomPokemon]); 
        setPkPosition([...pokePosition,...randomPosition]);
        setCp([...pokemonsCp,...randomCp]);
+       
 
     }    
 
@@ -176,7 +177,7 @@ const YardMapContainer =()=>{
        setwildPokemon([...wildPokemon,...randomPokemon]); 
        setPkPosition(randomPosition);
        setCp(randomCp);
-            console.log(",짜자잔");
+          
      }
     },[])
 
@@ -222,7 +223,7 @@ const YardMapContainer =()=>{
      frontMove={frontMove} 
      windowSize={windowSize}
      pokemon={wildPokemon}
-     setPokemons={setPokemon}
+     setPokemons={setwildPokemon}
      randomPosition={pokePosition}
      setPkPosition={setPkPosition}
      battlePokemon={battlePokemon}

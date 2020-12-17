@@ -246,7 +246,7 @@ const BossMapContainer =()=>{
     frontMove={frontMove} 
     windowSize={windowSize}
     pokemon={wildPokemon}
-    setPokemons={setPokemon}
+    setPokemons={setwildPokemon}
     randomPosition={pokePosition}
     setPkPosition={setPkPosition}
     battlePokemon={battlePokemon}

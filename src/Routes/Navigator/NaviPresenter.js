@@ -6,6 +6,9 @@ import LongMenu from "../../Components/LongMenu";
 import Pokemon from "../../Components/Pokemon";
 
 
+
+
+
 const PokeWrapper=styled.div`
     position:absolute;
     top:0;
@@ -19,6 +22,7 @@ const PokeWrapper=styled.div`
     gap:10px;
     grid-template-columns:repeat(3,1fr);
     grid-auto-rows:1fr;
+    overflow:auto;
 `;
 
 
