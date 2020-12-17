@@ -176,13 +176,12 @@ const YardMapContainer =()=>{
        setwildPokemon([...wildPokemon,...randomPokemon]); 
        setPkPosition(randomPosition);
        setCp(randomCp);
-
+            console.log(",짜자잔");
      }
     },[])
 
     useEffect(()=>{
         //걸음수가 늘어날 때마다 대입해준다. 
-        
         let eggs = JSON.parse(localStorage.getItem("myEggs"));
         let newHatchEggs=[];
         let newEggs=[];

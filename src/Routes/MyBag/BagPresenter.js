@@ -398,7 +398,7 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, win
 </Container>
 <ShowPokemon ref={showWindow} scroll={scroll}>
     <ul>
-        {showPokemon.length !==0 && showPokemon[0].myId ? showPokemon.map(pokemon=><li id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.color ?  (pokemon.specialUrl ? pokemon.specialShinyUrl : pokemon.shinyUrl) : (pokemon.specialUrl ? pokemon.specialUrl : pokemon.commonUrl)}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
+        {showPokemon.length !==0 && showPokemon[0].myId ? showPokemon.map(pokemon=><li key={pokemon.myId} id={pokemon.myId} onClick={handleSelectPokemon}><img src={pokemon.color ?  (pokemon.specialUrl ? pokemon.specialShinyUrl : pokemon.shinyUrl) : (pokemon.specialUrl ? pokemon.specialUrl : pokemon.commonUrl)}/><div><span>HP:</span> {pokemon.health}</div><div><span>CP:</span>{pokemon.cp}</div></li> ) :<h2>No Pokemon</h2>}
     </ul>
     <button onClick={()=>showWindow.current.style.display="none"}>Close</button>
 </ShowPokemon>
@@ -406,8 +406,8 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, win
 <ShowEgg ref={eggWindow} scroll={scroll}>
     <ul>
        {showPokemon.length !==0? showPokemon.map((egg,index)=>egg !==0 ? 
-       (index === 0 ? <li id={index+1} onClick={handleSelectEgg}><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg.png"/></li> 
-        : <li id={index+1} onClick={handleSelectEgg}><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/lucky-egg.png"/></li>) :""  ) :"No Eggs"} 
+       (index === 0 ? <li key={index+1} id={index+1} onClick={handleSelectEgg}><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/egg.png"/></li> 
+        : <li key={index+1} id={index+1} onClick={handleSelectEgg}><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/lucky-egg.png"/></li>) :""  ) :"No Eggs"} 
     </ul>
     <button onClick={()=>eggWindow.current.style.display="none"}>Close</button>
 </ShowEgg>
@@ -417,3 +417,21 @@ const BagPresenter= ({evolveUrl, evolveWindow, showWindow,eggWindow, scroll, win
 </EvolveWindow>
 </>
 export default BagPresenter;
+
+
+BagPresenter.propTypes={
+    evolveUrl:PropTypes.array, 
+    evolveWindow:PropTypes.object, 
+    showWindow:PropTypes.object,
+    eggWindow:PropTypes.object, 
+    scroll:PropTypes.number, 
+    windowSize:PropTypes.number,
+    bag:PropTypes.object,
+    egg:PropTypes.array,
+    showPokemon:PropTypes.array,
+    handleUseClick:PropTypes.func,
+    handleSelectPokemon:PropTypes.func,  
+    handleSelectEgg:PropTypes.func
+
+
+}

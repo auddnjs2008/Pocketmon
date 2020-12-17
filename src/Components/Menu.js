@@ -9,6 +9,7 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 const MenuWrapper = styled.div`
     display:flex;
     overflow:hidden;
+   
 `;
 
 const Icon = styled.span`
@@ -16,6 +17,7 @@ const Icon = styled.span`
     z-index:1;
     margin-left:10px;
     margin-top:10px;
+  
 `;
 
 const Container =styled.div`

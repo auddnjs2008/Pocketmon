@@ -80,6 +80,11 @@ const BattlePokemon = styled.ul`
 
 const BtnWrapper =styled.div`
    justify-self:center;
+   button{
+      height:30px;
+      margin-right:20px;
+      font-size:15px;
+   }
 `;
 
 
@@ -111,7 +116,7 @@ const MyPokePresenter = ({windowSize,pokemons,message,setMessage,handlePokemonCl
     </Header>
     <Container windowSize={windowSize}>
       {pokemons.map((item,index) => item ?
-         <MyPokemon sendBtnClick={sendBtnClick} id={item.myId} border={battlePokemons.length !==0 ? battlePokemons.map(item=>item.myId).includes(index+1) : false}  changePossible={changePossible} item={item} handlePokemonClick={handlePokemonClick}></MyPokemon>
+         <MyPokemon key={item.myId} sendBtnClick={sendBtnClick} id={item.myId} border={battlePokemons.length !==0 ? battlePokemons.map(item=>item.myId).includes(index+1) : false}  changePossible={changePossible} item={item} handlePokemonClick={handlePokemonClick}></MyPokemon>
         
       : "")}
     </Container>

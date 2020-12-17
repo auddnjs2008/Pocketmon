@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import PropTypes from "styled-components";
+import PropTypes from "prop-types";
 import ColorThief from "colorthief";
 import {Link} from "react-router-dom";
 
@@ -17,6 +17,7 @@ grid-template-rows:11fr 0.5fr;
    button{
       height:25px;
       margin-top:5px;
+      font-size:15px;
    }
 `;
 const PokeImg = styled.img`
@@ -185,7 +186,7 @@ const MyPokemon =({ sendBtnClick, id,border,changePossible,item,handlePokemonCli
 export default MyPokemon;
 
 MyPokemon.propTypes={
-   sendBtnClick:PropTypes.func, 
+ sendBtnClick:PropTypes.func, 
   border:PropTypes.bool,
   changePossible:PropTypes.number,
   item:PropTypes.object,

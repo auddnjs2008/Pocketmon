@@ -35,7 +35,7 @@ const Pokemon=({pokemon})=>{
     let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
 
     return(
-     <PLink to={`/navi/${pokemon.id}`}>    
+     <PLink  to={`/navi/${pokemon.id}`}>    
         <Container colors={colors}>    
         <img  crossOrigin ="anonymous" ref={Images} src={googleProxyURL+ encodeURIComponent(pokemon.img)}
                         alt={"example"}

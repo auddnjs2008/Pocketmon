@@ -13,12 +13,21 @@ const Container =styled.div`
  position:absolute;
  top:0;
  width:800vw;
- display:flex;
- overflow:hidden;
- margin-top:${props=>props.windowSize >810 ? "90px" :"0px"};
+ //display:flex;
+ //overflow:hidden;
+ margin-top:${props=>props.windowSize >810 ? "90px" :"100px"};
+
+ display:grid;
+ grid-template-columns:repeat(8,1fr);
 
 `;
 
+const FixedWrapper = styled.div`
+width:100%;
+position:fixed;
+top:0;
+z-index:1;
+`;
 
 const Section=styled.section`
 
@@ -26,6 +35,7 @@ const Section=styled.section`
     height:500px;
     display:grid;
     grid-template-rows:1fr 10fr;
+    gap:10px;
     justify-items:center;
     align-items:center;
     padding:20px;
@@ -99,7 +109,7 @@ const Section=styled.section`
 
     &:nth-child(6){
         background-image:url("https://usecloud.s3-ap-northeast-1.amazonaws.com/pokmonImages/%ED%91%B8%EB%A6%B0.png");
-        background-position:center center;
+        background-position:bottom;
         background-repeat:no-repeat;
         background-color:#fde9f2;
         p{
@@ -119,9 +129,22 @@ const Section=styled.section`
         background-position:center center;
         background-repeat:no-repeat;
         background-color:#84a89f;
+        position:relative;
         p{
             font-size:15px;
             justify-self:start;
+            
+        }
+        
+        .Info{
+            width:35%;
+            color:black;
+            position:absolute;
+            bottom:10px;
+            right:0;
+            font-size:20px;
+            color:white;
+         
         }
     }
 
@@ -130,7 +153,7 @@ const Section=styled.section`
 `;
 
 const ItemWrapper =styled.div`
-font-size:20px;
+font-size:15px;
 font-weight:600;
 display:grid;
 grid-template-rows:repeat(9,1fr);
@@ -169,27 +192,24 @@ const IconWrapper = styled.div`
 
 
 const Doc=()=>{
-
     const [windowSize,setWindow]=useState(window.innerWidth);
     const [page,setPage]=useState(1);
     const [itemWidth,setItem]=useState();
     const [sliderWidth,setSlider]=useState();
-    const [windowX,setWindowPosition]=useState(1535);
+    const [windowX,setWindowPosition]=useState(window.innerWidth);
     const slider=useRef();
     const item=useRef();
     
     
-
     const scrollSpeeder = (where)=>{
         let start=Math.floor(window.scrollX);
         let init =Math.floor(window.scrollX);
-       
         if(where === "right"){
             const rightSpeeder=setInterval(()=>{
-                start +=Math.floor(itemWidth/6);
+                start +=Math.ceil(itemWidth/6);
                 window.scrollTo(start,0);
                 setWindowPosition(start);
-             if(start>=init + itemWidth ){     
+             if(start+5>=init + itemWidth ){     
                 clearInterval(rightSpeeder);
              }
            },15); 
@@ -197,10 +217,10 @@ const Doc=()=>{
         else{
            
            const leftSpeeder=setInterval(()=>{
-                start -=Math.floor(itemWidth/6);
+                start -=Math.ceil(itemWidth/6);
               window.scrollTo(start,0);
               setWindowPosition(start);
-              if(start <=init-itemWidth){ 
+              if(start-5 <=init-itemWidth){ 
                   clearInterval(leftSpeeder);
             }
            },15); 
@@ -236,49 +256,56 @@ const Doc=()=>{
         }
     }
 
-
+    const handleScroll=()=>{
+        setWindow(window.innerWidth);
+        // 화면 사이즈를 늘릴때마다 크기 조정해줘야한다.  그리고 그 위치에 가만히 있어야 한다.
+        setItem(Math.floor(item.current.offsetWidth));
+        setSlider(Math.floor(slider.current.scrollWidth));
+    }
 
     useEffect(()=>{
         if(item.current && slider.current){
             setItem(Math.floor(item.current.offsetWidth));
             setSlider(Math.floor(slider.current.scrollWidth));
-             window.scrollTo(itemWidth,0);
-            setWindowPosition(itemWidth);
-            window.addEventListener("resize",()=>setWindow(window.innerWidth));        
-            return ()=>window.removeEventListener("resize",()=>setWindow(window.innerWidth));  
-              
+             //window.scrollTo(itemWidth,0);
+            //setWindowPosition(itemWidth);
+            window.addEventListener("resize",handleScroll);        
+            return ()=>window.removeEventListener("resize",handleScroll);    
         }    
     
-    },[slider,item]);
+    },[]);
 
     useEffect(()=>{
-        window.scrollTo(1535,0);
-        setWindowPosition(1535,0);
+        window.scrollTo(window.innerWidth,0);
+        setWindowPosition(window.innerWidth,0);
     },[])
     useEffect(()=>{
+        
         if(slider.current){
+            window.scrollTo(windowX,0);
          
         if(windowX >= 7*itemWidth-5){
             setTimeout(()=>window.scrollTo(itemWidth,0),30); // 페이지가 6페이지에 왔을때 슬쩍 바꿔치기 해준다.
             setWindowPosition(itemWidth);
         }
-        if(windowX <=0){
+        if(windowX <=1){
             setTimeout(()=>window.scrollTo(sliderWidth -2*itemWidth,0),30);
             setWindowPosition(sliderWidth -2*itemWidth);
         }
     }
 
     },[windowX]);
-
+    
+    useEffect(()=>{
+        setWindowPosition(page * windowSize);
+    },[windowSize])
 
 
 
 
 return (<>
-        {windowSize > 810 ? <LongMenu></LongMenu> : <Menu></Menu>}
+    {windowSize > 810 ? <LongMenu></LongMenu> :<FixedWrapper><Menu></Menu></FixedWrapper>}
     <Container windowSize={windowSize} ref={slider}>
- 
-
     <Section>
         <h1>CopyRight</h1>
         <p>
@@ -325,6 +352,11 @@ return (<>
         전기맵 배경
         <a href='https://kr.freepik.com/photos/water'>Water 사진는 jcomp - kr.freepik.com가 제작함</a>
 
+        </p>
+        <p className="Info">
+             Thank you, have fun with it. and please send message <br/> if you find some error  or have some question.<br/><br/>
+             auddnjs2008@naver.com <br/><br/>
+             Made by Kim myeoung won
         </p>
     </Section>
     <Section ref={item}>
@@ -426,10 +458,11 @@ return (<>
         <br/><br/>
         전기맵 배경
         <a href='https://kr.freepik.com/photos/water'>Water 사진는 jcomp - kr.freepik.com가 제작함</a>
-
-
-
-
+        </p>
+        <p className="Info">
+             Thank you, have fun with it. and please send message <br/> if you find some error  or have some question.<br/><br/>
+             auddnjs2008@naver.com <br/><br/>
+             Made by Kim myeoung won
         </p>
     </Section>
     <Section>
