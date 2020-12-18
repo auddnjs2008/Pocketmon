@@ -228,7 +228,7 @@ const BossMapPresenter=({map,trainer,bag,char,yard,charPosition,windowSize,front
             <Navigation>
                 <Link to="/navi">Home</Link>
                 <Link to="/game">Map</Link>
-                {bag.Incense !== 0 ? <Incense onClick={handleClickItem}><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/incense.png"/>{bag.Incense}</Incense> :""}             
+                {bag.Incense !== 0 && bag.Incese !== undefined? <Incense onClick={handleClickItem}><img src="https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/incense.png"/>{bag.Incense}</Incense> :""}             
            </Navigation>
             <ThreeD onClick={handleMapChange}>
                3D 입체보기 
