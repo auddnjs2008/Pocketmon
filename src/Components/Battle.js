@@ -284,8 +284,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     const myBag = JSON.parse(localStorage.getItem("myBag"));
     let commonUrl = "https://projectpokemon.org/images/normal-sprite/";
     let shinyUrl = "https://projectpokemon.org/images/shiny-sprite/";
-    let commonBackUrl = "https://projectpokemon.org/images/sprites-models/normal-back/";
-    let shinyBackUrl = "https://projectpokemon.org/images/sprites-models/shiny-back/";
+ 
     const menu =useRef();
     const myMonster = useRef();
     const battleMonster = useRef();
@@ -299,11 +298,13 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
     [Math.floor(Math.random()*(10-5))+5,Math.floor(Math.random()*(15-10))+10,Math.floor(Math.random()*(20-15))+15]:
     [Math.floor(Math.random()*(2-1))+1,Math.floor(Math.random()*(4-3))+3,Math.floor(Math.random()*(6-5))+5]);
 
+  
     const [myPhysical,setMyPhysical]=useState();
     const [initList,setInit]=useState();
     const [list,setList]=useState();
     const [listIndex,setIndex]=useState(0);
     const [ballEffect,setBallEffect]=useState(0);
+    const [bag,setBag]=useState(JSON.parse(localStorage.getItem("myBag")));
     const [ballImage,setBallImg]=useState();
     const [message,setMessage]=useState("");
     const [attackDamege,setAttack]=useState([0,0]);
@@ -402,6 +403,8 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
    
 
     const ballCatch=(item)=>{
+
+      
         if(item.innerHTML.includes("pokeball")){
             setBallCount(x=>x+1);
             setBallImg(`https://usecloud.s3-ap-northeast-1.amazonaws.com/pokemonicon/188915-pokemon-go/png/pokeball.png`);
@@ -446,6 +449,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
         }
 
         localStorage.setItem("myBag",JSON.stringify(myBag));
+      
         //setIndex(0);
         setBallEffect(1);
        
@@ -595,7 +599,9 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
          })
        )
        localStorage.setItem("battlePokemons",JSON.stringify(myBattlePokemons));
+     
     }
+
 
 
 
@@ -672,6 +678,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
         myPokemons[myMonster.current.id-1].health = myPhysical;
         localStorage.setItem("battlePokemons",JSON.stringify(myBattlePokemons));
         localStorage.setItem("myPoketmon",JSON.stringify(myPokemons));
+
         if(battlePhysical <= 0){   
             myPokeomnsSetting();
             setTimeout(()=>removePokemon(),1000);
@@ -679,13 +686,18 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
             //배틀이 끝나면 보상을 주어야 한다.
             if(battlePokmonName.includes("mew") || battlePokmonName.includes("moltres") || battlePokmonName.includes("zapdos")|| battlePokmonName.includes("articuno"))
             {    
-                myBag["money"] +=3000; 
+                myBag["money"] = bag.money === myBag["money"] ? myBag["money"]+3000 : myBag["money"];  
                 setMessage(`you got 3000 coin`);
+               
             }else{
-                myBag["money"]+=50;
+                myBag["money"] = bag.money === myBag["money"] ? myBag["money"]+50 : myBag["money"];  
                 setMessage(`you got 50 coin`);
+            
+              
             }
             
+            localStorage.setItem("myBag",JSON.stringify(myBag));
+
         
         }
         
@@ -717,7 +729,7 @@ const Battle =({color,battleIndex,pokemons,setBattle,battleon,setRun,pokemonsCp,
 
     },[battlePhysical,myPhysical])
 
-
+  
 
     return (
         <>

@@ -69,8 +69,22 @@ const MyPokeContainer =()=>{
         const id =parseInt(e.target.parentNode.id);
         let newBattlePokemon = battlePokemons;
         const pickPokemon=pokemons[id-1];
+
         if(newBag.Candy === undefined)newBag.Candy =0;
         //state 변수 리셋
+
+
+        // 만일 가지고 있는 포켓몬이 한마리이면 안보내도록
+
+        if(pokemons.length === 1){
+            setMessage("you have only one Pokemon, so you can't send Pokemon");
+            return 0;
+        }
+
+
+
+
+
         if(battlePokemons.filter(item=>item.myId === (id)).length === 0){
             // 포켓몬을 보낼시  보상으로 사탕을 준다.(cp에 따라 다르게 준다.)
             

@@ -351,7 +351,8 @@ return (<>
         <br/><br/>
         전기맵 배경
         <a href='https://kr.freepik.com/photos/water'>Water 사진는 jcomp - kr.freepik.com가 제작함</a>
-
+        <br/> <br/>
+        포켓몬 캐릭터 https://projectpokemon.org/ 
         </p>
         <p className="Info">
              Thank you, have fun with it. and please send message <br/> if you find some error  or have some question.<br/><br/>
@@ -458,6 +459,8 @@ return (<>
         <br/><br/>
         전기맵 배경
         <a href='https://kr.freepik.com/photos/water'>Water 사진는 jcomp - kr.freepik.com가 제작함</a>
+        <br/> <br/>
+        포켓몬 캐릭터 https://projectpokemon.org/ 
         </p>
         <p className="Info">
              Thank you, have fun with it. and please send message <br/> if you find some error  or have some question.<br/><br/>

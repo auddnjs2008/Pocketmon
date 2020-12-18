@@ -83,6 +83,10 @@ const StoreContainer = ()=>{
             setMessage("You got a special Pokemon");
         }
 
+        //뱃지가 23개이면 모두 0개로 다시 셋팅해준다.
+        if(itemes["Badges"].length === 23){
+            itemes["Badges"]=[]
+        }
 
 
 

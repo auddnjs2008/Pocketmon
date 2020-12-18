@@ -51,9 +51,6 @@ const YardMapContainer =()=>{
         return Math.floor(Math.random()*(num-start))+start; // 1부터 num까지 랜덤으로 배출
     }
 
-  
-    console.log(wildPokemon);
-
 
     // 부모요소의 시작점을 기준으로 한 상대좌표 구하기
   
